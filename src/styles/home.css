@@ -1,0 +1,248 @@
+/* ===========================================================
+   ADESUWA HERO — plain CSS
+   Font: Sora (self-hosted, closest open-source match to
+   Google Sans). Drop the Sora .woff2 files in /public/fonts/.
+   =========================================================== */
+
+.adesuwa-hero {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  min-height: 640px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  font-family: "Sora", "Segoe UI", sans-serif;
+  color: #ffffff;
+  isolation: isolate;
+}
+
+.adesuwa-hero__bg {
+  position: absolute;
+  inset: 0;
+  background-image: url("/images/hero-pic.png");
+  background-size: cover;
+  background-position: center 22%;
+  z-index: 0;
+}
+
+.adesuwa-hero__scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(10, 10, 12, 0.55) 0%,
+    rgba(10, 10, 12, 0.35) 35%,
+    rgba(10, 10, 12, 0.75) 100%
+  );
+  z-index: 1;
+}
+
+/* ---------- Top-left copy block ---------- */
+.adesuwa-hero__top {
+  position: absolute;
+  top: 20%;
+  left: 3%;
+  max-width: 340px;
+  z-index: 2;
+}
+
+.adesuwa-eyebrow {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  margin: 0;
+}
+
+.eyebrow-number {
+  flex-shrink: 0;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.6);
+  background: rgba(255, 255, 255, 0.08);
+  padding: 0.2rem 0.6rem;
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  letter-spacing: 0.05em;
+  margin-top: 0.1em;
+  line-height: 1.4;
+}
+
+.eyebrow-text {
+  font-weight: 400;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.92);
+}
+
+/* ---------- Glass card, top right (replaces the old pill) ----------
+   Same glass recipe as .nav-center-glass in navbar.css, reused here
+   for visual consistency across the page. */
+.adesuwa-card {
+  position: absolute;
+  top: 20%;
+  right: 48px;
+  z-index: 3;
+  width: 200px;
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: #ffffff;
+  overflow: hidden;
+
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 9px;
+  box-shadow:
+    0 4px 20px rgba(0, 0, 0, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+
+  padding: 10px;
+  gap: 8px;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.adesuwa-card:hover {
+  transform: translateY(-3px);
+  box-shadow:
+    0 8px 26px rgba(0, 0, 0, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+
+.adesuwa-card__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2px;
+}
+
+.adesuwa-card__logo {
+  height: 38px;
+  width: auto;
+  display: block;
+}
+
+.adesuwa-card__star {
+  font-size: 36px;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.adesuwa-card__image {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.adesuwa-card__image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.adesuwa-card__label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  text-align: left;
+  padding: 2px 0 2px;
+  color: rgba(255, 255, 255, 0.92);
+}
+
+/* ---------- Wordmark ---------- */
+.adesuwa-hero__wordmark {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  display: flex;
+  align-items: flex-end;
+  padding: 0 32px 40px 32px;
+  box-sizing: border-box;
+}
+
+.adesuwa-svg {
+  width: 100%;
+  height: auto;
+  max-height: 42vh;
+  display: block;
+}
+
+.adesuwa-letter {
+  fill: none;
+  stroke: #ffffff;
+  stroke-width: 2.5;
+  vector-effect: non-scaling-stroke;
+}
+
+.adesuwa-mark {
+  width: 64px;
+  height: 64px;
+  flex-shrink: 0;
+  margin-left: 12px;
+  margin-bottom: 6px;
+}
+
+.adesuwa-mark-circle,
+.adesuwa-mark-letter {
+  stroke: #ffffff;
+  stroke-width: 3;
+  vector-effect: non-scaling-stroke;
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 900px) {
+  .adesuwa-hero__top {
+    top: 88px;
+    left: 24px;
+    max-width: 260px;
+  }
+
+  .eyebrow-text {
+    font-size: 0.85rem;
+    line-height: 1.5;
+  }
+
+  .adesuwa-card {
+    top: auto;
+    bottom: 320px;
+    right: 24px;
+    width: 104px;
+    padding: 8px;
+  }
+
+  .adesuwa-card__logo {
+    height: 14px;
+  }
+
+  .adesuwa-card__star {
+    font-size: 13px;
+  }
+
+  .adesuwa-card__label {
+    font-size: 10px;
+  }
+
+  .adesuwa-hero__wordmark {
+    padding: 0 16px 28px 16px;
+  }
+
+  .adesuwa-svg {
+    max-height: 30vh;
+  }
+
+  .adesuwa-mark {
+    width: 40px;
+    height: 40px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .adesuwa-card {
+    transition: none;
+  }
+}

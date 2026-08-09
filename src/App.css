@@ -1,0 +1,32 @@
+/* Reset & body – white background for a clean design */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Google Sans', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: #ffffff;
+  min-height: 100vh;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+/* Optional subtle background effect – now light and barely visible */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(circle at 20% 50%, rgba(200, 200, 255, 0.1), transparent 60%),
+              radial-gradient(circle at 80% 50%, rgba(255, 200, 240, 0.1), transparent 60%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+#root {
+  width: 100%;
+  position: relative;
+  z-index: 1;
+}

@@ -1,0 +1,130 @@
+// src/components/Navbar.tsx
+import { NavLink } from 'react-router-dom';
+import { HiMenu, HiX } from 'react-icons/hi';
+import { useState, useRef, useEffect } from 'react';
+import gsap from 'gsap';
+import '../styles/navbar.css';
+
+const Navbar: React.FC = () => {
+    const [menuOpen, setMenuOpen] = useState(false);
+    const navRef = useRef<HTMLDivElement>(null);
+    const navInnerRef = useRef<HTMLDivElement>(null);
+    const isHiddenRef = useRef(false);
+    const hasPlayedEntrance = useRef(false);
+
+    const toggleMenu = () => setMenuOpen(!menuOpen);
+    const closeMenu = () => setMenuOpen(false);
+
+    // Lock body scroll when mobile menu is open
+    useEffect(() => {
+        if (menuOpen) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = '';
+        }
+        return () => {
+            document.body.style.overflow = '';
+        };
+    }, [menuOpen]);
+
+    // Click outside to close
+    useEffect(() => {
+        if (!menuOpen) return;
+        const handleClickOutside = (e: MouseEvent) => {
+            if (navRef.current && !navRef.current.contains(e.target as Node)) {
+                setMenuOpen(false);
+            }
+        };
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => document.removeEventListener('mousedown', handleClickOutside);
+    }, [menuOpen]);
+
+    // Hide/show navbar on scroll (via custom event)
+    useEffect(() => {
+        const handleVisibility = (e: Event) => {
+            const { hidden } = (e as CustomEvent).detail;
+            if (hidden === isHiddenRef.current) return;
+            isHiddenRef.current = hidden;
+            gsap.to(navRef.current, {
+                y: hidden ? '-130%' : '0%',
+                opacity: hidden ? 0 : 1,
+                duration: 0.35,
+                ease: 'power2.out',
+            });
+        };
+        window.addEventListener('navbar-visibility', handleVisibility);
+        return () => window.removeEventListener('navbar-visibility', handleVisibility);
+    }, []);
+
+    // ✅ FIX: Entrance animation – plays automatically on mount
+    useEffect(() => {
+        // Only run once
+        if (hasPlayedEntrance.current || !navInnerRef.current) return;
+        hasPlayedEntrance.current = true;
+
+        // Set initial state off-screen (just in case)
+        gsap.set(navInnerRef.current, { y: '-120%', opacity: 0 });
+
+        // Animate in after a tiny delay (ensures everything is ready)
+        gsap.to(navInnerRef.current, {
+            y: '0%',
+            opacity: 1,
+            duration: 0.8,
+            ease: 'power3.out',
+            delay: 0.15,
+        });
+    }, []);
+
+    return (
+        <>
+            <nav className="navbar" ref={navRef}>
+                <div className="navbar-inner" ref={navInnerRef}>
+                    {/* ─── LEFT: Logo ─── */}
+                    <div className="navbar-brand">
+                        <div className="brand-logo-wrapper">
+                            {/* 👇 REPLACE "logo.png" WITH YOUR ACTUAL FILENAME */}
+                            <img
+                                src="/logo.png"
+                                alt="Logo"
+                                className="brand-logo-img"
+                            />
+                        </div>
+                    </div>
+
+                    {/* ─── CENTER: Glassy pill with 4 links ─── */}
+                    <div className="nav-center-glass">
+                        <NavLink to="/about" className="glass-link">About</NavLink>
+                        <NavLink to="/investments" className="glass-link">Investments</NavLink>
+                        <NavLink to="/videos" className="glass-link">Videos</NavLink>
+                        <NavLink to="/contact" className="glass-link">Contact</NavLink>
+                        <NavLink to="/news" className="glass-link">News & Articles</NavLink>
+                    </div>
+
+                    {/* ─── RIGHT: News & Articles (outside glass) ─── */}
+                    <div className="nav-right-news">
+
+                    </div>
+
+                    {/* ─── Hamburger (mobile) ─── */}
+                    <button className="hamburger" onClick={toggleMenu}>
+                        {menuOpen ? <HiX /> : <HiMenu />}
+                    </button>
+                </div>
+
+                {/* ─── Mobile Drawer ─── */}
+                <ul className={`nav-links ${menuOpen ? 'open' : ''}`}>
+                    <li><NavLink to="/about" onClick={closeMenu}>About</NavLink></li>
+                    <li><NavLink to="/videos" onClick={closeMenu}>Videos</NavLink></li>
+                    <li><NavLink to="/investments" onClick={closeMenu}>Investments</NavLink></li>
+                    <li><NavLink to="/news" onClick={closeMenu}>News & Articles</NavLink></li>
+                    <li><NavLink to="/contact" onClick={closeMenu}>Contact</NavLink></li>
+                </ul>
+            </nav>
+
+            {/* Overlay for mobile menu */}
+            {menuOpen && <div className="menu-overlay" onClick={closeMenu} />}
+        </>
+    );
+};
+
+export default Navbar;
