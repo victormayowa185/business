@@ -1,10 +1,10 @@
 /* ===========================================================
-   ADESUWA HERO — plain CSS
-   Font: Sora (self-hosted, closest open-source match to
-   Google Sans). Drop the Sora .woff2 files in /public/fonts/.
+   HERO SECTION — Professional Template
+   Clean, reusable, no branding in class names.
    =========================================================== */
 
-.adesuwa-hero {
+/* ─── Hero Container ─── */
+.hero-section {
   position: relative;
   width: 100%;
   height: 100vh;
@@ -16,9 +16,10 @@
   font-family: "Sora", "Segoe UI", sans-serif;
   color: #ffffff;
   isolation: isolate;
-}
+}  
 
-.adesuwa-hero__bg {
+/* ─── Background Image ─── */
+.hero-section__bg {
   position: absolute;
   inset: 0;
   background-image: url("/images/hero-pic.png");
@@ -27,35 +28,32 @@
   z-index: 0;
 }
 
-.adesuwa-hero__scrim {
+.hero-section__scrim {
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    180deg,
-    rgba(10, 10, 12, 0.55) 0%,
-    rgba(10, 10, 12, 0.35) 35%,
-    rgba(10, 10, 12, 0.75) 100%
-  );
+  background: rgba(10, 10, 12, 0.381);  /* ← solid dark overlay */
   z-index: 1;
 }
 
-/* ---------- Top-left copy block ---------- */
-.adesuwa-hero__top {
+/* ─── Top Content Block ─── */
+.hero-section__top {
   position: absolute;
-  top: 20%;
+  top: 25%;
   left: 3%;
   max-width: 340px;
   z-index: 2;
 }
 
-.adesuwa-eyebrow {
+/* ─── Eyebrow / Badge ─── */
+.hero-eyebrow {
   display: flex;
+  flex-direction: column;
   align-items: flex-start;
   gap: 0.75rem;
   margin: 0;
 }
 
-.eyebrow-number {
+.hero-eyebrow__number {
   flex-shrink: 0;
   font-size: 0.75rem;
   font-weight: 700;
@@ -69,93 +67,90 @@
   line-height: 1.4;
 }
 
-.eyebrow-text {
+.hero-eyebrow__text {
   font-weight: 400;
   font-size: 0.95rem;
   line-height: 1.6;
   color: rgba(255, 255, 255, 0.92);
 }
 
-/* ---------- Glass card, top right (replaces the old pill) ----------
-   Same glass recipe as .nav-center-glass in navbar.css, reused here
-   for visual consistency across the page. */
-.adesuwa-card {
+/* ─── Glass Card (Top Right) ─── */
+.hero-card {
   position: absolute;
-  top: 20%;
+  top: 25%;
   right: 48px;
   z-index: 3;
   width: 200px;
+  height: 200px;
   display: flex;
   flex-direction: column;
   text-decoration: none;
-  color: #ffffff;
+  color: black;
   overflow: hidden;
-
-  background: rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.4);
+  background: white;
+  backdrop-filter: blur(12px) saturate(180%);
+  border: 1px solid white;
   border-radius: 9px;
   box-shadow:
     0 4px 20px rgba(0, 0, 0, 0.06),
     inset 0 1px 0 rgba(255, 255, 255, 0.6);
 
-  padding: 10px;
+  padding: 12px;
   gap: 8px;
   transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
-.adesuwa-card:hover {
+.hero-card:hover {
   transform: translateY(-3px);
   box-shadow:
     0 8px 26px rgba(0, 0, 0, 0.12),
     inset 0 1px 0 rgba(255, 255, 255, 0.6);
 }
 
-.adesuwa-card__head {
+.hero-card__header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 0 2px;
 }
 
-.adesuwa-card__logo {
+.hero-card__logo {
   height: 38px;
   width: auto;
   display: block;
 }
 
-.adesuwa-card__star {
+.hero-card__icon {
   font-size: 36px;
-  color: rgba(255, 255, 255, 0.85);
+  color: black;
 }
 
-.adesuwa-card__image {
+.hero-card__image {
   width: 100%;
   aspect-ratio: 4 / 3;
-  border-radius: 12px;
+  border-radius: 7px;
   overflow: hidden;
 }
 
-.adesuwa-card__image img {
+.hero-card__image img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
 }
 
-.adesuwa-card__label {
+.hero-card__label {
   font-size: 11px;
   font-weight: 600;
   letter-spacing: 0.03em;
   text-transform: uppercase;
   text-align: left;
-  padding: 2px 0 2px;
-  color: rgba(255, 255, 255, 0.92);
+  padding: 2px 0;
+  color: black;
 }
 
-/* ---------- Wordmark ---------- */
-.adesuwa-hero__wordmark {
+/* ─── Wordmark / SVG Logo ─── */
+.hero-section__wordmark {
   position: relative;
   z-index: 2;
   width: 100%;
@@ -165,21 +160,22 @@
   box-sizing: border-box;
 }
 
-.adesuwa-svg {
+.hero-svg {
   width: 100%;
   height: auto;
   max-height: 42vh;
   display: block;
 }
 
-.adesuwa-letter {
+.hero-svg__letter {
   fill: none;
   stroke: #ffffff;
-  stroke-width: 2.5;
+  stroke-width: 1;
   vector-effect: non-scaling-stroke;
 }
 
-.adesuwa-mark {
+/* ─── Registered Mark Badge ─── */
+.hero-mark {
   width: 64px;
   height: 64px;
   flex-shrink: 0;
@@ -187,62 +183,141 @@
   margin-bottom: 6px;
 }
 
-.adesuwa-mark-circle,
-.adesuwa-mark-letter {
+.hero-mark__circle,
+.hero-mark__letter {
   stroke: #ffffff;
-  stroke-width: 3;
+  stroke-width: 1;
   vector-effect: non-scaling-stroke;
 }
 
-/* ---------- Responsive ---------- */
+/* ─── Responsive (≤ 900px) ─── */
 @media (max-width: 900px) {
-  .adesuwa-hero__top {
+  .hero-section__top {
     top: 88px;
     left: 24px;
     max-width: 260px;
   }
 
-  .eyebrow-text {
+  .hero-eyebrow__text {
     font-size: 0.85rem;
     line-height: 1.5;
   }
 
-  .adesuwa-card {
+  .hero-card {
     top: auto;
     bottom: 320px;
     right: 24px;
-    width: 104px;
-    padding: 8px;
+    width: 140px;
+    padding: 10px;
   }
 
-  .adesuwa-card__logo {
-    height: 14px;
+  .hero-card__logo {
+    height: 28px;
   }
 
-  .adesuwa-card__star {
-    font-size: 13px;
+  .hero-card__icon {
+    font-size: 24px;
   }
 
-  .adesuwa-card__label {
+  .hero-card__label {
     font-size: 10px;
   }
 
-  .adesuwa-hero__wordmark {
+  .hero-section__wordmark {
     padding: 0 16px 28px 16px;
   }
 
-  .adesuwa-svg {
+  .hero-svg {
     max-height: 30vh;
   }
 
-  .adesuwa-mark {
+  .hero-mark {
     width: 40px;
     height: 40px;
   }
 }
 
+/* ─── Reduce Motion ─── */
 @media (prefers-reduced-motion: reduce) {
-  .adesuwa-card {
+  .hero-card {
     transition: none;
+  }
+}
+
+
+/* ---------- Mission Quotes ---------- */
+.mission-section {
+  padding: 120px 8% 100px;
+}
+
+.mission-inner {
+  max-width: 900px;
+  margin: 0 auto;
+  position: relative;         /* 👈 needed so the pin can anchor to this */
+  display: flex;
+  flex-direction: column; 
+  align-items: flex-start;
+}
+
+.mission-row {
+  position: relative;
+  margin-bottom: 56px;
+}
+
+/* Logo pinned once, aligned to the TOP of the first quote's text,
+   sitting just outside the text column (not inline, not centered). */
+.mission-pin {
+  position: absolute;
+  top: 2px;                   /* nudge to match cap-height of the text */
+  left: -16%;                /* sits to the left of the quote, outside it */
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+}
+
+.mission-quote {
+  margin-bottom: 56px;
+  max-width: 760px;
+}
+
+.mission-quote:last-child {
+  margin-bottom: 0;
+}
+
+.mission-quote__text {
+  font-family: "Sora", "Segoe UI", sans-serif;
+  font-size: clamp(1.1rem, 2vw, 1.55rem);
+  line-height: 1.55;
+  font-weight: 400;
+  color: #000032;
+  margin: 0 0 14px 0;
+  text-align: left;
+}
+
+.mission-quote__attribution {
+  display: block;
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: rgba(0, 0, 50, 0.6);
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 720px) {
+  .mission-section {
+    padding: 90px 6% 70px;
+  }
+
+  .mission-pin {
+    position: static;         /* on mobile, stack logo above text instead */
+    margin-bottom: 16px;
+    width: 40px;
+    height: 40px;
+  }
+
+  .mission-row {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
   }
 }
