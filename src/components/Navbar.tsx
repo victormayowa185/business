@@ -7,6 +7,7 @@ import '../styles/navbar.css';
 
 const Navbar: React.FC = () => {
     const [menuOpen, setMenuOpen] = useState(false);
+    const [scrolled, setScrolled] = useState(false); // 👈 NEW STATE
     const navRef = useRef<HTMLDivElement>(null);
     const navInnerRef = useRef<HTMLDivElement>(null);
     const isHiddenRef = useRef(false);
@@ -56,16 +57,36 @@ const Navbar: React.FC = () => {
         return () => window.removeEventListener('navbar-visibility', handleVisibility);
     }, []);
 
-    // ✅ FIX: Entrance animation – plays automatically on mount
+    // ─── ✨ NEW: Scroll listener for text color change ───
     useEffect(() => {
-        // Only run once
+        const handleScroll = () => {
+            // Hero is 100vh, so when we scroll past ~80% of viewport height,
+            // we switch to dark text. Adjust threshold as needed.
+            const scrollY = window.scrollY;
+            const threshold = window.innerHeight * 0.8; // 80% of viewport height
+            setScrolled(scrollY > threshold);
+        };
+
+        // Initial check on mount
+        handleScroll();
+
+        window.addEventListener('scroll', handleScroll);
+        // Also re-check on resize (viewport height may change)
+        window.addEventListener('resize', handleScroll);
+
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+            window.removeEventListener('resize', handleScroll);
+        };
+    }, []);
+
+    // Entrance animation – plays automatically on mount
+    useEffect(() => {
         if (hasPlayedEntrance.current || !navInnerRef.current) return;
         hasPlayedEntrance.current = true;
 
-        // Set initial state off-screen (just in case)
         gsap.set(navInnerRef.current, { y: '-120%', opacity: 0 });
 
-        // Animate in after a tiny delay (ensures everything is ready)
         gsap.to(navInnerRef.current, {
             y: '0%',
             opacity: 1,
@@ -77,12 +98,11 @@ const Navbar: React.FC = () => {
 
     return (
         <>
-            <nav className="navbar" ref={navRef}>
+            <nav className={`navbar ${scrolled ? 'navbar-scrolled' : ''}`} ref={navRef}>
                 <div className="navbar-inner" ref={navInnerRef}>
                     {/* ─── LEFT: Logo ─── */}
                     <div className="navbar-brand">
                         <div className="brand-logo-wrapper">
-                            {/* 👇 REPLACE "logo.png" WITH YOUR ACTUAL FILENAME */}
                             <img
                                 src="/logo.png"
                                 alt="Logo"
@@ -102,7 +122,7 @@ const Navbar: React.FC = () => {
 
                     {/* ─── RIGHT: News & Articles (outside glass) ─── */}
                     <div className="nav-right-news">
-
+                        {/* If you want a separate link outside the glass, put it here */}
                     </div>
 
                     {/* ─── Hamburger (mobile) ─── */}

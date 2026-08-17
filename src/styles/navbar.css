@@ -63,7 +63,7 @@
 }
 
 .glass-link {
-  color: rgba(0, 0, 0, 0.70);                /* ← dark but slightly muted */
+  color: white;                /* ← dark but slightly muted */
   text-decoration: none;
   font-weight: 500;
   font-size: 0.95rem;
@@ -87,7 +87,7 @@
   justify-self: end;
 }
 .news-link {
-  color: rgba(0, 0, 0, 0.75);
+  color: white;
   text-decoration: none;
   font-weight: 600;
   font-size: 0.95rem;
@@ -100,7 +100,7 @@
 .news-link:hover {
   background: rgba(0, 0, 0, 0.04);
   border-color: rgba(0, 0, 0, 0.2);
-  color: #000;
+  color: white;
 }
 
 /* ─── Hamburger (hidden on desktop) ─── */
@@ -206,4 +206,28 @@
   background: rgba(0, 0, 0, 0.15);
   backdrop-filter: blur(2px);
   z-index: 1040;
+}
+
+/* ─── Scroll state: text turns dark when past hero ─── */
+.navbar-scrolled .glass-link {
+  color: #000000; /* black text */
+}
+
+.navbar-scrolled .glass-link:hover {
+  color: #000000; /* keep black on hover (or a shade) */
+}
+
+.navbar-scrolled .glass-link.active {
+  color: #000;
+  border-bottom-color: rgba(0, 0, 0, 0.5);
+}
+
+.navbar-scrolled .news-link {
+  color: #000000;
+}
+
+.navbar-scrolled .news-link:hover {
+  color: #000000;
+  background: rgba(0, 0, 0, 0.05);
+  border-color: rgba(0, 0, 0, 0.2);
 }
