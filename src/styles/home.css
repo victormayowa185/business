@@ -6,6 +6,7 @@
 /* ─── Hero Container ─── */
 .hero-section {
   position: relative;
+  z-index: 100;
   width: 100%;
   height: 100vh;
   min-height: 640px;
@@ -16,7 +17,7 @@
   font-family: "Sora", "Segoe UI", sans-serif;
   color: #ffffff;
   isolation: isolate;
-}  
+}
 
 /* ─── Background Image ─── */
 .hero-section__bg {
@@ -31,7 +32,8 @@
 .hero-section__scrim {
   position: absolute;
   inset: 0;
-  background: rgba(10, 10, 12, 0.381);  /* ← solid dark overlay */
+  background: rgba(10, 10, 12, 0.381);
+  /* ← solid dark overlay */
   z-index: 1;
 }
 
@@ -245,52 +247,106 @@
 }
 
 
-/* ---------- Mission Quotes ---------- */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 .mission-section {
-  padding: 120px 8% 100px;
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  /* keeps the image from ever bleeding outside */
+  z-index: 0;
 }
 
+.mission-photo-band {
+  position: fixed;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+  /* ← only centers vertically now, no horizontal centering needed */
+  z-index: -100;
+  width: 100%;
+  /* ← changed: full screen width */
+  height: 70vh;
+  /* ← unchanged, matches .mission-gap's height */
+  overflow: hidden;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.mission-photo-band.is-visible {
+  opacity: 1;
+}
+
+.mission-photo-band__img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("/images/hero1.png");
+  background-size: cover;
+  background-position: center 20%;
+  /* ← adjust this percentage to move the image up/down */
+}
+
+/* ── Panels: normal in-flow black blocks ── */
+.mission-panel {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  box-sizing: border-box;
+  background: white;
+  color: #fff;
+  padding: 80px 8%;
+}
+
+/* Gap between panels — where the image shows through once visible */
+.mission-gap {
+  height: 70vh;
+  background: transparent;
+}
+
+/* =========================
+   CONTENT
+   ========================= */
+
 .mission-inner {
+  position: relative;
   max-width: 900px;
   margin: 0 auto;
-  position: relative;         /* 👈 needed so the pin can anchor to this */
   display: flex;
-  flex-direction: column; 
+  flex-direction: column;
   align-items: flex-start;
 }
 
 .mission-row {
   position: relative;
-  margin-bottom: 56px;
-}
-
-/* Logo pinned once, aligned to the TOP of the first quote's text,
-   sitting just outside the text column (not inline, not centered). */
-.mission-pin {
-  position: absolute;
-  top: 2px;                   /* nudge to match cap-height of the text */
-  left: -16%;                /* sits to the left of the quote, outside it */
-  width: 48px;
-  height: 48px;
-  object-fit: contain;
+  width: 100%;
 }
 
 .mission-quote {
-  margin-bottom: 56px;
   max-width: 760px;
 }
 
-.mission-quote:last-child {
-  margin-bottom: 0;
-}
-
 .mission-quote__text {
+  margin: 0 0 14px;
   font-family: "Sora", "Segoe UI", sans-serif;
   font-size: clamp(1.1rem, 2vw, 1.55rem);
   line-height: 1.55;
   font-weight: 400;
-  color: #000032;
-  margin: 0 0 14px 0;
+  color: black;
   text-align: left;
 }
 
@@ -299,20 +355,40 @@
   font-size: 0.9rem;
   font-weight: 600;
   letter-spacing: 0.02em;
-  color: rgba(0, 0, 50, 0.6);
+  color: rgba(255, 255, 255, 0.6);
 }
 
-/* ---------- Responsive ---------- */
+/* =========================
+   PIN / LOGO
+   ========================= */
+
+.mission-pin {
+  position: absolute;
+  top: 2px;
+  left: -16%;
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+}
+
+/* =========================
+   MOBILE
+   ========================= */
+
 @media (max-width: 720px) {
-  .mission-section {
-    padding: 90px 6% 70px;
+  .mission-panel {
+    padding: 50px 6%;
+  }
+
+  .mission-gap {
+    height: 45vh;
   }
 
   .mission-pin {
-    position: static;         /* on mobile, stack logo above text instead */
-    margin-bottom: 16px;
+    position: static;
     width: 40px;
     height: 40px;
+    margin-bottom: 16px;
   }
 
   .mission-row {
@@ -321,6 +397,3 @@
     align-items: flex-start;
   }
 }
-
-
-

@@ -1,16 +1,18 @@
 // src/App.tsx
-import { BrowserRouter } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
 import Navbar from './components/Navbar';
 import News from './pages/News';
-import './App.css';   // ← make sure you have this file (or change to index.css)
+import './App.css';
 
 function App() {
   return (
     <BrowserRouter>
       <Navbar />
-      <Home />
-      <News />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/news" element={<News />} />
+      </Routes>
     </BrowserRouter>
   );
 }

@@ -94,6 +94,8 @@ const Home: React.FC = () => {
     const timelineRef = useRef<gsap.core.Timeline | null>(null);
 
     const missionRef = useRef<HTMLDivElement | null>(null);
+    const missionPhotoRef = useRef<HTMLDivElement | null>(null);
+    const missionGapRef = useRef<HTMLDivElement | null>(null);
     const membershipsRef = useRef<HTMLDivElement | null>(null);
 
     // ─── Hero: drawn wordmark + eyebrow + glass card ───
@@ -192,7 +194,9 @@ const Home: React.FC = () => {
         return () => ctx.revert();
     }, []);
 
-    // ─── Mission quotes + Memberships masonry ───
+    // ─── Mission: quote fade-in + scroll-triggered instant show/hide of
+    //     the background image (strictly scoped to this section, never
+    //     touches the hero container) + Memberships masonry ───
     useEffect(() => {
         const ctx = gsap.context(() => {
             if (missionRef.current) {
@@ -229,6 +233,22 @@ const Home: React.FC = () => {
                     },
                     "-=0.35"
                 );
+
+                // Instant snap on/off for the background image, tracked to
+                // the gap element specifically — not the whole section —
+                // so it only appears once the gap is actually on screen,
+                // and disappears as soon as the gap scrolls out.
+                if (missionPhotoRef.current && missionGapRef.current) {
+                    ScrollTrigger.create({
+                        trigger: missionGapRef.current,
+                        start: "top bottom",
+                        end: "bottom top",
+                        onEnter: () => missionPhotoRef.current?.classList.add("is-visible"),
+                        onLeave: () => missionPhotoRef.current?.classList.remove("is-visible"),
+                        onEnterBack: () => missionPhotoRef.current?.classList.add("is-visible"),
+                        onLeaveBack: () => missionPhotoRef.current?.classList.remove("is-visible"),
+                    });
+                }
             }
 
             if (membershipsRef.current) {
@@ -344,35 +364,52 @@ const Home: React.FC = () => {
             </section>
 
             {/* ═══════════════════════════════════════
-          MISSION QUOTES
+          MISSION — image is hidden until this section is
+          scrolled into view, then it snaps on instantly as
+          the background behind the text. It snaps off again
+          once you scroll past the section. It is strictly
+          contained inside this section and can never touch
+          the hero container above it.
       ═══════════════════════════════════════ */}
             <section className="mission-section" ref={missionRef}>
-                <div className="mission-inner">
-                    <div className="mission-row">
-                        <img src="/logo1.png" alt="Adesuwa Rhodes" className="mission-pin" />
+                <div className="mission-photo-band" ref={missionPhotoRef}>
+                    <div className="mission-photo-band__img" />
+                </div>
 
-                        <div className="mission-quote">
-                            <p className="mission-quote__text">
-                                I am on a mission to unlock the untapped potential of women as
-                                capital allocators, consumers, founders, board members,
-                                suppliers and across all levels of society, to unlock enhanced
-                                financial returns and positive social impact.
-                            </p>
-                            <span className="mission-quote__attribution">~ Adesuwa Rhodes</span>
+                <div className="mission-panel mission-panel--top">
+                    <div className="mission-inner">
+                        <div className="mission-row">
+                            <img src="/logo1.png" alt="Adesuwa Rhodes" className="mission-pin" />
+
+                            <div className="mission-quote">
+                                <p className="mission-quote__text">
+                                    I am on a mission to unlock the untapped potential of women as
+                                    capital allocators, consumers, founders, board members,
+                                    suppliers and across all levels of society, to unlock enhanced
+                                    financial returns and positive social impact.
+                                </p>
+                                <span className="mission-quote__attribution">~ Adesuwa Rhodes</span>
+                            </div>
                         </div>
                     </div>
+                </div>
 
-                    <div className="mission-quote">
-                        <p className="mission-quote__text">
-                            I believe the way to effectively provide women with more seats
-                            at the table is for us to create our own tables. More women
-                            succeeding as capital allocators means more women getting
-                            funded, more mentors, more torch-bearers, and more examples to
-                            follow. Investing in or with funds like Aruwa Capital
-                            Management is a practical way to narrow the gender funding gap
-                            and making money while you do so.
-                        </p>
-                        <span className="mission-quote__attribution">- Adesuwa Rhodes</span>
+                <div className="mission-gap" ref={missionGapRef} />776
+
+                <div className="mission-panel mission-panel--bottom">
+                    <div className="mission-inner">
+                        <div className="mission-quote">
+                            <p className="mission-quote__text">
+                                I believe the way to effectively provide women with more seats
+                                at the table is for us to create our own tables. More women
+                                succeeding as capital allocators means more women getting
+                                funded, more mentors, more torch-bearers, and more examples to
+                                follow. Investing in or with funds like Aruwa Capital
+                                Management is a practical way to narrow the gender funding gap
+                                and making money while you do so.
+                            </p>
+                            <span className="mission-quote__attribution">- Adesuwa Rhodes</span>
+                        </div>
                     </div>
                 </div>
             </section>
