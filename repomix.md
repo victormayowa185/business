@@ -45,6 +45,25 @@ public/
   images/
     hero-pic.png
     hero1.png
+    hero2.png
+  logos/
+    logo1.jpg
+    logo10.jpg
+    logo11.jpg
+    logo12.jpg
+    logo13.jpg
+    logo14.jpg
+    logo15.jpg
+    logo16.jpg
+    logo17.jpg
+    logo2.jpg
+    logo3.jpg
+    logo4.jpg
+    logo5.jpg
+    logo6.jpg
+    logo7.jpg
+    logo8.jpg
+    logo9.jpg
   logo.png
   logo1.png
 src/
@@ -951,19 +970,28 @@ const LETTERS: LetterGlyph[] = [
  * /public/images/. `size` lets you control the masonry span so logos
  * with different aspect ratios sit naturally in the grid.
  */
-interface Badge {
+/**
+ * ─── Membership / publication logos ───
+ * Add new items here as you get more — nothing else needs to change.
+ * Each item just needs a unique id and its filename inside /public/images/.
+ * Name your files logo1.png, logo2.png, logo3.png... and just add a line here.
+ */
+interface MembershipLogo {
     id: string;
     src: string;
     alt: string;
-    size?: "sm" | "md" | "lg";
 }
 
-const BADGES: Badge[] = [
-    { id: "badge1", src: "/images/badge1.png", alt: "Membership badge 1", size: "md" },
-    { id: "badge2", src: "/images/badge2.png", alt: "Membership badge 2", size: "sm" },
-    { id: "badge3", src: "/images/badge3.png", alt: "Membership badge 3", size: "lg" },
-    // 👉 add more badges here, e.g.:
-    // { id: "badge4", src: "/images/badge4.png", alt: "Membership badge 4", size: "sm" },
+const MEMBERSHIP_LOGOS: MembershipLogo[] = [
+    { id: "logo1", src: "/logos/logo1.jpg", alt: "Membership logo 1" },
+    { id: "logo2", src: "/logos/logo2.jpg", alt: "Membership logo 2" },
+    { id: "logo3", src: "/logos/logo3.jpg", alt: "Membership logo 3" },
+    { id: "logo4", src: "/logos/logo4.jpg", alt: "Membership logo 4" },
+    { id: "logo5", src: "/logos/logo5.jpg", alt: "Membership logo 5" },
+    { id: "logo6", src: "/logos/logo6.jpg", alt: "Membership logo 6" },
+    { id: "logo7", src: "/logos/logo7.jpg", alt: "Membership logo 7" },
+    // 👉 add more here, e.g.:
+    // { id: "logo8", src: "/images/logo8.png", alt: "Membership logo 8" },
 ];
 
 // ─── Home Page ───
@@ -977,6 +1005,7 @@ const Home: React.FC = () => {
     const missionPhotoRef = useRef<HTMLDivElement | null>(null);
     const missionGapRef = useRef<HTMLDivElement | null>(null);
     const membershipsRef = useRef<HTMLDivElement | null>(null);
+    const marqueeTrackRef = useRef<HTMLDivElement | null>(null);
 
     // ─── Hero: drawn wordmark + eyebrow + glass card ───
     useEffect(() => {
@@ -1133,12 +1162,8 @@ const Home: React.FC = () => {
 
             if (membershipsRef.current) {
                 const heading = membershipsRef.current.querySelector(".memberships-heading");
-                const cards = gsap.utils.toArray<HTMLElement>(
-                    membershipsRef.current.querySelectorAll(".badge-card")
-                );
 
                 gsap.set(heading, { autoAlpha: 0, y: 20 });
-                gsap.set(cards, { autoAlpha: 0, y: 30, scale: 0.96 });
 
                 ScrollTrigger.create({
                     trigger: membershipsRef.current,
@@ -1150,18 +1175,23 @@ const Home: React.FC = () => {
                             duration: 0.7,
                             ease: "power3.out",
                         });
-                        gsap.to(cards, {
-                            autoAlpha: 1,
-                            y: 0,
-                            scale: 1,
-                            duration: 0.7,
-                            ease: "power3.out",
-                            stagger: { each: 0.08, from: "start" },
-                        });
                     },
                     onLeaveBack: () => {
-                        gsap.to([heading, ...cards], { autoAlpha: 0, y: 20, duration: 0.3 });
+                        gsap.to(heading, { autoAlpha: 0, y: 20, duration: 0.3 });
                     },
+                });
+            }
+
+            // ─── Infinite logo marquee: continuous, seamless, smooth loop ───
+            if (marqueeTrackRef.current) {
+                const track = marqueeTrackRef.current;
+                // Track is duplicated in the JSX (two identical sets back-to-back),
+                // so animating exactly -50% loops seamlessly with no visible jump.
+                gsap.to(track, {
+                    xPercent: -50,
+                    duration: MEMBERSHIP_LOGOS.length * 3, // ~3s per logo — adjust to taste
+                    ease: "none",
+                    repeat: -1,
                 });
             }
         });
@@ -1295,17 +1325,28 @@ const Home: React.FC = () => {
             </section>
 
             {/* ═══════════════════════════════════════
-          MEMBERSHIPS & PUBLICATIONS
+          MEMBERSHIPS & PUBLICATIONS — infinite auto-scrolling
+          logo marquee. Add more logos by adding entries to
+          MEMBERSHIP_LOGOS above — nothing else to touch.
       ═══════════════════════════════════════ */}
             <section className="memberships-section" ref={membershipsRef}>
                 <h2 className="memberships-heading">Memberships and Publications</h2>
 
-                <div className="badge-masonry">
-                    {BADGES.map((badge) => (
-                        <div key={badge.id} className={`badge-card badge-card--${badge.size ?? "md"}`}>
-                            <img src={badge.src} alt={badge.alt} loading="lazy" />
-                        </div>
-                    ))}
+                <div className="marquee">
+                    <div className="marquee__track" ref={marqueeTrackRef}>
+                        {/* Set 1 */}
+                        {MEMBERSHIP_LOGOS.map((logo) => (
+                            <div key={logo.id} className="marquee__item">
+                                <img src={logo.src} alt={logo.alt} loading="lazy" />
+                            </div>
+                        ))}
+                        {/* Set 2 — exact duplicate, required for the seamless loop */}
+                        {MEMBERSHIP_LOGOS.map((logo) => (
+                            <div key={`${logo.id}-dup`} className="marquee__item" aria-hidden="true">
+                                <img src={logo.src} alt="" loading="lazy" />
+                            </div>
+                        ))}
+                    </div>
                 </div>
             </section>
         </>
@@ -1872,7 +1913,7 @@ export default App;
   inset: 0;
   width: 100%;
   height: 100%;
-  background-image: url("/images/hero1.png");
+  background-image: url("/images/hero2.png");
   background-size: cover;
   background-position: center 20%;
   /* ← adjust this percentage to move the image up/down */
@@ -1972,6 +2013,84 @@ export default App;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+  }
+}
+
+
+
+
+
+/* =========================================================
+   MEMBERSHIPS & PUBLICATIONS — infinite logo marquee
+   ========================================================= */
+
+.memberships-section {
+  width: 100%;
+  padding: 80px 0;
+  overflow: hidden;
+  background: #fff;
+}
+
+.memberships-heading {
+  text-align: center;
+  font-family: "Sora", "Segoe UI", sans-serif;
+  font-size: clamp(1.4rem, 3vw, 2rem);
+  font-weight: 600;
+  margin: 0 0 48px;
+  color: #111;
+}
+
+.marquee {
+  width: 100%;
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(to right,
+      transparent 0%,
+      #000 8%,
+      #000 92%,
+      transparent 100%);
+  mask-image: linear-gradient(to right,
+      transparent 0%,
+      #000 8%,
+      #000 92%,
+      transparent 100%);
+}
+
+.marquee__track {
+  display: flex;
+  align-items: center;
+  width: max-content;
+  will-change: transform;
+}
+
+.marquee__item {
+  flex: 0 0 auto;
+  width: 160px;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 32px;
+}
+
+.marquee__item img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.marquee__track:hover {
+  animation-play-state: paused;
+}
+
+@media (max-width: 720px) {
+  .memberships-section {
+    padding: 56px 0;
+  }
+
+  .marquee__item {
+    width: 110px;
+    height: 70px;
+    margin: 0 20px;
   }
 }
 </file>

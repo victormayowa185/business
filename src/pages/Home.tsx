@@ -71,19 +71,28 @@ const LETTERS: LetterGlyph[] = [
  * /public/images/. `size` lets you control the masonry span so logos
  * with different aspect ratios sit naturally in the grid.
  */
-interface Badge {
+/**
+ * ─── Membership / publication logos ───
+ * Add new items here as you get more — nothing else needs to change.
+ * Each item just needs a unique id and its filename inside /public/images/.
+ * Name your files logo1.png, logo2.png, logo3.png... and just add a line here.
+ */
+interface MembershipLogo {
     id: string;
     src: string;
     alt: string;
-    size?: "sm" | "md" | "lg";
 }
 
-const BADGES: Badge[] = [
-    { id: "badge1", src: "/images/badge1.png", alt: "Membership badge 1", size: "md" },
-    { id: "badge2", src: "/images/badge2.png", alt: "Membership badge 2", size: "sm" },
-    { id: "badge3", src: "/images/badge3.png", alt: "Membership badge 3", size: "lg" },
-    // 👉 add more badges here, e.g.:
-    // { id: "badge4", src: "/images/badge4.png", alt: "Membership badge 4", size: "sm" },
+const MEMBERSHIP_LOGOS: MembershipLogo[] = [
+    { id: "logo1", src: "/logos/logo1.jpg", alt: "Membership logo 1" },
+    { id: "logo2", src: "/logos/logo2.jpg", alt: "Membership logo 2" },
+    { id: "logo3", src: "/logos/logo3.jpg", alt: "Membership logo 3" },
+    { id: "logo4", src: "/logos/logo4.jpg", alt: "Membership logo 4" },
+    { id: "logo5", src: "/logos/logo5.jpg", alt: "Membership logo 5" },
+    { id: "logo6", src: "/logos/logo6.jpg", alt: "Membership logo 6" },
+    { id: "logo7", src: "/logos/logo7.jpg", alt: "Membership logo 7" },
+    // 👉 add more here, e.g.:
+    // { id: "logo8", src: "/images/logo8.png", alt: "Membership logo 8" },
 ];
 
 // ─── Home Page ───
@@ -97,6 +106,7 @@ const Home: React.FC = () => {
     const missionPhotoRef = useRef<HTMLDivElement | null>(null);
     const missionGapRef = useRef<HTMLDivElement | null>(null);
     const membershipsRef = useRef<HTMLDivElement | null>(null);
+    const marqueeTrackRef = useRef<HTMLDivElement | null>(null);
 
     // ─── Hero: drawn wordmark + eyebrow + glass card ───
     useEffect(() => {
@@ -253,12 +263,8 @@ const Home: React.FC = () => {
 
             if (membershipsRef.current) {
                 const heading = membershipsRef.current.querySelector(".memberships-heading");
-                const cards = gsap.utils.toArray<HTMLElement>(
-                    membershipsRef.current.querySelectorAll(".badge-card")
-                );
 
                 gsap.set(heading, { autoAlpha: 0, y: 20 });
-                gsap.set(cards, { autoAlpha: 0, y: 30, scale: 0.96 });
 
                 ScrollTrigger.create({
                     trigger: membershipsRef.current,
@@ -270,18 +276,23 @@ const Home: React.FC = () => {
                             duration: 0.7,
                             ease: "power3.out",
                         });
-                        gsap.to(cards, {
-                            autoAlpha: 1,
-                            y: 0,
-                            scale: 1,
-                            duration: 0.7,
-                            ease: "power3.out",
-                            stagger: { each: 0.08, from: "start" },
-                        });
                     },
                     onLeaveBack: () => {
-                        gsap.to([heading, ...cards], { autoAlpha: 0, y: 20, duration: 0.3 });
+                        gsap.to(heading, { autoAlpha: 0, y: 20, duration: 0.3 });
                     },
+                });
+            }
+
+            // ─── Infinite logo marquee: continuous, seamless, smooth loop ───
+            if (marqueeTrackRef.current) {
+                const track = marqueeTrackRef.current;
+                // Track is duplicated in the JSX (two identical sets back-to-back),
+                // so animating exactly -50% loops seamlessly with no visible jump.
+                gsap.to(track, {
+                    xPercent: -50,
+                    duration: MEMBERSHIP_LOGOS.length * 3, // ~3s per logo — adjust to taste
+                    ease: "none",
+                    repeat: -1,
                 });
             }
         });
@@ -415,17 +426,28 @@ const Home: React.FC = () => {
             </section>
 
             {/* ═══════════════════════════════════════
-          MEMBERSHIPS & PUBLICATIONS
+          MEMBERSHIPS & PUBLICATIONS — infinite auto-scrolling
+          logo marquee. Add more logos by adding entries to
+          MEMBERSHIP_LOGOS above — nothing else to touch.
       ═══════════════════════════════════════ */}
             <section className="memberships-section" ref={membershipsRef}>
                 <h2 className="memberships-heading">Memberships and Publications</h2>
 
-                <div className="badge-masonry">
-                    {BADGES.map((badge) => (
-                        <div key={badge.id} className={`badge-card badge-card--${badge.size ?? "md"}`}>
-                            <img src={badge.src} alt={badge.alt} loading="lazy" />
-                        </div>
-                    ))}
+                <div className="marquee">
+                    <div className="marquee__track" ref={marqueeTrackRef}>
+                        {/* Set 1 */}
+                        {MEMBERSHIP_LOGOS.map((logo) => (
+                            <div key={logo.id} className="marquee__item">
+                                <img src={logo.src} alt={logo.alt} loading="lazy" />
+                            </div>
+                        ))}
+                        {/* Set 2 — exact duplicate, required for the seamless loop */}
+                        {MEMBERSHIP_LOGOS.map((logo) => (
+                            <div key={`${logo.id}-dup`} className="marquee__item" aria-hidden="true">
+                                <img src={logo.src} alt="" loading="lazy" />
+                            </div>
+                        ))}
+                    </div>
                 </div>
             </section>
         </>
