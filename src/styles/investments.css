@@ -1,0 +1,354 @@
+/* ===========================================================
+   INVESTMENTS PAGE — Hero + Bio + Featured Companies (masonry)
+   =========================================================== */
+
+/* ─── Hero (same short-banner pattern as About) ─── */
+.investments-hero {
+  position: relative;
+  width: 100%;
+  height: 60vh;
+  min-height: 420px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  font-family: "Sora", "Segoe UI", sans-serif;
+  color: #ffffff;
+  isolation: isolate;
+}
+
+.investments-hero__bg {
+  position: absolute;
+  inset: 0;
+  background-image: url("/images/hero-pic.png");
+  background-size: cover;
+  background-position: center 22%;
+  z-index: 0;
+}
+
+.investments-hero__scrim {
+  position: absolute;
+  inset: 0;
+  background: rgba(10, 10, 12, 0.5);
+  z-index: 1;
+}
+
+.investments-hero__wordmark {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 32px 60px 32px;
+  box-sizing: border-box;
+}
+
+.investments-svg {
+  width: 100%;
+  height: auto;
+  max-height: 50vh;
+  display: block;
+}
+
+.investments-svg__letter {
+  fill: none;
+  stroke: #ffffff;
+  stroke-width: 1.5;
+  vector-effect: non-scaling-stroke;
+}
+
+/* ─── Bio / Strategy text ─── */
+.investments-bio {
+  width: 100%;
+  background: #ffffff;
+  padding: 80px 8%;
+}
+
+.investments-bio__container {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.investments-bio__content {
+  display: flex;
+  gap: 1.5rem;
+  align-items: flex-start;
+}
+
+.investments-bio__bullet {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+  flex-shrink: 0;
+  margin-top: 0.2rem; /* aligns with top of first text line */
+}
+
+.investments-bio__text {
+  flex: 1;
+}
+
+.investments-bio__text p {
+  font-family: "Sora", "Segoe UI", sans-serif;
+  font-size: 1rem;
+  line-height: 1.8;
+  font-weight: 400;
+  color: #1a1a1a;
+  margin: 0 0 1.5rem 0;
+  text-align: left;
+}
+
+.investments-bio__subheading {
+  font-family: "Sora", "Segoe UI", sans-serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #000032;
+  margin: 2rem 0 1rem 0;
+}
+
+.investments-bio__sectors {
+  margin: 0;
+  padding: 0 0 0 1.25rem;
+  list-style: disc;
+}
+
+.investments-bio__sectors li {
+  font-family: "Sora", "Segoe UI", sans-serif;
+  font-size: 1rem;
+  line-height: 1.9;
+  color: #1a1a1a;
+}
+
+/* ─── Featured Companies ─── */
+.featured-companies {
+  width: 100%;
+  background: #ffffff;
+  padding: 40px 8% 120px;
+}
+
+.featured-companies__heading {
+  text-align: center;
+  font-family: "Sora", "Segoe UI", sans-serif;
+  font-size: clamp(1.5rem, 3vw, 2.2rem);
+  font-weight: 700;
+  color: #000032;
+  margin: 0 0 56px 0;
+}
+
+/* True masonry via CSS columns — cards flow top-to-bottom, then wrap
+   into the next column, so varying card heights sit naturally. */
+.company-masonry {
+  column-count: 3;
+  column-gap: 24px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+/* Pastel background rotation — 4 colors cycling through the cards,
+   matching the Google-reference look. Swap hex values any time. */
+.company-card {
+  break-inside: avoid;
+  display: block;
+  margin-bottom: 24px;
+  border-radius: 20px;
+  padding: 20px;
+  text-decoration: none;
+  color: inherit;
+  box-sizing: border-box;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.company-card:nth-child(4n + 1) {
+  background: #e8edfb; /* pastel blue */
+}
+
+.company-card:nth-child(4n + 2) {
+  background: #e6f4ea; /* pastel green */
+}
+
+.company-card:nth-child(4n + 3) {
+  background: #fdeaea; /* pastel pink */
+}
+
+.company-card:nth-child(4n + 4) {
+  background: #fdf3d9; /* pastel yellow */
+}
+
+.company-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 14px 30px rgba(0, 0, 50, 0.1);
+}
+
+/* Big logo panel — white rounded box, matches the size/prominence of
+   the photo in the Google reference (not a small corner logo anymore) */
+.company-card__logo-wrap {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  background: #ffffff;
+  border-radius: 14px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  box-sizing: border-box;
+  margin-bottom: 18px;
+}
+
+.company-card__logo {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+.company-card__body {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  text-align: center;
+}
+
+.company-card__name {
+  font-family: "Sora", "Segoe UI", sans-serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #000032;
+  margin: 0;
+}
+
+.company-card__sector {
+  font-family: "Sora", "Segoe UI", sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: rgba(0, 0, 50, 0.55);
+  margin: 0;
+}
+
+.company-card__description {
+  font-family: "Sora", "Segoe UI", sans-serif;
+  font-size: 0.92rem;
+  line-height: 1.6;
+  color: #333333;
+  margin: 6px 0 0 0;
+}
+
+.company-card__link {
+  display: block;
+  margin-top: 12px;
+  font-family: "Sora", "Segoe UI", sans-serif;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #0033cc;
+  word-break: break-all;
+}
+
+/* Height variants give the masonry visible rhythm — actual height is
+   still driven by real content/logo size once you fill these in. */
+.company-card--sm {
+  padding-bottom: 16px;
+}
+
+.company-card--md {
+  padding-bottom: 20px;
+}
+
+.company-card--lg {
+  padding-bottom: 28px;
+}
+
+.company-card--lg .company-card__logo-wrap {
+  aspect-ratio: 4 / 3.6;
+}
+
+/* ─── Responsive (≤ 900px) ─── */
+@media (max-width: 900px) {
+  .company-masonry {
+    column-count: 2;
+  }
+}
+
+/* ─── Responsive (≤ 768px) ─── */
+@media (max-width: 768px) {
+  .investments-hero {
+    height: 45vh;
+    min-height: 340px;
+  }
+
+  .investments-hero__wordmark {
+    padding: 0 16px 40px 16px;
+  }
+
+  .investments-svg {
+    max-height: 30vh;
+  }
+
+  .investments-bio {
+    padding: 50px 6%;
+  }
+
+  .investments-bio__content {
+    gap: 1rem;
+  }
+
+  .investments-bio__bullet {
+    width: 36px;
+    height: 36px;
+  }
+
+  .investments-bio__text p,
+  .investments-bio__sectors li {
+    font-size: 0.9rem;
+    line-height: 1.7;
+  }
+
+  .featured-companies {
+    padding: 30px 6% 80px;
+  }
+
+  .company-masonry {
+    column-count: 1;
+    column-gap: 16px;
+  }
+
+  .company-card {
+    padding: 16px;
+    margin-bottom: 16px;
+  }
+}
+
+/* ─── Small phones (≤ 480px) ─── */
+@media (max-width: 480px) {
+  .investments-hero {
+    height: 38vh;
+    min-height: 280px;
+  }
+
+  .investments-svg {
+    max-height: 22vh;
+  }
+
+  .investments-bio__bullet {
+    width: 28px;
+    height: 28px;
+    margin-top: 0.1rem;
+  }
+
+  .investments-bio__text p,
+  .investments-bio__sectors li {
+    font-size: 0.85rem;
+  }
+}
+
+/* ─── Reduce Motion ─── */
+@media (prefers-reduced-motion: reduce) {
+  .investments-svg__letter {
+    stroke-dasharray: none !important;
+  }
+
+  .company-card {
+    transition: none;
+  }
+}

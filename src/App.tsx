@@ -7,6 +7,7 @@ import News from './pages/News';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import Preloader from './components/Preloader';
+import Investments from './pages/Investments';
 import './App.css';
 
 function App() {
@@ -28,6 +29,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />  {/* ← Add this */}
         <Route path="/news" element={<News />} />
+         <Route path="/investments" element={<Investments />} />
       </Routes>
       <Footer />
     </BrowserRouter>
