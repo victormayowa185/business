@@ -64,19 +64,6 @@ const LETTERS: LetterGlyph[] = [
     },
 ];
 
-/**
- * ─── Badge / membership images ───
- * Add new items here as you get more badges — nothing else needs to
- * change. Each item just needs a unique id and its filename inside
- * /public/images/. `size` lets you control the masonry span so logos
- * with different aspect ratios sit naturally in the grid.
- */
-/**
- * ─── Membership / publication logos ───
- * Add new items here as you get more — nothing else needs to change.
- * Each item just needs a unique id and its filename inside /public/images/.
- * Name your files logo1.png, logo2.png, logo3.png... and just add a line here.
- */
 interface MembershipLogo {
     id: string;
     src: string;
@@ -91,11 +78,8 @@ const MEMBERSHIP_LOGOS: MembershipLogo[] = [
     { id: "logo5", src: "/logos/logo5.jpg", alt: "Membership logo 5" },
     { id: "logo6", src: "/logos/logo6.jpg", alt: "Membership logo 6" },
     { id: "logo7", src: "/logos/logo7.jpg", alt: "Membership logo 7" },
-    // 👉 add more here, e.g.:
-    // { id: "logo8", src: "/images/logo8.png", alt: "Membership logo 8" },
 ];
 
-// ─── Home Page ───
 const Home: React.FC = () => {
     const heroRef = useRef<HTMLDivElement | null>(null);
     const svgRef = useRef<SVGSVGElement | null>(null);
@@ -108,7 +92,7 @@ const Home: React.FC = () => {
     const membershipsRef = useRef<HTMLDivElement | null>(null);
     const marqueeTrackRef = useRef<HTMLDivElement | null>(null);
 
-    // ─── Hero: drawn wordmark + eyebrow + glass card ───
+    // ─── Hero: drawn wordmark + eyebrow ───
     useEffect(() => {
         if (!heroRef.current || !svgRef.current || !markRef.current) return;
 
@@ -134,22 +118,12 @@ const Home: React.FC = () => {
                     autoAlpha: 0,
                     y: 14,
                 });
-                tl.set(heroRef.current!.querySelector(".hero-card"), {
-                    autoAlpha: 0,
-                    y: 14,
-                    scale: 0.94,
-                });
                 if (markPath) tl.set(markPath, { drawSVG: "0%" });
                 tl.set(markLetters, { drawSVG: "0%" });
 
                 tl.to(
                     heroRef.current!.querySelector(".hero-eyebrow"),
                     { autoAlpha: 1, y: 0, duration: 0.7, ease: "power3.out" },
-                    0.1
-                );
-                tl.to(
-                    heroRef.current!.querySelector(".hero-card"),
-                    { autoAlpha: 1, y: 0, scale: 1, duration: 0.7, ease: "power3.out" },
                     0.1
                 );
 
@@ -204,9 +178,7 @@ const Home: React.FC = () => {
         return () => ctx.revert();
     }, []);
 
-    // ─── Mission: quote fade-in + scroll-triggered instant show/hide of
-    //     the background image (strictly scoped to this section, never
-    //     touches the hero container) + Memberships masonry ───
+    // ─── Mission: fade‑in for pin & bottom quotes + image snap ───
     useEffect(() => {
         const ctx = gsap.context(() => {
             if (missionRef.current) {
@@ -244,10 +216,6 @@ const Home: React.FC = () => {
                     "-=0.35"
                 );
 
-                // Instant snap on/off for the background image, tracked to
-                // the gap element specifically — not the whole section —
-                // so it only appears once the gap is actually on screen,
-                // and disappears as soon as the gap scrolls out.
                 if (missionPhotoRef.current && missionGapRef.current) {
                     ScrollTrigger.create({
                         trigger: missionGapRef.current,
@@ -263,7 +231,6 @@ const Home: React.FC = () => {
 
             if (membershipsRef.current) {
                 const heading = membershipsRef.current.querySelector(".memberships-heading");
-
                 gsap.set(heading, { autoAlpha: 0, y: 20 });
 
                 ScrollTrigger.create({
@@ -283,14 +250,11 @@ const Home: React.FC = () => {
                 });
             }
 
-            // ─── Infinite logo marquee: continuous, seamless, smooth loop ───
             if (marqueeTrackRef.current) {
                 const track = marqueeTrackRef.current;
-                // Track is duplicated in the JSX (two identical sets back-to-back),
-                // so animating exactly -50% loops seamlessly with no visible jump.
                 gsap.to(track, {
                     xPercent: -50,
-                    duration: MEMBERSHIP_LOGOS.length * 3, // ~3s per logo — adjust to taste
+                    duration: MEMBERSHIP_LOGOS.length * 3,
                     ease: "none",
                     repeat: -1,
                 });
@@ -311,24 +275,27 @@ const Home: React.FC = () => {
 
                 <div className="hero-section__top">
                     <div className="hero-eyebrow">
-                        <span className="hero-eyebrow__number">01</span>
                         <strong className="hero-eyebrow__text">
                             Adesuwa Rhodes is changing the face of investing and
                             entrepreneurship in Africa, one investment at a time.
                         </strong>
+                        <p className="hero-quote-extra">
+                            “Capital alone is not enough. We don't just invest with money;
+                            we go beyond the capital to help companies build stronger finance
+                            functions, governance, and strategy.” — Detailing her approach
+                            at Aruwa Capital Management.
+                        </p>
                     </div>
                 </div>
 
-                <Link to="/about" className="hero-card">
-                    <div className="hero-card__header">
-                        <img src="/logo1.png" alt="Logo" className="hero-card__logo" />
-                        <WiStars className="hero-card__icon" />
-                    </div>
-                    <div className="hero-card__image">
-                        <img src="/images/hero1.png" alt="Featured" />
-                    </div>
-                    <div className="hero-card__label">About</div>
-                </Link>
+                <div className="hero-recent">
+                    <span className="hero-recent__label">RECENT</span>
+                    <p className="hero-recent__text">
+                        Adesuwa Rhodes featured in Forbes as one of Africa's most influential
+                        investors shaping the future of sustainable finance.
+                    </p>
+                    <Link to="/news" className="hero-recent__link">Read more →</Link>
+                </div>
 
                 <div className="hero-section__wordmark">
                     <svg
@@ -375,73 +342,105 @@ const Home: React.FC = () => {
             </section>
 
             {/* ═══════════════════════════════════════
-          MISSION — image is hidden until this section is
-          scrolled into view, then it snaps on instantly as
-          the background behind the text. It snaps off again
-          once you scroll past the section. It is strictly
-          contained inside this section and can never touch
-          the hero container above it.
+          MISSION — two‑column panels + pinned image
       ═══════════════════════════════════════ */}
             <section className="mission-section" ref={missionRef}>
+                {/* ─── Pinned image (snaps on/off) ─── */}
                 <div className="mission-photo-band" ref={missionPhotoRef}>
                     <div className="mission-photo-band__img" />
                 </div>
 
+                {/* ─── Top Panel: Bio & Investments side‑by‑side ─── */}
                 <div className="mission-panel mission-panel--top">
                     <div className="mission-inner">
-                        <div className="mission-row">
-                            <img src="/logo1.png" alt="Adesuwa Rhodes" className="mission-pin" />
-
-                            <div className="mission-quote">
-                                <p className="mission-quote__text">
-                                    I am on a mission to unlock the untapped potential of women as
-                                    capital allocators, consumers, founders, board members,
-                                    suppliers and across all levels of society, to unlock enhanced
-                                    financial returns and positive social impact.
+                        <div className="mission-grid-2col">
+                            {/* Left: Bio with logo */}
+                            <div className="mission-block">
+                                <img src="/logo1.png" alt="Adesuwa Rhodes" className="mission-block__logo" />
+                                <p className="mission-block__text">
+                                    Adesuwa is a leading investment professional and CEO with over 14
+                                    years of experience in investment banking and private equity in
+                                    developed and emerging markets across a number of sectors including
+                                    healthcare, financial services, technology and consumer goods.
+                                    Adesuwa is an entrepreneur, CEO, mother, investor and women's
+                                    empowerment advocate. She is one of the youngest female private
+                                    equity fund managers running her own fund in Africa, having
+                                    launched her fund at 29 years old.....
                                 </p>
-                                <span className="mission-quote__attribution">~ Adesuwa Rhodes</span>
+                                <Link to="/about" className="mission-block__link">Read More →</Link>
+                            </div>
+
+                            {/* Right: Investments with heading */}
+                            <div className="mission-block">
+                                <h3 className="mission-block__heading">INVESTMENTS</h3>
+                                <p className="mission-block__text">
+                                    Adesuwa is the Founder &amp; Managing Partner of Aruwa Capital
+                                    Management an early stage private equity fund investing in rapidly
+                                    growing businesses in West Africa. With Aruwa Capital and her own
+                                    personal investments, Adesuwa is focused on uncovering untapped
+                                    investment opportunities that are typically overlooked and
+                                    underserved. Adesuwa is passionate about showcasing the natural
+                                    competitive advantage women allocating capital have when investing
+                                    in businesses for women and by women. Through a gender lens
+                                    investment strategy, Adesuwa is focused on generating enhanced
+                                    financial returns whilst delivering positive social impact with a
+                                    multiplier effect across societies and economies.
+                                </p>
+                                <Link to="/about" className="mission-block__link">Learn More →</Link>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div className="mission-gap" ref={missionGapRef} />776
+                {/* ─── Gap with pinned image ─── */}
+                <div className="mission-gap" ref={missionGapRef} />
 
+                {/* ─── Bottom Panel: Old quotes side‑by‑side ─── */}
                 <div className="mission-panel mission-panel--bottom">
                     <div className="mission-inner">
-                        <div className="mission-quote">
-                            <p className="mission-quote__text">
-                                I believe the way to effectively provide women with more seats
-                                at the table is for us to create our own tables. More women
-                                succeeding as capital allocators means more women getting
-                                funded, more mentors, more torch-bearers, and more examples to
-                                follow. Investing in or with funds like Aruwa Capital
-                                Management is a practical way to narrow the gender funding gap
-                                and making money while you do so.
-                            </p>
-                            <span className="mission-quote__attribution">- Adesuwa Rhodes</span>
+                        {/* Decorative pin (bullet) */}
+                        <img src="/logo1.png" alt="Adesuwa Rhodes" className="mission-pin" />
+
+                        <div className="mission-quotes-grid">
+                            <div className="mission-quote">
+                                <p className="mission-quote__text">
+                                    I am on a mission to unlock the untapped potential of women as
+                                    capital allocators, consumers, founders, board members, suppliers
+                                    and across all levels of society, to unlock enhanced financial
+                                    returns and positive social impact.
+                                </p>
+                            </div>
+                            <div className="mission-quote">
+                                <p className="mission-quote__text">
+                                    I believe the way to effectively provide women with more seats at
+                                    the table is for us to create our own tables. More women succeeding
+                                    as capital allocators means more women getting funded, more mentors,
+                                    more torch-bearers, and more examples to follow. Investing in or
+                                    with funds like Aruwa Capital Management is a practical way to
+                                    narrow the gender funding gap and making money while you do so.
+                                </p>
+                            </div>
                         </div>
+
+                        {/* Single attribution for both quotes */}
+                        <div className="mission-attribution">~ Adesuwa Rhodes</div>
                     </div>
                 </div>
             </section>
 
             {/* ═══════════════════════════════════════
-          MEMBERSHIPS & PUBLICATIONS — infinite auto-scrolling
-          logo marquee. Add more logos by adding entries to
-          MEMBERSHIP_LOGOS above — nothing else to touch.
+          MEMBERSHIPS & PUBLICATIONS
       ═══════════════════════════════════════ */}
             <section className="memberships-section" ref={membershipsRef}>
                 <h2 className="memberships-heading">Memberships and Publications</h2>
 
                 <div className="marquee">
                     <div className="marquee__track" ref={marqueeTrackRef}>
-                        {/* Set 1 */}
                         {MEMBERSHIP_LOGOS.map((logo) => (
                             <div key={logo.id} className="marquee__item">
                                 <img src={logo.src} alt={logo.alt} loading="lazy" />
                             </div>
                         ))}
-                        {/* Set 2 — exact duplicate, required for the seamless loop */}
                         {MEMBERSHIP_LOGOS.map((logo) => (
                             <div key={`${logo.id}-dup`} className="marquee__item" aria-hidden="true">
                                 <img src={logo.src} alt="" loading="lazy" />

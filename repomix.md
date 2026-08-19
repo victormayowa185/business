@@ -1354,6 +1354,12 @@ const Home: React.FC = () => {
 };
 
 export default Home;
+
+
+
+
+
+// "Capital alone is not enough. We don't just invest with money; we go beyond the capital to help companies build stronger finance functions, governance, and strategy." — Detailing her approach at Aruwa Capital Management.
 </file>
 
 <file path="src/styles/navbar.css">
@@ -1689,7 +1695,7 @@ export default App;
 
 .hero-eyebrow__text {
   font-weight: 400;
-  font-size: 0.95rem;
+  font-size: 1.05rem;
   line-height: 1.6;
   color: rgba(255, 255, 255, 0.92);
 }

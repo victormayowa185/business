@@ -7,7 +7,7 @@ import '../styles/navbar.css';
 
 const Navbar: React.FC = () => {
     const [menuOpen, setMenuOpen] = useState(false);
-    const [scrolled, setScrolled] = useState(false); // 👈 NEW STATE
+    const [scrolled, setScrolled] = useState(false);
     const navRef = useRef<HTMLDivElement>(null);
     const navInnerRef = useRef<HTMLDivElement>(null);
     const isHiddenRef = useRef(false);
@@ -57,21 +57,16 @@ const Navbar: React.FC = () => {
         return () => window.removeEventListener('navbar-visibility', handleVisibility);
     }, []);
 
-    // ─── ✨ NEW: Scroll listener for text color change ───
+    // ─── Scroll listener for text color + logo change ───
     useEffect(() => {
         const handleScroll = () => {
-            // Hero is 100vh, so when we scroll past ~80% of viewport height,
-            // we switch to dark text. Adjust threshold as needed.
             const scrollY = window.scrollY;
-            const threshold = window.innerHeight * 0.8; // 80% of viewport height
+            const threshold = window.innerHeight * 0.8;
             setScrolled(scrollY > threshold);
         };
 
-        // Initial check on mount
         handleScroll();
-
         window.addEventListener('scroll', handleScroll);
-        // Also re-check on resize (viewport height may change)
         window.addEventListener('resize', handleScroll);
 
         return () => {
@@ -104,14 +99,14 @@ const Navbar: React.FC = () => {
                     <div className="navbar-brand">
                         <div className="brand-logo-wrapper">
                             <img
-                                src="/logo.png"
+                                src={scrolled ? "/logo-dark.png" : "/logo.png"}
                                 alt="Logo"
                                 className="brand-logo-img"
                             />
                         </div>
                     </div>
 
-                    {/* ─── CENTER: Glassy pill with 4 links ─── */}
+                    {/* ─── CENTER: Glassy pill with 5 links ─── */}
                     <div className="nav-center-glass">
                         <NavLink to="/about" className="glass-link">About</NavLink>
                         <NavLink to="/investments" className="glass-link">Investments</NavLink>

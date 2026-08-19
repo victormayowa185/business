@@ -33,7 +33,6 @@
   position: absolute;
   inset: 0;
   background: rgba(10, 10, 12, 0.381);
-  /* ← solid dark overlay */
   z-index: 1;
 }
 
@@ -55,100 +54,65 @@
   margin: 0;
 }
 
-.hero-eyebrow__number {
-  flex-shrink: 0;
-  font-size: 0.75rem;
-  font-weight: 700;
-  color: rgba(255, 255, 255, 0.6);
-  background: rgba(255, 255, 255, 0.08);
-  padding: 0.2rem 0.6rem;
-  border-radius: 4px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  letter-spacing: 0.05em;
-  margin-top: 0.1em;
-  line-height: 1.4;
-}
-
+/* Number badge removed — no longer used */
 .hero-eyebrow__text {
   font-weight: 400;
-  font-size: 0.95rem;
+  font-size: 1.05rem;
   line-height: 1.6;
   color: rgba(255, 255, 255, 0.92);
 }
 
-/* ─── Glass Card (Top Right) ─── */
-.hero-card {
+/* ─── Extra quote below the eyebrow ─── */
+.hero-quote-extra {
+  margin-top: 1.5rem;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.8);
+  max-width: 380px;
+}
+
+/* ─── Recent news block (right side, plain text) ─── */
+.hero-recent {
   position: absolute;
   top: 25%;
   right: 48px;
   z-index: 3;
-  width: 200px;
-  height: 200px;
-  display: flex;
-  flex-direction: column;
-  text-decoration: none;
-  color: black;
-  overflow: hidden;
-  background: white;
-  backdrop-filter: blur(12px) saturate(180%);
-  border: 1px solid white;
-  border-radius: 9px;
-  box-shadow:
-    0 4px 20px rgba(0, 0, 0, 0.06),
-    inset 0 1px 0 rgba(255, 255, 255, 0.6);
-
-  padding: 12px;
-  gap: 8px;
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  max-width: 260px;
+  text-align: right;
+  color: #fff;
 }
 
-.hero-card:hover {
-  transform: translateY(-3px);
-  box-shadow:
-    0 8px 26px rgba(0, 0, 0, 0.12),
-    inset 0 1px 0 rgba(255, 255, 255, 0.6);
-}
-
-.hero-card__header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 2px;
-}
-
-.hero-card__logo {
-  height: 38px;
-  width: auto;
+.hero-recent__label {
   display: block;
-}
-
-.hero-card__icon {
-  font-size: 36px;
-  color: black;
-}
-
-.hero-card__image {
-  width: 100%;
-  aspect-ratio: 4 / 3;
-  border-radius: 7px;
-  overflow: hidden;
-}
-
-.hero-card__image img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
-.hero-card__label {
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.03em;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
-  text-align: left;
-  padding: 2px 0;
-  color: black;
+  color: rgba(255, 255, 255, 0.5);
+  margin-bottom: 0.5rem;
+}
+
+.hero-recent__text {
+  font-size: 1rem;
+  line-height: 1.6;
+  margin: 0 0 1rem 0;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.92);
+}
+
+.hero-recent__link {
+  display: inline-block;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #fff;
+  text-decoration: none;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.3);
+  transition: border-color 0.2s;
+}
+
+.hero-recent__link:hover {
+  border-color: #fff;
 }
 
 /* ─── Wordmark / SVG Logo ─── */
@@ -205,24 +169,31 @@
     line-height: 1.5;
   }
 
-  .hero-card {
+  .hero-quote-extra {
+    font-size: 0.8rem;
+    max-width: 280px;
+    margin-top: 1rem;
+  }
+
+  .hero-recent {
     top: auto;
-    bottom: 320px;
+    bottom: 280px;
+    /* adjust as needed */
     right: 24px;
-    width: 140px;
-    padding: 10px;
+    max-width: 200px;
+    text-align: right;
   }
 
-  .hero-card__logo {
-    height: 28px;
+  .hero-recent__text {
+    font-size: 0.85rem;
   }
 
-  .hero-card__icon {
-    font-size: 24px;
+  .hero-recent__label {
+    font-size: 0.7rem;
   }
 
-  .hero-card__label {
-    font-size: 10px;
+  .hero-recent__link {
+    font-size: 0.8rem;
   }
 
   .hero-section__wordmark {
@@ -241,46 +212,29 @@
 
 /* ─── Reduce Motion ─── */
 @media (prefers-reduced-motion: reduce) {
-  .hero-card {
-    transition: none;
-  }
+  /* any hover transitions can be removed if needed */
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+/* ===========================================================
+   MISSION SECTION — two‑column panels + pinned image
+   =========================================================== */
 
 .mission-section {
   position: relative;
   width: 100%;
   overflow: hidden;
-  /* keeps the image from ever bleeding outside */
   z-index: 0;
 }
 
+/* ─── Pinned Image (unchanged) ─── */
 .mission-photo-band {
   position: fixed;
   top: 50%;
   left: 0;
   transform: translateY(-50%);
-  /* ← only centers vertically now, no horizontal centering needed */
   z-index: -100;
   width: 100%;
-  /* ← changed: full screen width */
   height: 70vh;
-  /* ← unchanged, matches .mission-gap's height */
   overflow: hidden;
   opacity: 0;
   pointer-events: none;
@@ -298,83 +252,142 @@
   background-image: url("/images/hero2.png");
   background-size: cover;
   background-position: center 20%;
-  /* ← adjust this percentage to move the image up/down */
 }
 
-/* ── Panels: normal in-flow black blocks ── */
+/* ─── Panels — white background for both ─── */
 .mission-panel {
   position: relative;
   z-index: 1;
   width: 100%;
   box-sizing: border-box;
-  background: white;
-  color: #fff;
+  background: #ffffff;
+  color: #000000;
   padding: 80px 8%;
 }
 
-/* Gap between panels — where the image shows through once visible */
+/* Gap between panels — where the image shows through */
 .mission-gap {
   height: 70vh;
   background: transparent;
 }
 
-/* =========================
-   CONTENT
-   ========================= */
-
+/* ─── Inner container ─── */
 .mission-inner {
   position: relative;
-  max-width: 900px;
+  max-width: 1200px;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-}
-
-.mission-row {
-  position: relative;
+  align-items: center;
   width: 100%;
 }
 
-.mission-quote {
-  max-width: 760px;
+/* ─── Two‑column grid (Bio + Investments) ─── */
+.mission-grid-2col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  width: 100%;
 }
 
-.mission-quote__text {
-  margin: 0 0 14px;
-  font-family: "Sora", "Segoe UI", sans-serif;
-  font-size: clamp(1.1rem, 2vw, 1.55rem);
-  line-height: 1.55;
-  font-weight: 400;
-  color: black;
-  text-align: left;
+/* ─── Each content block in the top panel ─── */
+.mission-block {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
 }
 
-.mission-quote__attribution {
-  display: block;
-  font-size: 0.9rem;
-  font-weight: 600;
-  letter-spacing: 0.02em;
-  color: rgba(255, 255, 255, 0.6);
-}
-
-/* =========================
-   PIN / LOGO
-   ========================= */
-
-.mission-pin {
-  position: absolute;
-  top: 2px;
-  left: -16%;
+/* ─── Logo inside the left block ─── */
+.mission-block__logo {
   width: 48px;
   height: 48px;
   object-fit: contain;
+  display: block;
+  margin-bottom: 0.5rem;
 }
 
-/* =========================
-   MOBILE
-   ========================= */
+/* ─── Heading for "Investments" ─── */
+.mission-block__heading {
+  font-family: "Sora", "Segoe UI", sans-serif;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #000;
+  margin: 0 0 0.5rem 0;
+  letter-spacing: 0.02em;
+}
 
+.mission-block__text {
+  margin: 0;
+  font-family: "Sora", "Segoe UI", sans-serif;
+  font-size: 1rem;
+  line-height: 1.7;
+  font-weight: 400;
+  color: #000000;
+  text-align: left;
+}
+
+.mission-block__link {
+  display: inline-block;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #000;
+  text-decoration: none;
+  border-bottom: 2px solid rgba(0, 0, 0, 0.3);
+  transition: border-color 0.2s;
+  align-self: flex-start;
+}
+
+.mission-block__link:hover {
+  border-color: #000;
+}
+
+/* ─── Bottom panel: quotes side‑by‑side ─── */
+.mission-quotes-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  width: 100%;
+  margin-top: 0.5rem;
+}
+
+/* Each quote block */
+.mission-quote {
+  display: flex;
+  flex-direction: column;
+}
+
+.mission-quote__text {
+  margin: 0;
+  font-family: "Sora", "Segoe UI", sans-serif;
+  font-size: clamp(1rem, 1.6vw, 1.3rem);
+  line-height: 1.6;
+  font-weight: 400;
+  color: #000000;
+  text-align: left;
+}
+
+/* ─── Decorative pin (bullet) ─── */
+.mission-pin {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+  margin-bottom: 1.5rem;
+  display: block;
+  align-self: flex-start;
+}
+
+/* ─── Single attribution ─── */
+.mission-attribution {
+  width: 100%;
+  text-align: right;
+  margin-top: 2rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: #000000;
+}
+
+/* ─── Mobile (≤ 720px) ─── */
 @media (max-width: 720px) {
   .mission-panel {
     padding: 50px 6%;
@@ -384,33 +397,51 @@
     height: 45vh;
   }
 
-  .mission-pin {
-    position: static;
-    width: 40px;
-    height: 40px;
-    margin-bottom: 16px;
+  /* Stack both grids into single columns on mobile */
+  .mission-grid-2col,
+  .mission-quotes-grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
   }
 
-  .mission-row {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
+  .mission-block__logo {
+    width: 36px;
+    height: 36px;
+  }
+
+  .mission-block__heading {
+    font-size: 1rem;
+  }
+
+  .mission-pin {
+    width: 40px;
+    height: 40px;
+    margin-bottom: 1rem;
+    align-self: flex-start;
+  }
+
+  .mission-block__text,
+  .mission-quote__text {
+    font-size: 0.95rem;
+  }
+
+  .mission-attribution {
+    margin-top: 1.5rem;
+    font-size: 0.8rem;
+    text-align: right;
   }
 }
 
-
-
-
-
-/* =========================================================
+/* ===========================================================
    MEMBERSHIPS & PUBLICATIONS — infinite logo marquee
-   ========================================================= */
+   =========================================================== */
 
 .memberships-section {
   width: 100%;
   padding: 80px 0;
   overflow: hidden;
   background: #fff;
+  z-index: 1000;
 }
 
 .memberships-heading {
