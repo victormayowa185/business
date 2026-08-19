@@ -446,6 +446,7 @@
 
 .memberships-heading {
   text-align: center;
+  text-decoration: underline;
   font-family: "Sora", "Segoe UI", sans-serif;
   font-size: clamp(1.4rem, 3vw, 2rem);
   font-weight: 600;

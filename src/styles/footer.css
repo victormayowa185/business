@@ -1,0 +1,126 @@
+/* ===========================================================
+   FOOTER — Dark background, white text, clean layout
+   =========================================================== */
+
+.footer {
+  width: 100%;
+  background: #02022d;
+  padding: 0 3rem;
+  color: #ffffff;
+  font-family: "Sora", "Segoe UI", sans-serif;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.footer-inner {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+/* ─── LEFT: Logo ─── */
+.footer-brand {
+  flex-shrink: 0;
+}
+
+.footer-logo {
+  height: 6rem;
+  width: auto;
+  display: block;
+}
+
+/* ─── CENTER: Copyright ─── */
+.footer-center {
+  flex: 1;
+  text-align: center;
+}
+
+.footer-copyright {
+  margin: 0;
+  font-size: 0.9rem;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.7);
+  letter-spacing: 0.02em;
+}
+
+.footer-link {
+  color: #ffffff;
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.2s ease;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.footer-link:hover {
+  color: #7C3EFF;
+  border-bottom-color: #7C3EFF;
+}
+
+/* ─── RIGHT: Social Icons ─── */
+.footer-social {
+  display: flex;
+  align-items: center;
+  gap: 0.05rem;
+  flex-shrink: 0;
+}
+
+.footer-social__link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  color: white;
+  transition: all 0.25s ease;
+  font-size: 1.1rem;
+  text-decoration: none;
+}
+
+.footer-social__link:hover {
+  color: #ffffff;
+  background: none;
+  transform: translateY(-2px);
+}
+
+/* ─── 📱 Responsive (≤ 768px) ─── */
+@media (max-width: 768px) {
+  .footer {
+    padding: 1.5rem 1rem;
+  }
+
+  .footer-inner {
+    flex-direction: column;
+    gap: 1rem;
+    text-align: center;
+  }
+
+  .footer-center {
+    order: 3;
+    width: 100%;
+  }
+
+  .footer-social {
+    order: 2;
+  }
+
+  .footer-brand {
+    order: 1;
+  }
+
+  .footer-logo {
+    height: 40px;
+  }
+
+  .footer-copyright {
+    font-size: 0.8rem;
+  }
+
+  .footer-social__link {
+    width: 36px;
+    height: 36px;
+    font-size: 1rem;
+  }
+}

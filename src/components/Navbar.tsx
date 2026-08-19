@@ -1,5 +1,5 @@
 // src/components/Navbar.tsx
-import { NavLink } from 'react-router-dom';
+import { NavLink, Link } from 'react-router-dom';
 import { HiMenu, HiX } from 'react-icons/hi';
 import { useState, useRef, useEffect } from 'react';
 import gsap from 'gsap';
@@ -95,14 +95,16 @@ const Navbar: React.FC = () => {
         <>
             <nav className={`navbar ${scrolled ? 'navbar-scrolled' : ''}`} ref={navRef}>
                 <div className="navbar-inner" ref={navInnerRef}>
-                    {/* ─── LEFT: Logo ─── */}
+                    {/* ─── LEFT: Logo (clickable → home) ─── */}
                     <div className="navbar-brand">
                         <div className="brand-logo-wrapper">
-                            <img
-                                src={scrolled ? "/logo-dark.png" : "/logo.png"}
-                                alt="Logo"
-                                className="brand-logo-img"
-                            />
+                            <Link to="/">
+                                <img
+                                    src={scrolled ? "/logo-dark.png" : "/logo.png"}
+                                    alt="Logo"
+                                    className="brand-logo-img"
+                                />
+                            </Link>
                         </div>
                     </div>
 

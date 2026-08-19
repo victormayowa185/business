@@ -289,7 +289,7 @@ const Home: React.FC = () => {
                 </div>
 
                 <div className="hero-recent">
-                    <span className="hero-recent__label">RECENT</span>
+                    <span className="hero-recent__label">RECENT ON THE NEWS</span>
                     <p className="hero-recent__text">
                         Adesuwa Rhodes featured in Forbes as one of Africa's most influential
                         investors shaping the future of sustainable finance.
