@@ -1,0 +1,167 @@
+/* ===========================================================
+   ABOUT PAGE — Hero + Biography
+   =========================================================== */
+
+/* ─── Hero ─── */
+.about-hero {
+    position: relative;
+    width: 100%;
+    height: 60vh;
+    /* was 100vh */
+    min-height: 420px;
+    /* was 640px */
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    font-family: "Sora", "Segoe UI", sans-serif;
+    color: #ffffff;
+    isolation: isolate;
+}
+
+.about-hero__bg {
+    position: absolute;
+    inset: 0;
+    background-image: url("/images/hero-pic.png");
+    background-size: cover;
+    background-position: center 22%;
+    z-index: 0;
+}
+
+.about-hero__scrim {
+    position: absolute;
+    inset: 0;
+    background: rgba(10, 10, 12, 0.5);
+    z-index: 1;
+}
+
+.about-hero__wordmark {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 32px 60px 32px;
+    box-sizing: border-box;
+}
+
+.about-svg {
+    width: 100%;
+    height: auto;
+    max-height: 50vh;
+    display: block;
+}
+
+.about-svg__letter {
+    fill: none;
+    stroke: #ffffff;
+    stroke-width: 1.5;
+    vector-effect: non-scaling-stroke;
+}
+
+/* ─── Biography ─── */
+.about-biography {
+    width: 100%;
+    background: #ffffff;
+    padding: 80px 8%;
+}
+
+.about-biography__container {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.about-biography__content {
+    display: flex;
+    gap: 1.5rem;
+    align-items: flex-start;
+}
+
+.about-biography__bullet {
+    width: 48px;
+    height: 48px;
+    object-fit: contain;
+    flex-shrink: 0;
+    margin-top: 0.2rem;
+}
+
+.about-biography__text {
+    flex: 1;
+}
+
+.about-biography__text p {
+    font-family: "Sora", "Segoe UI", sans-serif;
+    font-size: 1rem;
+    line-height: 1.8;
+    font-weight: 400;
+    color: #1a1a1a;
+    margin: 0 0 1.5rem 0;
+    text-align: left;
+}
+
+.about-biography__text p:last-child {
+    margin-bottom: 0;
+}
+
+/* ─── Responsive (≤ 768px) ─── */
+@media (max-width: 768px) {
+    .about-hero {
+        min-height: 480px;
+    }
+
+    .about-hero__wordmark {
+        padding: 0 16px 40px 16px;
+    }
+
+    .about-svg {
+        max-height: 30vh;
+    }
+
+    .about-biography {
+        padding: 50px 6%;
+    }
+
+    .about-biography__content {
+        gap: 1rem;
+        flex-direction: row;
+    }
+
+    .about-biography__bullet {
+        width: 36px;
+        height: 36px;
+    }
+
+    .about-biography__text p {
+        font-size: 0.9rem;
+        line-height: 1.7;
+    }
+}
+
+/* ─── Small phones (≤ 480px) ─── */
+@media (max-width: 480px) {
+    .about-hero {
+        min-height: 360px;
+    }
+
+    .about-svg {
+        max-height: 22vh;
+    }
+
+    .about-biography__bullet {
+        width: 28px;
+        height: 28px;
+        margin-top: 0.1rem;
+    }
+
+    .about-biography__text p {
+        font-size: 0.85rem;
+    }
+}
+
+/* ─── Reduce Motion ─── */
+@media (prefers-reduced-motion: reduce) {
+    .about-svg__letter {
+        stroke-dasharray: none !important;
+    }
+}
