@@ -93,15 +93,149 @@ const FEATURED_COMPANIES: Company[] = [
     height: "md",
   },
   // 👉 add more companies here, e.g.:
-  // {
-  //   id: "company5",
-  //   name: "Company Five",
-  //   sector: "Consumer",
-  //   description: "…",
-  //   url: "https://example.com",
-  //   logo: "/company/logo5.png",
-  //   height: "sm",
-  // },
+  {
+    id: "company5",
+    name: "Company Five",
+    sector: "Consumer",
+    description: "…",
+    url: "https://example.com",
+    logo: "/company/logo5.png",
+    height: "sm",
+  },
+
+   {
+    id: "company6",
+    name: "Company Six",
+    sector: "Consumer",
+    description: "…",
+    url: "https://example.com",
+    logo: "/company/logo6.png",
+    height: "sm",
+  },
+
+   {
+    id: "company7",
+    name: "Company Seven",
+    sector: "Consumer",
+    description: "…",
+    url: "https://example.com",
+    logo: "/company/logo7.png",
+    height: "sm",
+  },
+
+   {
+    id: "company8",
+    name: "Company Eight",
+    sector: "Consumer",
+    description: "…",
+    url: "https://example.com",
+    logo: "/company/logo8.png",
+    height: "sm",
+  },
+
+   {
+    id: "company9",
+    name: "Company Nine",
+    sector: "Consumer",
+    description: "…",
+    url: "https://example.com",
+    logo: "/company/logo9.png",
+    height: "sm",
+  },
+
+   {
+    id: "company10",
+    name: "Company Ten",
+    sector: "Consumer",
+    description: "…",
+    url: "https://example.com",
+    logo: "/company/logo10.png",
+    height: "sm",
+  },
+
+   {
+    id: "company11",
+    name: "Company Eleven",
+    sector: "Consumer",
+    description: "…",
+    url: "https://example.com",
+    logo: "/company/logo11.png",
+    height: "sm",
+  },
+
+   {
+    id: "company12",
+    name: "Company Twelve",
+    sector: "Consumer",
+    description: "…",
+    url: "https://example.com",
+    logo: "/company/logo12.png",
+    height: "sm",
+  },
+
+   {
+    id: "company13",
+    name: "Company Thirteen",
+    sector: "Consumer",
+    description: "…",
+    url: "https://example.com",
+    logo: "/company/logo13.png",
+    height: "sm",
+  },
+
+     {
+    id: "company14",
+    name: "Company Fourteen",
+    sector: "Consumer",
+    description: "…",
+    url: "https://example.com",
+    logo: "/company/logo14.png",
+    height: "sm",
+  },
+
+     {
+    id: "company15",
+    name: "Company fifteen",
+    sector: "Consumer",
+    description: "…",
+    url: "https://example.com",
+    logo: "/company/logo15.png",
+    height: "sm",
+  },
+
+
+     {
+    id: "company16",
+    name: "Company Sixteen",
+    sector: "Consumer",
+    description: "…",
+    url: "https://example.com",
+    logo: "/company/logo16.png",
+    height: "sm",
+  },
+
+
+     {
+    id: "company17",
+    name: "Company Seventeen",
+    sector: "Consumer",
+    description: "…",
+    url: "https://example.com",
+    logo: "/company/logo17.png",
+    height: "sm",
+  },
+
+
+     {
+    id: "company18",
+    name: "Company Eighteen",
+    sector: "Consumer",
+    description: "…",
+    url: "https://example.com",
+    logo: "/company/logo18.png",
+    height: "sm",
+  },
+
 ];
 
 const PRIMARY_SECTORS = [
@@ -283,7 +417,7 @@ const Investments: React.FC = () => {
           FEATURED COMPANIES — masonry, clickable cards
       ═══════════════════════════════════════ */}
       <section className="featured-companies" ref={companiesRef}>
-        <h2 className="featured-companies__heading">Featured Companies</h2>
+        <h2 className="featured-companies__heading">FEATURED COMPANIES</h2>
 
         <div className="company-masonry">
           {FEATURED_COMPANIES.map((company) => (
