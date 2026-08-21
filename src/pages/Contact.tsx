@@ -6,78 +6,57 @@ import "../styles/contact.css";
 
 gsap.registerPlugin(ScrollTrigger, DrawSVGPlugin);
 
-// ─── Wordmark Configuration ───
-// "CONTACT" — built the same way as the other pages: reused glyphs
-// where they already exist (O, N, T, A), plus one new glyph.
-//
-// The "C" does not exist anywhere else on the site, so it's been
-// hand-built here in the same visual weight as the rest (730-unit
-// cap height, ~74-unit side margins, similar ring thickness to O),
-// using SVG arc ("A") commands rather than hand-tuned Bézier
-// control points — a more exact way to get a clean circular
-// letterform than eyeballing curve coordinates, while still landing
-// on the same proportions as the extracted-font glyphs.
-const CAP_HEIGHT = 760;
-const TOTAL_WIDTH = 5341;
-
-interface LetterGlyph {
-    ch: string;
-    d: string;
-    x: number;
-    w: number;
-    /** Optional local transform to normalize glyphs pulled from a
-     *  different source/scale than the rest of the set (used for O). */
-    transform?: string;
-}
+const CAP_HEIGHT = 730;
+const TOTAL_WIDTH = 5521; // Adjusted for new spacing
 
 const LETTERS: LetterGlyph[] = [
-    // C — new glyph. Outer radius 365 (0→730 cap height), inner
-    // radius 215 (150-unit ring thickness), opening is a 70°-wide gap
-    // centered on the right (±35° from due "east").
+    // C — Smooth geometric arc
     {
         ch: "C",
-        d: "M738.0 574.4A365 365 0 1 1 738.0 155.6L615.1 241.7A215 215 0 1 0 615.1 488.3Z",
+        d: "M738.0 574.4 A365 365 0 1 1 738.0 155.6 L615.1 241.7 A215 215 0 1 0 615.1 488.3 Z",
         x: 0,
         w: 812,
     },
-    // O — rescaled/re-baselined to match cap height of the other
-    // letters (same fix used on Videos/About).
+    // O — Transform REMOVED. Now perfectly matches the height of C.
     {
         ch: "O",
-        // Native path: No transform/scale needed. Perfectly circular and smooth.
         d: "M395 0 C170 0 50 160 50 365 C50 570 170 730 395 730 C620 730 740 570 740 365 C740 160 620 0 395 0 Z M395 140 C510 140 570 230 570 365 C570 500 510 590 395 590 C280 590 220 500 220 365 C220 230 280 140 395 140 Z",
-        x: 812,
+        x: 842, // Adjusted X to maintain gap
         w: 790,
-        transform: "translate(-67.68, -102.82) scale(1.285211)",
     },
+    // N — Clean straight lines
     {
         ch: "N",
-        d: "M74 0V730H379L622 148H637V730H811V0H504L261 582H246V0Z",
-        x: 1602,
+        d: "M74 0 V730 H379 L622 148 H637 V730 H811 V0 H504 L261 582 H246 V0 Z",
+        x: 1662,
         w: 885,
     },
+    // T — Clean straight lines
     {
         ch: "T",
-        d: "M220 0V568H20V730H606V568H406V0Z",
-        x: 2487,
+        d: "M220 0 V568 H20 V730 H606 V568 H406 V0 Z",
+        x: 2577,
         w: 626,
     },
+    // A — Smoothed version to match the weight of the C and O
     {
         ch: "A",
-        d: "M8 0 242 730H540L782 0H590L537 169H246L194 0ZM292 321H489L408 580H371Z",
-        x: 3113,
+        d: "M0 0 L285 730 H505 L790 0 H610 L545 180 H245 L180 0 H0 Z M295 330 H495 L395 600 Z",
+        x: 3233,
         w: 790,
     },
+    // C — Second C
     {
         ch: "C",
-        d: "M738.0 574.4A365 365 0 1 1 738.0 155.6L615.1 241.7A215 215 0 1 0 615.1 488.3Z",
-        x: 3903,
+        d: "M738.0 574.4 A365 365 0 1 1 738.0 155.6 L615.1 241.7 A215 215 0 1 0 615.1 488.3 Z",
+        x: 4053,
         w: 812,
     },
+    // T — Second T
     {
         ch: "T",
-        d: "M220 0V568H20V730H606V568H406V0Z",
-        x: 4715,
+        d: "M220 0 V568 H20 V730 H606 V568 H406 V0 Z",
+        x: 4895,
         w: 626,
     },
 ];

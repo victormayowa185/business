@@ -221,8 +221,8 @@
 /* ─── Responsive (≤ 768px) ─── */
 @media (max-width: 768px) {
   .videos-hero {
-    height: 45vh;
-    min-height: 340px;
+    height: 35vh !important;
+    min-height: 20% !important;
   }
 
   .videos-hero__wordmark {

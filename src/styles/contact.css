@@ -63,7 +63,7 @@
 .contact-svg {
   width: 100%;
   height: auto;
-  max-height: 50vh;
+  max-height: 20vh;
   display: block;
 }
 
@@ -189,7 +189,7 @@
 }
 
 .contact-form__submit {
-  align-self: flex-start;
+  align-self: center;
   font-family: "Sora", "Segoe UI", sans-serif;
   font-size: 0.95rem;
   font-weight: 700;
@@ -214,14 +214,16 @@
 /* ─── Responsive (≤ 768px) ─── */
 @media (max-width: 768px) {
   .contact-form__submit {
-  
+    flex-direction: center;
+    align-self: center;
     width: 50%;
   }
 
   .contact-hero {
-    height: 45vh;
-    min-height: 340px;
+    height: 35vh !important;
+    min-height: 20% !important;
   }
+
 
   .contact-hero__wordmark {
     padding: 0 16px 40px 16px;
@@ -287,7 +289,7 @@
   }
 
   .contact-form__submit {
-    align-self: stretch;
+    align-self: center;
     text-align: center;
   }
 }

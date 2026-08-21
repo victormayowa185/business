@@ -134,8 +134,8 @@
 /* ─── Responsive (≤ 768px) ─── */
 @media (max-width: 768px) {
     .about-hero {
-        height: 45vh;
-        min-height: 340px;
+        height: 35vh;
+        min-height: 20% !important;
     }
 
     .about-hero__wordmark {

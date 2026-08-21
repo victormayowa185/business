@@ -6,91 +6,50 @@ import "../styles/videos.css";
 
 gsap.registerPlugin(ScrollTrigger, DrawSVGPlugin);
 
-// ─── Wordmark Configuration ───
-// "VIDEOS" — using paths from existing letters (V,I,D,E,O,S)
-//
-// NOTE on sizing/centering fix:
-// TOTAL_WIDTH is now 7600 (same as investments.tsx) instead of the old
-// 4600. Because CAP_HEIGHT/viewBox-height (880) is identical on both
-// pages, matching TOTAL_WIDTH makes each letter render at the SAME
-// absolute pixel size on both pages — the old 4600 value made every
-// glyph appear ~65% larger here than on the Investments page for no
-// real reason.
-//
-// The six letters (V I D E O S) only span 3907 units of glyph width.
-// To center them inside the new 7600-wide box, every letter's x has
-// been shifted right by (7600 - 3907) / 2 = 1846.5, so there's equal
-// empty space on both sides instead of all the slack sitting on the
-// right.
-//
-// NOTE on the O glyph fix:
-// The O path was pulled from the About page and was drawn at a
-// different (shorter) cap height than the V/I/D/E/S glyphs — it only
-// spanned y 80→648 (568 units tall) instead of the ~730 units the
-// other letters use, so it rendered visibly smaller/misaligned.
-// Rather than hand-editing every coordinate in the path (risk of
-// typos), a local `transform` is applied just to the O path that:
-//   1) scales it by 730/568 ≈ 1.2852 so its height matches the others
-//   2) translates it so its baseline sits at y=0 (matching V/I/E)
-//   3) re-centers it horizontally inside its own letter box (w: 790)
-// so its left/right side-bearing looks the same as before, just at
-// the corrected scale.
-const CAP_HEIGHT = 760;
+const CAP_HEIGHT = 730; // Standardized height
 const TOTAL_WIDTH = 7600;
 
-interface LetterGlyph {
-  ch: string;
-  d: string;
-  x: number;
-  w: number;
-  /** Optional local transform to normalize glyphs pulled from a
-   *  different source/scale than the rest of the set (used for O). */
-  transform?: string;
-}
-
 const LETTERS: LetterGlyph[] = [
-  // V (from Investments)
+  // V — Smoothed and aligned to 0-730
   {
     ch: "V",
-    d: "M232 0 20 730H212L366 148H400L544 730H730L532 0Z",
+    d: "M232 0 L20 730 H212 L366 148 H400 L544 730 H730 L532 0 Z",
     x: 1846.5,
     w: 750,
   },
-  // I (from Investments)
+  // I — Simple and clean
   {
     ch: "I",
-    d: "M76 0V730H262V0Z",
+    d: "M76 0 V730 H262 V0 Z",
     x: 2596.5,
     w: 338,
   },
-  // D (from About page)
+  // D — Rewritten with smooth Cubic Beziers (No more "broken" edges)
   {
     ch: "D",
-    d: "M74 -4V736H352Q451 736 525.5 708.0Q600 680 650.0 630.5Q700 581 725.0 516.0Q750 451 750 378V356Q750 289 725.0 224.5Q700 160 650.0 111.5Q600 63 525.5 31.5Q451 0 352 0H74ZM246 152H344Q409 152 458.0 178.5Q507 205 535.5 253.0Q564 301 564 366V370Q564 435 535.5 483.0Q507 531 458.0 557.5Q409 584 344 584H246Z",
+    d: "M80 0 V730 H380 C580 730 720 580 720 365 C720 150 580 0 380 0 H80 Z M250 140 H380 C480 140 540 210 540 365 C540 520 480 590 380 590 H250 V140 Z",
     x: 2934.5,
     w: 778,
   },
-  // E (from Investments)
+  // E — Clean straight lines
   {
     ch: "E",
-    d: "M74 0V730H536V578H254V447H521V295H254V152H542V0Z",
+    d: "M74 0 V730 H536 V578 H254 V447 H521 V295 H254 V152 H542 V0 Z",
     x: 3712.5,
     w: 592,
   },
-  // O (from About page) — rescaled/re-baselined to match cap height
-  // of the other letters (see NOTE above).
+  // O — Transform REMOVED. Now perfectly matches the height of others.
   {
     ch: "O",
-    // Native path: No transform/scale needed. Perfectly circular and smooth.
     d: "M395 0 C170 0 50 160 50 365 C50 570 170 730 395 730 C620 730 740 570 740 365 C740 160 620 0 395 0 Z M395 140 C510 140 570 230 570 365 C570 500 510 590 395 590 C280 590 220 500 220 365 C220 230 280 140 395 140 Z",
     x: 4304.5,
     w: 790,
-    transform: "translate(-67.68, -102.82) scale(1.285211)",
+    // transform is removed here
   },
-  // S (from Investments)
+  // S — Redrawn for smoothness (Fixed the -20 baseline issue)
   {
     ch: "S",
-    d: "M334 -20Q232 -20 162.5 12.0Q93 44 57.5 99.5Q22 155 22 227H202Q202 187 234.5 160.5Q267 134 334 134Q392 134 424.5 156.0Q457 178 457 215Q457 247 430.0 264.5Q403 282 339 287L292 291Q179 301 112.0 362.0Q45 423 45 524Q45 631 119.0 691.5Q193 752 317 752Q407 752 469.5 722.0Q532 692 565.0 637.5Q598 583 598 511H418Q418 547 391.5 572.5Q365 598 317 598Q271 598 248.0 577.0Q225 556 225 524Q225 496 244.0 476.0Q263 456 310 452L357 448Q439 441 502.0 412.5Q565 384 601.0 335.0Q637 286 637 215Q637 144 600.5 91.0Q564 38 496.5 9.0Q429 -20 334 -20Z",
+    d: "M60 180 H220 C220 120 280 70 360 70 C440 70 480 110 480 160 C480 210 440 230 340 260 L240 290 C120 325 60 395 60 500 C60 640 170 730 360 730 C550 730 650 640 650 500 H490 C490 580 440 610 360 610 C290 610 240 580 240 520 C240 470 280 450 380 420 L480 390 C600 355 660 285 660 175 C660 60 550 0 360 0 C170 0 60 80 60 180 Z",
     x: 5094.5,
     w: 659,
   },
