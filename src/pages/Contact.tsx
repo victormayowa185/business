@@ -171,11 +171,6 @@ const Contact: React.FC = () => {
   }, []);
 
   // ─── Form submit — UI only for now ───
-  // No submission method has been wired up yet. Swap this out for
-  // whichever approach gets chosen later:
-  //   • mailto: link — change the <form> to a plain <a href="mailto:...">
-  //   • Form service (Formspree/Web3Forms/EmailJS) — POST/fetch here
-  //   • Your own backend — fetch("/api/contact", { method: "POST", ... })
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     // Intentionally a no-op — UI-only per current spec.
@@ -232,21 +227,13 @@ const Contact: React.FC = () => {
                   are looking for support and/or funding for your business
                   or simply want to share exciting ideas.
                 </p>
-                <a
-                  href="https://aruwacapital.com/contact/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="contact-intro__link"
-                >
-                  https://aruwacapital.com/contact/
-                </a>
               </div>
             </div>
           </div>
         </section>
 
         {/* ═══════════════════════════════════════
-            CONTACT FORM
+            CONTACT FORM — with Email field
         ═══════════════════════════════════════ */}
         <section className="contact-form-section">
           <div className="contact-form-container">
@@ -257,7 +244,7 @@ const Contact: React.FC = () => {
             >
               <div className="contact-form__field">
                 <label htmlFor="contact-name" className="contact-form__label">
-                  Name <span className="contact-form__required">*</span>
+                  NAME   <span className="contact-form__required">*</span>
                 </label>
                 <input
                   id="contact-name"
@@ -269,12 +256,27 @@ const Contact: React.FC = () => {
                 />
               </div>
 
+              {/* ─── NEW: Email Field ─── */}
+              <div className="contact-form__field">
+                <label htmlFor="contact-email" className="contact-form__label">
+                  EMAIL   <span className="contact-form__required">*</span>
+                </label>
+                <input
+                  id="contact-email"
+                  name="email"
+                  type="email"
+                  required
+                  className="contact-form__input"
+                  placeholder="Your email address"
+                />
+              </div>
+
               <div className="contact-form__field">
                 <label
                   htmlFor="contact-message"
                   className="contact-form__label"
                 >
-                  Comment or Message{" "}
+                  COMMENT OR MESSAGE{" "}
                   <span className="contact-form__required">*</span>
                 </label>
                 <textarea
@@ -288,7 +290,7 @@ const Contact: React.FC = () => {
               </div>
 
               <button type="submit" className="contact-form__submit">
-                Submit
+                SUBMIT
               </button>
             </form>
           </div>

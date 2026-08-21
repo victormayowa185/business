@@ -131,11 +131,11 @@ const Navbar: React.FC = () => {
 
                     {/* ─── CENTER: Glassy pill with 5 links ─── */}
                     <div className="nav-center-glass">
-                        <NavLink to="/about" className="glass-link">About</NavLink>
-                        <NavLink to="/investments" className="glass-link">Investments</NavLink>
-                        <NavLink to="/videos" className="glass-link">Videos</NavLink>
-                        <NavLink to="/contact" className="glass-link">Contact</NavLink>
-                       
+                        <NavLink to="/about" className="glass-link">ABOUT</NavLink>
+                        <NavLink to="/investments" className="glass-link">INVESTMENTS</NavLink>
+                        <NavLink to="/videos" className="glass-link">VIDEOS</NavLink>
+                        <NavLink to="/contact" className="glass-link">CONTACT</NavLink>
+
                     </div>
 
                     {/* ─── RIGHT: Live Clock (WAT) ─── */}
@@ -152,11 +152,10 @@ const Navbar: React.FC = () => {
 
                 {/* ─── Mobile Drawer ─── */}
                 <ul className={`nav-links ${menuOpen ? 'open' : ''}`}>
-                    <li><NavLink to="/about" onClick={closeMenu}>About</NavLink></li>
-                    <li><NavLink to="/videos" onClick={closeMenu}>Videos</NavLink></li>
-                    <li><NavLink to="/investments" onClick={closeMenu}>Investments</NavLink></li>
-                    <li><NavLink to="/news" onClick={closeMenu}>News & Articles</NavLink></li>
-                    <li><NavLink to="/contact" onClick={closeMenu}>Contact</NavLink></li>
+                    <li><NavLink to="/about" onClick={closeMenu}>ABOUT</NavLink></li>
+                    <li><NavLink to="/videos" onClick={closeMenu}>VIDEOS</NavLink></li>
+                    <li><NavLink to="/investments" onClick={closeMenu}>INVESTMENTS</NavLink></li>
+                    <li><NavLink to="/contact" onClick={closeMenu}>CONTACT</NavLink></li>
                 </ul>
             </nav>
 

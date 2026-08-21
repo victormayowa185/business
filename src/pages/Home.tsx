@@ -285,6 +285,15 @@ const Home: React.FC = () => {
                             functions, governance, and strategy.” — Detailing her approach
                             at Aruwa Capital Management.
                         </p>
+                        {/* ─── NEW: Link to Aruwa Capital ─── */}
+                        <Link
+                            to="https://aruwacapital.com/"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="hero-aruwacapital-link"
+                        >
+                            ADESUWA CAPITAL →
+                        </Link>
                     </div>
                 </div>
 
@@ -294,7 +303,7 @@ const Home: React.FC = () => {
                         Adesuwa Rhodes featured in Forbes as one of Africa's most influential
                         investors shaping the future of sustainable finance.
                     </p>
-                    <Link to="/news" className="hero-recent__link">Read more →</Link>
+                    <Link to="/news" className="hero-recent__link">READ MORE →</Link>
                 </div>
 
                 <div className="hero-section__wordmark">
