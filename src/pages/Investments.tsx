@@ -103,7 +103,7 @@ const FEATURED_COMPANIES: Company[] = [
     height: "sm",
   },
 
-   {
+  {
     id: "company6",
     name: "Company Six",
     sector: "Consumer",
@@ -113,7 +113,7 @@ const FEATURED_COMPANIES: Company[] = [
     height: "sm",
   },
 
-   {
+  {
     id: "company7",
     name: "Company Seven",
     sector: "Consumer",
@@ -123,7 +123,7 @@ const FEATURED_COMPANIES: Company[] = [
     height: "sm",
   },
 
-   {
+  {
     id: "company8",
     name: "Company Eight",
     sector: "Consumer",
@@ -133,7 +133,7 @@ const FEATURED_COMPANIES: Company[] = [
     height: "sm",
   },
 
-   {
+  {
     id: "company9",
     name: "Company Nine",
     sector: "Consumer",
@@ -143,7 +143,7 @@ const FEATURED_COMPANIES: Company[] = [
     height: "sm",
   },
 
-   {
+  {
     id: "company10",
     name: "Company Ten",
     sector: "Consumer",
@@ -153,7 +153,7 @@ const FEATURED_COMPANIES: Company[] = [
     height: "sm",
   },
 
-   {
+  {
     id: "company11",
     name: "Company Eleven",
     sector: "Consumer",
@@ -163,7 +163,7 @@ const FEATURED_COMPANIES: Company[] = [
     height: "sm",
   },
 
-   {
+  {
     id: "company12",
     name: "Company Twelve",
     sector: "Consumer",
@@ -173,7 +173,7 @@ const FEATURED_COMPANIES: Company[] = [
     height: "sm",
   },
 
-   {
+  {
     id: "company13",
     name: "Company Thirteen",
     sector: "Consumer",
@@ -183,7 +183,7 @@ const FEATURED_COMPANIES: Company[] = [
     height: "sm",
   },
 
-     {
+  {
     id: "company14",
     name: "Company Fourteen",
     sector: "Consumer",
@@ -193,7 +193,7 @@ const FEATURED_COMPANIES: Company[] = [
     height: "sm",
   },
 
-     {
+  {
     id: "company15",
     name: "Company fifteen",
     sector: "Consumer",
@@ -204,7 +204,7 @@ const FEATURED_COMPANIES: Company[] = [
   },
 
 
-     {
+  {
     id: "company16",
     name: "Company Sixteen",
     sector: "Consumer",
@@ -215,7 +215,7 @@ const FEATURED_COMPANIES: Company[] = [
   },
 
 
-     {
+  {
     id: "company17",
     name: "Company Seventeen",
     sector: "Consumer",
@@ -226,7 +226,7 @@ const FEATURED_COMPANIES: Company[] = [
   },
 
 
-     {
+  {
     id: "company18",
     name: "Company Eighteen",
     sector: "Consumer",
@@ -380,8 +380,16 @@ const Investments: React.FC = () => {
             />
             <div className="investments-bio__text">
               <p>
-                Adesuwa is the Founder &amp; Managing Partner of Aruwa
-                Capital Management, an early stage private equity fund
+                Adesuwa is the Founder &amp; Managing Partner of{" "}
+                <a
+                  href="https://aruwacapital.com/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="investments-bio__link"
+                >
+                  Aruwa Capital Management
+                </a>
+                , an early stage private equity fund
                 investing in rapidly growing businesses in West Africa.
                 With Aruwa Capital and her own personal investments,
                 Adesuwa is focused on uncovering untapped investment

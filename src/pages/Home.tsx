@@ -5,6 +5,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { DrawSVGPlugin } from "gsap/DrawSVGPlugin";
 import "../styles/home.css";
+import { NAV_ENTRANCE_COMPLETE_EVENT } from "../utils/appEvents";
 
 gsap.registerPlugin(ScrollTrigger, DrawSVGPlugin);
 
@@ -92,7 +93,20 @@ const Home: React.FC = () => {
     const membershipsRef = useRef<HTMLDivElement | null>(null);
     const marqueeTrackRef = useRef<HTMLDivElement | null>(null);
 
-    // ─── Hero: drawn wordmark + eyebrow ───
+    // ─── Hero: drawn wordmark ───
+    // Previously this played immediately on mount, chained together
+    // with the eyebrow's fade-in in the same GSAP timeline. Now:
+    //   • The eyebrow (and everything else in the hero) shows
+    //     instantly — it's no longer part of this timeline at all.
+    //   • Only the SVG letter-draw is gated: on a fresh page load it
+    //     waits for the navbar's bounce-drop to finish
+    //     (NAV_ENTRANCE_COMPLETE_EVENT, dispatched from Navbar.tsx)
+    //     before drawing. On any later visit to Home within the same
+    //     session (e.g. navigating away and back), the navbar
+    //     entrance has already completed, so it just draws right away
+    //     — no waiting, no re-gating.
+    // The existing ScrollTrigger re-trigger (replaying the draw when
+    // the hero scrolls back into view) is untouched.
     useEffect(() => {
         if (!heroRef.current || !svgRef.current || !markRef.current) return;
 
@@ -114,29 +128,19 @@ const Home: React.FC = () => {
                 const tl = gsap.timeline({ paused: true });
 
                 tl.set(letterPaths, { drawSVG: "0%", opacity: 1 });
-                tl.set(heroRef.current!.querySelector(".hero-eyebrow"), {
-                    autoAlpha: 0,
-                    y: 14,
-                });
                 if (markPath) tl.set(markPath, { drawSVG: "0%" });
                 tl.set(markLetters, { drawSVG: "0%" });
-
-                tl.to(
-                    heroRef.current!.querySelector(".hero-eyebrow"),
-                    { autoAlpha: 1, y: 0, duration: 0.7, ease: "power3.out" },
-                    0.1
-                );
 
                 order.forEach((idx, i) => {
                     const dur = gsap.utils.random(0.55, 0.95);
                     tl.to(
                         letterPaths[idx],
                         { drawSVG: "100%", duration: dur, ease: "power2.inOut" },
-                        0.5 + i * 0.16
+                        0.1 + i * 0.16
                     );
                 });
 
-                const lettersEnd = 0.5 + order.length * 0.16 + 0.4;
+                const lettersEnd = 0.1 + order.length * 0.16 + 0.4;
 
                 if (markPath) {
                     tl.to(
@@ -156,9 +160,24 @@ const Home: React.FC = () => {
                 return tl;
             };
 
-            timelineRef.current = buildTimeline();
-            timelineRef.current.play();
+            const playInitialDraw = () => {
+                timelineRef.current = buildTimeline();
+                timelineRef.current.play();
+            };
 
+            // Gate the very first draw behind the navbar's entrance —
+            // but only on a fresh page load. If the navbar entrance
+            // already finished this session (e.g. we've navigated back
+            // to Home), draw immediately with no delay.
+            if (window.__navEntranceComplete) {
+                playInitialDraw();
+            } else {
+                window.addEventListener(NAV_ENTRANCE_COMPLETE_EVENT, playInitialDraw, {
+                    once: true,
+                });
+            }
+
+            // Re-trigger on scroll in/back — unchanged from before.
             ScrollTrigger.create({
                 trigger: heroRef.current,
                 start: "top 75%",
@@ -173,26 +192,58 @@ const Home: React.FC = () => {
                     timelineRef.current.play();
                 },
             });
+
+            return () => {
+                window.removeEventListener(NAV_ENTRANCE_COMPLETE_EVENT, playInitialDraw);
+            };
         }, heroRef);
 
         return () => ctx.revert();
     }, []);
 
-    // ─── Mission: fade‑in for pin & bottom quotes + image snap ───
+    // ─── Mission: fade‑in for bio/investments blocks, pin & bottom
+    //     quotes, plus image snap ───
+    // Added: the top panel's bio/investments blocks previously had NO
+    // entrance animation at all — they just appeared statically. They
+    // now get the same smooth fade+slide reveal as the rest of the
+    // page for consistent "app-like" polish.
     useEffect(() => {
         const ctx = gsap.context(() => {
             if (missionRef.current) {
+                const topBlocks = gsap.utils.toArray<HTMLElement>(
+                    missionRef.current.querySelectorAll(".mission-block")
+                );
                 const pin = missionRef.current.querySelector(".mission-pin");
                 const quoteBlocks = gsap.utils.toArray<HTMLElement>(
                     missionRef.current.querySelectorAll(".mission-quote")
                 );
 
+                gsap.set(topBlocks, { autoAlpha: 0, y: 28 });
                 gsap.set(pin, { autoAlpha: 0, y: 24, scale: 0.9 });
                 gsap.set(quoteBlocks, { autoAlpha: 0, y: 28 });
 
+                // Top panel (bio + investments) reveal
+                ScrollTrigger.create({
+                    trigger: missionRef.current.querySelector(".mission-panel--top"),
+                    start: "top 78%",
+                    onEnter: () => {
+                        gsap.to(topBlocks, {
+                            autoAlpha: 1,
+                            y: 0,
+                            duration: 0.8,
+                            ease: "expo.out",
+                            stagger: 0.18,
+                        });
+                    },
+                    onLeaveBack: () => {
+                        gsap.to(topBlocks, { autoAlpha: 0, y: 20, duration: 0.3 });
+                    },
+                });
+
+                // Bottom panel (pin + quotes) reveal
                 const tl = gsap.timeline({
                     scrollTrigger: {
-                        trigger: missionRef.current,
+                        trigger: missionRef.current.querySelector(".mission-panel--bottom"),
                         start: "top 70%",
                         toggleActions: "play none none reverse",
                     },
@@ -203,15 +254,15 @@ const Home: React.FC = () => {
                     y: 0,
                     scale: 1,
                     duration: 0.8,
-                    ease: "power3.out",
+                    ease: "expo.out",
                 }).to(
                     quoteBlocks,
                     {
                         autoAlpha: 1,
                         y: 0,
                         duration: 0.9,
-                        ease: "power3.out",
-                        stagger: 0.25,
+                        ease: "expo.out",
+                        stagger: 0.2,
                     },
                     "-=0.35"
                 );
@@ -241,7 +292,7 @@ const Home: React.FC = () => {
                             autoAlpha: 1,
                             y: 0,
                             duration: 0.7,
-                            ease: "power3.out",
+                            ease: "expo.out",
                         });
                     },
                     onLeaveBack: () => {

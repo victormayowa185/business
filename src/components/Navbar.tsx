@@ -4,6 +4,20 @@ import { HiMenu, HiX } from 'react-icons/hi';
 import { useState, useRef, useEffect } from 'react';
 import gsap from 'gsap';
 import '../styles/navbar.css';
+import {
+    PRELOADER_COMPLETE_EVENT,
+    NAV_ENTRANCE_COMPLETE_EVENT,
+} from '../utils/appEvents';
+
+// Module-level flag (persists for the whole app session, resets on a
+// real page reload since the module re-evaluates then) — lets any
+// component check synchronously whether the one-time entrance
+// sequence has already played, without needing React context.
+declare global {
+    interface Window {
+        __navEntranceComplete?: boolean;
+    }
+}
 
 const Navbar: React.FC = () => {
     const [menuOpen, setMenuOpen] = useState(false);
@@ -96,20 +110,57 @@ const Navbar: React.FC = () => {
         return () => clearInterval(interval);
     }, []);
 
-    // Entrance animation – plays automatically on mount
+    // ─── Entrance animation — bounce-drop, gated behind the preloader ───
+    // Previously this played immediately on mount with a plain
+    // slide+fade (power3.out, no overshoot). Now it waits for the
+    // preloader to have fully faded out (see App.tsx's
+    // PRELOADER_COMPLETE_EVENT, fired at 2600ms), then plays a
+    // bounce-drop using an overshoot ease so it drops slightly past
+    // its resting position and settles back — a real "bounce",
+    // rather than a straight slide-in.
+    //
+    // Because Navbar mounts once and stays mounted for the whole
+    // BrowserRouter session (it's outside <Routes>), this only ever
+    // runs once per full page load — route switches never remount it,
+    // so this never replays when navigating between pages.
     useEffect(() => {
         if (hasPlayedEntrance.current || !navInnerRef.current) return;
         hasPlayedEntrance.current = true;
 
-        gsap.set(navInnerRef.current, { y: '-120%', opacity: 0 });
+        const el = navInnerRef.current;
 
-        gsap.to(navInnerRef.current, {
-            y: '0%',
-            opacity: 1,
-            duration: 0.8,
-            ease: 'power3.out',
-            delay: 0.15,
+        const playBounceDrop = () => {
+            gsap.set(el, { y: '-140%', opacity: 0 });
+
+            gsap.to(el, {
+                y: '0%',
+                opacity: 1,
+                duration: 0.9,
+                ease: 'back.out(1.7)', // overshoots slightly past 0%, then settles — the "bounce"
+                onComplete: () => {
+                    window.__navEntranceComplete = true;
+                    window.dispatchEvent(new CustomEvent(NAV_ENTRANCE_COMPLETE_EVENT));
+                },
+            });
+        };
+
+        // Safety net: if this effect somehow subscribes after the
+        // preloader has already fired its complete event (shouldn't
+        // normally happen — Navbar mounts synchronously at app start,
+        // well before the 2600ms mark), don't get stuck waiting forever.
+        if (window.__navEntranceComplete) {
+            // Entrance already happened this session — just snap to final state.
+            gsap.set(el, { y: '0%', opacity: 1 });
+            return;
+        }
+
+        window.addEventListener(PRELOADER_COMPLETE_EVENT, playBounceDrop, {
+            once: true,
         });
+
+        return () => {
+            window.removeEventListener(PRELOADER_COMPLETE_EVENT, playBounceDrop);
+        };
     }, []);
 
     return (

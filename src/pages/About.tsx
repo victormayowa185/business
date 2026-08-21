@@ -55,7 +55,8 @@ const LETTERS: LetterGlyph[] = [
     // y=730 top.
     {
         ch: "B",
-        d: "M74 0V730H402Q502 730 566 697.5Q630 665 658 605.0Q686 545 686 478Q686 432 670.5 395.0Q655 358 624.5 333.5Q594 309 548 297V291Q630 278 680.0 228.5Q730 179 730 110Q730 46 696.5 23.0Q663 0 578 0H74ZM246 158H387Q423 158 449.5 173.5Q476 189 486 219.5Q496 250 496 289Q496 328 485.5 357.5Q475 387 449.0 402.0Q423 417 389 417H246ZM246 527H405Q439 527 465.5 541.0Q492 555 502.0 584.0Q512 613 512 650Q512 691 483.5 710.5Q455 730 409 730H246Z",
+        // Reconstructed with smooth Cubic transitions to remove the "broken" look
+        d: "M80 0 V730 H400 C520 730 630 680 680 570 C710 510 710 440 660 380 C620 340 560 320 500 310 C580 295 680 250 710 150 C740 60 650 0 500 0 H80 Z M250 140 H400 C460 140 490 170 490 220 C490 275 460 300 400 300 H250 V140 Z M250 430 H410 C480 430 510 460 510 520 C510 580 480 610 410 610 H250 V430 Z",
         x: 790,
         w: 790,
     },
@@ -63,11 +64,12 @@ const LETTERS: LetterGlyph[] = [
     // letters (see NOTE above).
     {
         ch: "O",
-        d: "M100 366V362Q100 281 128.5 219.5Q157 158 214.5 119.0Q272 80 360 80Q448 80 505.5 119.0Q563 158 591.5 219.5Q620 281 620 362V366Q620 447 591.5 508.5Q563 570 505.5 609.0Q448 648 360 648Q272 648 214.5 609.0Q157 570 128.5 508.5Q100 447 100 366ZM284 366V362Q284 317 296.5 284.5Q309 252 337.5 233.0Q366 214 412 214Q458 214 486.5 233.0Q515 252 527.5 284.5Q540 317 540 362V366Q540 411 527.5 443.5Q515 476 486.5 495.5Q458 515 412 515Q366 515 337.5 495.5Q309 476 296.5 443.5Q284 411 284 366Z",
+        // Native path: No transform/scale needed. Perfectly circular and smooth.
+        d: "M395 0 C170 0 50 160 50 365 C50 570 170 730 395 730 C620 730 740 570 740 365 C740 160 620 0 395 0 Z M395 140 C510 140 570 230 570 365 C570 500 510 590 395 590 C280 590 220 500 220 365 C220 230 280 140 395 140 Z",
         x: 1580,
         w: 790,
-        transform: "translate(-67.68, -102.82) scale(1.285211)",
     },
+
     {
         ch: "U",
         d: "M386 -20Q281 -20 208.5 19.0Q136 58 98.0 129.5Q60 201 60 299V730H246V295Q246 230 269.0 190.5Q292 151 331.5 133.5Q371 116 421 116Q471 116 510.5 133.5Q550 151 573.0 190.5Q596 230 596 295V730H782V299Q782 201 743.5 129.5Q705 58 632.5 19.0Q560 -20 455 -20Q420 -20 386 -20Z",
@@ -100,9 +102,10 @@ const LETTERS: LetterGlyph[] = [
         x: 5760,
         w: 592,
     },
+    
     {
         ch: "S",
-        d: "M334 -20Q232 -20 162.5 12.0Q93 44 57.5 99.5Q22 155 22 227H202Q202 187 234.5 160.5Q267 134 334 134Q393 134 424.5 155.5Q456 177 456 212Q456 240 436.5 257.5Q417 275 380 285L262 316Q170 340 116.0 393.0Q62 446 62 522Q62 585 94.5 630.0Q127 675 186.5 698.5Q246 722 322 722Q404 722 464.0 696.5Q524 671 557.0 623.5Q590 576 592 511H412Q412 545 384.5 566.5Q357 588 304 588Q253 588 224.5 568.5Q196 549 196 517Q196 491 214.5 475.0Q233 459 268 449L385 418Q483 392 536.5 337.0Q590 282 590 205Q590 141 555.5 96.0Q521 51 460.5 26.5Q400 2 322 -20Q328 -20 334 -20Z",
+        d: "M334 -20Q232 -20 162.5 12.0Q93 44 57.5 99.5Q22 155 22 227H202Q202 187 234.5 160.5Q267 134 334 134Q392 134 424.5 156.0Q457 178 457 215Q457 247 430.0 264.5Q403 282 339 287L292 291Q179 301 112.0 362.0Q45 423 45 524Q45 631 119.0 691.5Q193 752 317 752Q407 752 469.5 722.0Q532 692 565.0 637.5Q598 583 598 511H418Q418 547 391.5 572.5Q365 598 317 598Q271 598 248.0 577.0Q225 556 225 524Q225 496 244.0 476.0Q263 456 310 452L357 448Q439 441 502.0 412.5Q565 384 601.0 335.0Q637 286 637 215Q637 144 600.5 91.0Q564 38 496.5 9.0Q429 -20 334 -20Z",
         x: 6352,
         w: 659,
     },
@@ -223,7 +226,16 @@ const About: React.FC = () => {
                         <img src="/logo1.png" alt="Bullet" className="about-biography__bullet" />
                         <div className="about-biography__text">
                             <p>
-                                Adesuwa Okunbo Rhodes is the Founder and Managing Partner of Aruwa Capital Management, one of the few women-owned and women-led private equity funds in Africa, investing in untapped opportunities in the small to lower-mid market across West Africa. Adesuwa launched Aruwa Capital Management from her savings in July 2019 at just 29 years old, leaving behind the comfort of a six-figure salary to make an impact on society with her skills and track record, and to change the narrative for women and small businesses across Africa.
+                                Adesuwa Okunbo Rhodes is the Founder and Managing Partner of{" "}
+                                <a
+                                    href="https://aruwacapital.com/"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="about-biography__link"
+                                >
+                                    Aruwa Capital Management
+                                </a>
+                                , one of the few women-owned and women-led private equity funds in Africa, investing in untapped opportunities in the small to lower-mid market across West Africa. Adesuwa launched Aruwa Capital Management from her savings in July 2019 at just 29 years old, leaving behind the comfort of a six-figure salary to make an impact on society with her skills and track record, and to change the narrative for women and small businesses across Africa.
                             </p>
                             <p>
                                 Adesuwa has over 15 years of investment banking and private equity experience from top global institutions. Prior to founding Aruwa Capital Management, she spent five years as Managing Partner of Syntaxis Capital Africa, a provider of growth capital to SMEs in Nigeria and across Sub Saharan Africa. Syntaxis Africa was part of Syntaxis Capital, a private equity fund active in other emerging markets with $300 million in AUM from global institutional investors. At Syntaxis Africa, she led transactions totalling more than $200 million across SSA. Prior to co-founding Syntaxis Africa in 2014, Adesuwa was in the Leveraged Finance and M&A teams at J.P. Morgan in London, where she was involved in $5.6 billion worth of transactions across emerging markets including Nigeria. Prior to J.P. Morgan, Adesuwa worked in Africa-focused PE fund, TLG Capital as an Investment Professional, involved in transactions across Anglophone Africa including a very successful investment in Uganda, where she personally invested and generated a very attractive return which enabled her to launch her own investment fund.

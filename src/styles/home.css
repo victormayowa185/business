@@ -337,7 +337,7 @@
 .mission-block__text {
   margin: 0;
   font-family: "Sora", "Segoe UI", sans-serif;
-  font-size: 1rem;
+  font-size: 1.1rem;
   line-height: 1.7;
   font-weight: 400;
   color: #000000;
@@ -377,7 +377,7 @@
 .mission-quote__text {
   margin: 0;
   font-family: "Sora", "Segoe UI", sans-serif;
-  font-size: clamp(1rem, 1.6vw, 1.3rem);
+  font-size: 1.1rem;
   line-height: 1.6;
   font-weight: 400;
   color: #000000;
@@ -408,7 +408,7 @@
 /* ─── Mobile (≤ 720px) ─── */
 @media (max-width: 720px) {
   .mission-panel {
-    padding: 50px 6%;
+    padding: 50px 15%;
   }
 
   .mission-gap {
@@ -441,6 +441,7 @@
   .mission-block__text,
   .mission-quote__text {
     font-size: 0.95rem;
+    
   }
 
   .mission-attribution {
