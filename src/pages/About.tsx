@@ -7,18 +7,39 @@ import "../styles/about.css";
 gsap.registerPlugin(ScrollTrigger, DrawSVGPlugin);
 
 // ─── Wordmark Configuration ───
-// "ABOUT ADESUWA" — TOTAL_WIDTH recalculated to match the real extent
-// of all letter paths (last letter's x + w), with a word-gap of 300
-// units inserted between "ABOUT" and "ADESUWA" so they don't run
-// together.
+// "ABOUT ADESUWA"
+//
+// Fixes applied here vs. the previous version:
+//
+// 1) B — the upper counter (inner "hole") subpath peaked at y=776,
+//    46 units above the outer outline's own top (y=730). That's the
+//    stray loop poking out above the B. The whole upper-counter
+//    subpath has been shifted down by 46 units so it tops out at
+//    exactly y=730, flush with the rest of the letter, leaving a
+//    clean ~110-unit crossbar between the two counters.
+//
+// 2) O — pulled from a different source at a shorter cap height
+//    (568 units tall, y 80→648) than the rest of the glyphs (~730+).
+//    A local `transform` rescales it by 730/568 ≈ 1.2852 and
+//    re-baselines/re-centers it so it matches the others, same fix
+//    used on the Videos page wordmark.
+//
+// 3) U/T spacing — U's real ink extends to x=782, past its declared
+//    box width of 771, so it was overlapping T with no visible gap.
+//    T (and every letter after it) is shifted +71 units right to
+//    open a real ~60-unit gap, and TOTAL_WIDTH is extended to match
+//    so the word still ends flush on the right.
 const CAP_HEIGHT = 760;
-const TOTAL_WIDTH = 9581;
+const TOTAL_WIDTH = 9652;
 
 interface LetterGlyph {
     ch: string;
     d: string;
     x: number;
     w: number;
+    /** Optional local transform to normalize glyphs pulled from a
+     *  different source/scale than the rest of the set (used for O). */
+    transform?: string;
 }
 
 const LETTERS: LetterGlyph[] = [
@@ -29,17 +50,23 @@ const LETTERS: LetterGlyph[] = [
         x: 0,
         w: 790,
     },
+    // B — upper counter subpath corrected (see NOTE above): shifted
+    // down 46 units so it no longer overshoots the outer outline's
+    // y=730 top.
     {
         ch: "B",
-        d: "M74 0V730H402Q502 730 566 697.5Q630 665 658 605.0Q686 545 686 478Q686 432 670.5 395.0Q655 358 624.5 333.5Q594 309 548 297V291Q630 278 680.0 228.5Q730 179 730 110Q730 46 696.5 23.0Q663 0 578 0H74ZM246 158H387Q423 158 449.5 173.5Q476 189 486 219.5Q496 250 496 289Q496 328 485.5 357.5Q475 387 449.0 402.0Q423 417 389 417H246ZM246 573H405Q439 573 465.5 587.0Q492 601 502.0 630.0Q512 659 512 696Q512 737 483.5 756.5Q455 776 409 776H246Z",
+        d: "M74 0V730H402Q502 730 566 697.5Q630 665 658 605.0Q686 545 686 478Q686 432 670.5 395.0Q655 358 624.5 333.5Q594 309 548 297V291Q630 278 680.0 228.5Q730 179 730 110Q730 46 696.5 23.0Q663 0 578 0H74ZM246 158H387Q423 158 449.5 173.5Q476 189 486 219.5Q496 250 496 289Q496 328 485.5 357.5Q475 387 449.0 402.0Q423 417 389 417H246ZM246 527H405Q439 527 465.5 541.0Q492 555 502.0 584.0Q512 613 512 650Q512 691 483.5 710.5Q455 730 409 730H246Z",
         x: 790,
         w: 790,
     },
+    // O — rescaled/re-baselined to match cap height of the other
+    // letters (see NOTE above).
     {
         ch: "O",
         d: "M100 366V362Q100 281 128.5 219.5Q157 158 214.5 119.0Q272 80 360 80Q448 80 505.5 119.0Q563 158 591.5 219.5Q620 281 620 362V366Q620 447 591.5 508.5Q563 570 505.5 609.0Q448 648 360 648Q272 648 214.5 609.0Q157 570 128.5 508.5Q100 447 100 366ZM284 366V362Q284 317 296.5 284.5Q309 252 337.5 233.0Q366 214 412 214Q458 214 486.5 233.0Q515 252 527.5 284.5Q540 317 540 362V366Q540 411 527.5 443.5Q515 476 486.5 495.5Q458 515 412 515Q366 515 337.5 495.5Q309 476 296.5 443.5Q284 411 284 366Z",
         x: 1580,
         w: 790,
+        transform: "translate(-67.68, -102.82) scale(1.285211)",
     },
     {
         ch: "U",
@@ -50,51 +77,51 @@ const LETTERS: LetterGlyph[] = [
     {
         ch: "T",
         d: "M0 620H281V0H399V620H680V730H0Z",
-        x: 3141,
+        x: 3212,
         w: 680,
     },
 
-    // ── ADESUWA (shifted +300 units to create a word gap after "T") ──
+    // ── ADESUWA (word gap preserved after the U/T spacing fix) ──
     {
         ch: "A",
         d: "M8 0 242 730H540L782 0H590L537 169H246L194 0ZM292 321H489L408 580H371Z",
-        x: 4121,
+        x: 4192,
         w: 790,
     },
     {
         ch: "D",
         d: "M74 -4V736H352Q451 736 525.5 708.0Q600 680 650.0 630.5Q700 581 725.0 516.0Q750 451 750 378V356Q750 289 725.0 224.5Q700 160 650.0 111.5Q600 63 525.5 31.5Q451 0 352 0H74ZM246 152H344Q409 152 458.0 178.5Q507 205 535.5 253.0Q564 301 564 366V370Q564 435 535.5 483.0Q507 531 458.0 557.5Q409 584 344 584H246Z",
-        x: 4911,
+        x: 4982,
         w: 778,
     },
     {
         ch: "E",
         d: "M74 0V730H536V578H254V447H521V295H254V152H542V0Z",
-        x: 5689,
+        x: 5760,
         w: 592,
     },
     {
         ch: "S",
         d: "M334 -20Q232 -20 162.5 12.0Q93 44 57.5 99.5Q22 155 22 227H202Q202 187 234.5 160.5Q267 134 334 134Q393 134 424.5 155.5Q456 177 456 212Q456 240 436.5 257.5Q417 275 380 285L262 316Q170 340 116.0 393.0Q62 446 62 522Q62 585 94.5 630.0Q127 675 186.5 698.5Q246 722 322 722Q404 722 464.0 696.5Q524 671 557.0 623.5Q590 576 592 511H412Q412 545 384.5 566.5Q357 588 304 588Q253 588 224.5 568.5Q196 549 196 517Q196 491 214.5 475.0Q233 459 268 449L385 418Q483 392 536.5 337.0Q590 282 590 205Q590 141 555.5 96.0Q521 51 460.5 26.5Q400 2 322 -20Q328 -20 334 -20Z",
-        x: 6281,
+        x: 6352,
         w: 659,
     },
     {
         ch: "U",
         d: "M386 -20Q281 -20 208.5 19.0Q136 58 98.0 129.5Q60 201 60 299V730H246V295Q246 230 269.0 190.5Q292 151 331.5 133.5Q371 116 421 116Q471 116 510.5 133.5Q550 151 573.0 190.5Q596 230 596 295V730H782V299Q782 201 743.5 129.5Q705 58 632.5 19.0Q560 -20 455 -20Q420 -20 386 -20Z",
-        x: 6940,
+        x: 7011,
         w: 771,
     },
     {
         ch: "W",
         d: "M192 0 18 730H210L336 148H360L455 704H638L749 148H773L882 730H1062L909 0H626L545 458H507L426 0Z",
-        x: 7711,
+        x: 7782,
         w: 1080,
     },
     {
         ch: "A",
         d: "M8 0 242 730H540L782 0H590L537 169H246L194 0ZM292 321H489L408 580H371Z",
-        x: 8791,
+        x: 8862,
         w: 790,
     },
 ];
@@ -178,6 +205,7 @@ const About: React.FC = () => {
                                         className="about-svg__letter"
                                         d={letter.d}
                                         fillRule="evenodd"
+                                        transform={letter.transform}
                                     />
                                 </g>
                             ))}

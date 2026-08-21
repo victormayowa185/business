@@ -22,8 +22,22 @@
   inset: 0;
   background-image: url("/investment.png");
   background-size: cover;
-  background-position: center 72%;
+  background-position: center 55%;
   z-index: 0;
+  /* Subtle continuous "breathing" zoom — gentle in/out, not a hard pulse. */
+  transform-origin: center center;
+  animation: investments-hero-breathe 12s ease-in-out infinite;
+  will-change: transform;
+}
+
+@keyframes investments-hero-breathe {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
 }
 
 .investments-hero__scrim {
@@ -350,5 +364,9 @@
 
   .company-card {
     transition: none;
+  }
+
+  .investments-hero__bg {
+    animation: none !important;
   }
 }

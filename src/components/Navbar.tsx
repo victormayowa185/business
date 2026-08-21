@@ -8,6 +8,7 @@ import '../styles/navbar.css';
 const Navbar: React.FC = () => {
     const [menuOpen, setMenuOpen] = useState(false);
     const [scrolled, setScrolled] = useState(false);
+    const [currentTime, setCurrentTime] = useState<string>('');
     const navRef = useRef<HTMLDivElement>(null);
     const navInnerRef = useRef<HTMLDivElement>(null);
     const isHiddenRef = useRef(false);
@@ -75,6 +76,26 @@ const Navbar: React.FC = () => {
         };
     }, []);
 
+    // ─── Live Clock: Nigerian Time (WAT) ───
+    useEffect(() => {
+        const updateClock = () => {
+            const now = new Date();
+            const timeString = now.toLocaleTimeString('en-GB', {
+                timeZone: 'Africa/Lagos',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: false,
+            });
+            setCurrentTime(timeString);
+        };
+
+        updateClock();
+        const interval = setInterval(updateClock, 1000);
+
+        return () => clearInterval(interval);
+    }, []);
+
     // Entrance animation – plays automatically on mount
     useEffect(() => {
         if (hasPlayedEntrance.current || !navInnerRef.current) return;
@@ -117,9 +138,10 @@ const Navbar: React.FC = () => {
                         <NavLink to="/news" className="glass-link">News & Articles</NavLink>
                     </div>
 
-                    {/* ─── RIGHT: News & Articles (outside glass) ─── */}
-                    <div className="nav-right-news">
-                        {/* If you want a separate link outside the glass, put it here */}
+                    {/* ─── RIGHT: Live Clock (WAT) ─── */}
+                    <div className="nav-clock">
+                        <span className="nav-clock__label">WAT</span>
+                        <span className="nav-clock__time">{currentTime}</span>
                     </div>
 
                     {/* ─── Hamburger (mobile) ─── */}

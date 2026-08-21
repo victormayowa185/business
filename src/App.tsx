@@ -9,6 +9,7 @@ import Footer from './components/Footer';
 import Preloader from './components/Preloader';
 import Investments from './pages/Investments';
 import './App.css';
+import Videos from './pages/Videos';
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -29,7 +30,8 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />  {/* ← Add this */}
         <Route path="/news" element={<News />} />
-         <Route path="/investments" element={<Investments />} />
+        <Route path="/investments" element={<Investments />} />
+        <Route path="/videos" element={<Videos />} />
       </Routes>
       <Footer />
     </BrowserRouter>

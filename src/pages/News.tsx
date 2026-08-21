@@ -8,8 +8,34 @@ import "../styles/news.css";
 gsap.registerPlugin(ScrollTrigger, DrawSVGPlugin);
 
 // ─── Wordmark Configuration ───
+// "IN THE NEWS" — rebuilt from real, filled/stroked outline glyphs
+// (same construction style as About/Investments/Videos) instead of
+// the old open-line "approximation" paths.
+//
+// What changed vs. the previous version:
+//   • T and H were previously drawn as bare open line-strokes
+//     (e.g. "M0 0 L300 0 M150 0 L150 730") rather than closed
+//     outline letterforms like every other glyph on the site — that
+//     made them render thin/broken and misaligned. Both are now
+//     proper closed paths using the same H/V command style as E, N,
+//     etc., with matching ~74-unit side margins and the same
+//     730-unit cap height.
+//   • There was no actual gap between "IN", "THE", and "NEWS" — the
+//     array jumped straight from letter to letter with no space, so
+//     the whole thing ran together. Real 250-unit word gaps are now
+//     inserted between words.
+//   • Letter box widths (x/w) were previously guessed rather than
+//     computed from real glyph geometry, causing overlap. They're
+//     now computed as a running sum of actual letter widths + word
+//     gaps, so TOTAL_WIDTH is exactly flush with the rendered word
+//     (0 → 6937) and centers cleanly with zero dead space —
+//     matching the approach used on the other pages.
+//   • viewBox/transform brought in line with the other pages'
+//     convention (height 880, translate(0,780) scale(1,-1)) instead
+//     of this page's one-off (CAP_HEIGHT-40) setup.
 const CAP_HEIGHT = 760;
-const TOTAL_WIDTH = 6500; // approximate for "IN THE NEWS"
+const TOTAL_WIDTH = 6937;
+const WORD_GAP = 250;
 
 interface LetterGlyph {
   ch: string;
@@ -18,72 +44,68 @@ interface LetterGlyph {
   w: number;
 }
 
-// Simple path approximations for each letter (uppercase, sans-serif style)
-// These are not perfect but give the drawing effect.
 const LETTERS: LetterGlyph[] = [
-  // I
+  // ── I N ──
   {
     ch: "I",
-    d: "M50 0 L50 730",
+    d: "M76 0V730H262V0Z",
     x: 0,
-    w: 100,
+    w: 338,
   },
-  // N
   {
     ch: "N",
-    d: "M50 0 L50 730 L350 0 L350 730",
-    x: 100,
-    w: 400,
+    d: "M74 0V730H379L622 148H637V730H811V0H504L261 582H246V0Z",
+    x: 338,
+    w: 885,
   },
-  // space (we'll handle spaces by offset)
-  // T
+
+  // ── T H E (word gap of 250 after "IN") ──
   {
     ch: "T",
-    d: "M0 0 L300 0 M150 0 L150 730",
-    x: 500,
-    w: 300,
+    d: "M220 0V568H20V730H606V568H406V0Z",
+    x: 1473, // 338 + 885 + 250
+    w: 626,
   },
-  // H
+  // H — built fresh in the same outline style as the other letters
+  // (closed path, alternating H/V commands, 74-unit side margins,
+  // 730-unit cap height) since no H glyph existed elsewhere on the
+  // site to reuse.
   {
     ch: "H",
-    d: "M50 0 L50 730 M350 0 L350 730 M50 365 L350 365",
-    x: 800,
-    w: 400,
+    d: "M74 0H254V295H526V0H706V730H526V447H254V730H74Z",
+    x: 2099, // 1473 + 626
+    w: 780,
   },
-  // E
   {
     ch: "E",
     d: "M74 0V730H536V578H254V447H521V295H254V152H542V0Z",
-    x: 1200,
+    x: 2879, // 2099 + 780
     w: 592,
   },
-  // space
-  // N
+
+  // ── N E W S (word gap of 250 after "THE") ──
   {
     ch: "N",
-    d: "M50 0 L50 730 L350 0 L350 730",
-    x: 1800,
-    w: 400,
+    d: "M74 0V730H379L622 148H637V730H811V0H504L261 582H246V0Z",
+    x: 3721, // 2879 + 592 + 250
+    w: 885,
   },
-  // E
   {
     ch: "E",
     d: "M74 0V730H536V578H254V447H521V295H254V152H542V0Z",
-    x: 2200,
+    x: 4606, // 3721 + 885
     w: 592,
   },
-  // W
   {
     ch: "W",
     d: "M192 0 18 730H210L336 148H360L455 704H638L749 148H773L882 730H1062L909 0H626L545 458H507L426 0Z",
-    x: 2800,
+    x: 5198, // 4606 + 592
     w: 1080,
   },
-  // S
   {
     ch: "S",
     d: "M334 -20Q232 -20 162.5 12.0Q93 44 57.5 99.5Q22 155 22 227H202Q202 187 234.5 160.5Q267 134 334 134Q393 134 424.5 155.5Q456 177 456 212Q456 240 436.5 257.5Q417 275 380 285L262 316Q170 340 116.0 393.0Q62 446 62 522Q62 585 94.5 630.0Q127 675 186.5 698.5Q246 722 322 722Q404 722 464.0 696.5Q524 671 557.0 623.5Q590 576 592 511H412Q412 545 384.5 566.5Q357 588 304 588Q253 588 224.5 568.5Q196 549 196 517Q196 491 214.5 475.0Q233 459 268 449L385 418Q483 392 536.5 337.0Q590 282 590 205Q590 141 555.5 96.0Q521 51 460.5 26.5Q400 2 322 -20Q328 -20 334 -20Z",
-    x: 3900,
+    x: 6278, // 5198 + 1080
     w: 659,
   },
 ];
@@ -225,11 +247,11 @@ const News: React.FC = () => {
           <svg
             ref={svgRef}
             className="news-svg"
-            viewBox={`0 -40 ${TOTAL_WIDTH} ${CAP_HEIGHT}`}
+            viewBox={`0 -60 ${TOTAL_WIDTH} 880`}
             preserveAspectRatio="xMidYMax meet"
             xmlns="http://www.w3.org/2000/svg"
           >
-            <g transform={`translate(0, ${CAP_HEIGHT - 40}) scale(1, -1)`}>
+            <g transform="translate(0, 780) scale(1, -1)">
               {LETTERS.map((letter, i) => (
                 <g key={`${letter.ch}-${i}`} transform={`translate(${letter.x}, 0)`}>
                   <path

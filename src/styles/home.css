@@ -23,7 +23,7 @@
 .hero-section__bg {
   position: absolute;
   inset: 0;
-  background-image: url("/images/hero-pic.png");
+  background-image: url("/images/hero.png");
   background-size: cover;
   background-position: center 22%;
   z-index: 0;
@@ -32,7 +32,7 @@
 .hero-section__scrim {
   position: absolute;
   inset: 0;
-  background: rgba(10, 10, 12, 0.381);
+  background: rgba(10, 10, 12, 0.718);
   z-index: 1;
 }
 
@@ -159,7 +159,7 @@
 /* ─── Responsive (≤ 900px) ─── */
 @media (max-width: 900px) {
   .hero-section__top {
-    top: 88px;
+    top: 19%;
     left: 24px;
     max-width: 260px;
   }
@@ -177,8 +177,8 @@
 
   .hero-recent {
     top: auto;
-    bottom: 280px;
-    /* adjust as needed */
+    bottom: 20%;
+  
     right: 24px;
     max-width: 200px;
     text-align: right;

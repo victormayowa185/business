@@ -71,9 +71,9 @@
   display: flex;
   align-items: center;
   gap: 2rem;
-  background: rgba(255, 255, 255, 0.20);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(36px) saturate(180%);
+  -webkit-backdrop-filter: blur(36px) saturate(180%);
   border: 1px solid rgba(255, 255, 255, 0.40);
   border-radius: 9999px;
   padding: 0.3rem 1.8rem;
@@ -83,6 +83,7 @@
     inset 0 1px 0 rgba(255, 255, 255, 0.6);
 }
 
+/* ─── Default glass links (on hero) ─── */
 .glass-link {
   color: white;
   text-decoration: none;
@@ -98,10 +99,78 @@
   transform: translateY(-1px);
 }
 
+/* ─── Active link: white + underline on hero ─── */
 .glass-link.active {
-  color: #000;
+  color: #ffffff;
   font-weight: 600;
-  border-bottom: 2px solid rgba(0, 0, 0, 0.3);
+  border-bottom: 2px solid rgba(255, 255, 255, 0.5);
+}
+
+/* ─── RIGHT: Live Clock (WAT) ─── */
+.nav-clock {
+  flex-shrink: 0;
+  justify-self: end;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.1rem;
+  line-height: 1.2;
+  transition: color 0.3s ease;
+  margin-right: 2.5rem;
+  margin-top: 0.5rem;
+}
+
+.nav-clock__label {
+  font-family: "Sora", "Segoe UI", sans-serif;
+  font-size: 0.55rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.5);
+  transition: color 0.3s ease;
+}
+
+.nav-clock__time {
+  font-family: "Sora", "Segoe UI", sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: #ffffff;
+  transition: color 0.3s ease;
+}
+
+/* ─── Scroll state: text turns dark when past hero ─── */
+.navbar-scrolled .glass-link {
+  color: #000000;
+}
+
+.navbar-scrolled .glass-link:hover {
+  color: #000000;
+}
+
+/* ─── Scrolled active: dark + dark underline ─── */
+.navbar-scrolled .glass-link.active {
+  color: #000;
+  border-bottom-color: rgba(0, 0, 0, 0.5);
+}
+
+.navbar-scrolled .news-link {
+  color: #000000;
+}
+
+.navbar-scrolled .news-link:hover {
+  color: #000000;
+  background: rgba(0, 0, 0, 0.05);
+  border-color: rgba(0, 0, 0, 0.2);
+}
+
+/* ─── Scrolled state: clock text turns dark ─── */
+.navbar-scrolled .nav-clock__label {
+  color: rgba(0, 0, 0, 0.4);
+}
+
+.navbar-scrolled .nav-clock__time {
+  color: #000000;
 }
 
 /* ─── RIGHT: News & Articles – aligned to the right edge ─── */
@@ -128,6 +197,10 @@
   color: white;
 }
 
+.navbar-scrolled .hamburger {
+  color: #000000;
+}
+
 /* ─── Hamburger (hidden on desktop) ─── */
 .hamburger {
   display: none;
@@ -135,7 +208,7 @@
   border: none;
   font-size: 2rem;
   cursor: pointer;
-  color: #000000;
+  color: black;
   padding: 0.2rem;
   line-height: 1;
   transition: transform 0.2s;
@@ -162,10 +235,26 @@
     width: 95%;
     padding: 0.5rem 1.2rem;
     gap: 0.5rem;
-    background: rgba(255, 255, 255, 0.7);
-    backdrop-filter: blur(10px);
-    border-radius: 9999px;
-    border: 1px solid rgba(255, 255, 255, 0.3);
+    position: relative;
+  }
+
+  .brand-logo-img {
+    margin-top: 0.6rem;
+    height: 80px;
+  }
+
+  .navbar-brand {
+    margin-right: auto; /* pushes logo left, pre-scroll */
+    margin-left: -2.2rem;
+  }
+
+  /* ─── Once scrolled: neutralize the brand's auto margin so it
+       stops eating the row's free space and shoving the clock right ─── */
+  .navbar-scrolled .navbar-brand {
+    margin-right: 0;
+    margin-left: 0;
+    min-width: 0;
+    flex: 0 0 auto;
   }
 
   .nav-center-glass {
@@ -178,9 +267,46 @@
 
   .hamburger {
     display: block;
+    color: white;
     margin-left: auto;
+    order: 3;
   }
 
+  /* ─── Mobile: clock centered while logo is still visible ─── */
+  .nav-clock {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    align-items: center;
+    margin-right: 0;
+    background: transparent !important;
+    backdrop-filter: none !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+  }
+
+  .nav-clock__label {
+    font-size: 0.65rem; /* bigger WAT label */
+  }
+
+  .nav-clock__time {
+    font-size: 0.9rem;
+  }
+
+  /* ─── Mobile scrolled: logo hides completely, clock moves left ─── */
+  .navbar-scrolled .brand-logo-wrapper {
+    display: none;
+  }
+
+  .navbar-scrolled .nav-clock {
+    position: static;
+    left: auto;
+    transform: none;
+    align-items: flex-start;
+  }
+
+  /* ─── Mobile Drawer – solid white background ─── */
   .nav-links {
     display: flex;
     position: fixed;
@@ -188,10 +314,11 @@
     right: -100%;
     width: min(75%, 280px);
     height: 100vh;
-    background: rgba(255, 255, 255, 0.92);
-    backdrop-filter: blur(30px);
-    -webkit-backdrop-filter: blur(30px);
-    border-left: 1px solid rgba(255, 255, 255, 0.2);
+    pointer-events: auto;
+    background: #ffffff;               /* solid white, not transparent */
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    border-left: 1px solid rgba(0, 0, 0, 0.1);
     flex-direction: column;
     justify-content: center;
     align-items: center;
@@ -201,6 +328,7 @@
     padding: 2rem 1.5rem;
     list-style: none;
     margin: 0;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
   }
 
   .nav-links.open {
@@ -226,12 +354,16 @@
     background: rgba(0, 0, 0, 0.08);
     color: #000;
   }
+}
 
-  /* ─── Mobile: keep logo visible when scrolled ─── */
-  .navbar-scrolled .brand-logo-wrapper {
-    opacity: 1;
-    transform: scale(1);
-    pointer-events: auto;
+/* ─── Small phones (≤ 480px) ─── */
+@media (max-width: 480px) {
+  .nav-clock__time {
+    font-size: 0.8rem;
+  }
+
+  .nav-clock__label {
+    font-size: 0.7rem;
   }
 }
 
@@ -245,28 +377,4 @@
   background: rgba(0, 0, 0, 0.15);
   backdrop-filter: blur(2px);
   z-index: 1040;
-}
-
-/* ─── Scroll state: text turns dark when past hero ─── */
-.navbar-scrolled .glass-link {
-  color: #000000;
-}
-
-.navbar-scrolled .glass-link:hover {
-  color: #000000;
-}
-
-.navbar-scrolled .glass-link.active {
-  color: #000;
-  border-bottom-color: rgba(0, 0, 0, 0.5);
-}
-
-.navbar-scrolled .news-link {
-  color: #000000;
-}
-
-.navbar-scrolled .news-link:hover {
-  color: #000000;
-  background: rgba(0, 0, 0, 0.05);
-  border-color: rgba(0, 0, 0, 0.2);
 }
