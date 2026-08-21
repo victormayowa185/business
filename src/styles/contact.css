@@ -1,0 +1,312 @@
+/* ===========================================================
+   CONTACT PAGE — Hero + Intro + Form
+   =========================================================== */
+
+/* ─── Hero (same pattern as About/Investments/Videos/News) ─── */
+.contact-hero {
+  position: relative;
+  width: 100%;
+  height: 60vh;
+  min-height: 120px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  font-family: "Sora", "Segoe UI", sans-serif;
+  color: #ffffff;
+  isolation: isolate;
+}
+
+.contact-hero__bg {
+  position: absolute;
+  inset: 0;
+  background-image: url("/contact.png");
+  background-size: cover;
+  background-position: center;
+  z-index: 0;
+  /* Subtle continuous "breathing" zoom — gentle in/out, not a hard pulse. */
+  transform-origin: center center;
+  animation: contact-hero-breathe 12s ease-in-out infinite;
+  will-change: transform;
+}
+
+@keyframes contact-hero-breathe {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+.contact-hero__scrim {
+  position: absolute;
+  inset: 0;
+  background: rgba(10, 10, 12, 0.5);
+  z-index: 1;
+}
+
+.contact-hero__wordmark {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 32px 60px 32px;
+  box-sizing: border-box;
+}
+
+.contact-svg {
+  width: 100%;
+  height: auto;
+  max-height: 50vh;
+  display: block;
+}
+
+.contact-svg__letter {
+  fill: none;
+  stroke: #ffffff;
+  stroke-width: 1.5;
+  vector-effect: non-scaling-stroke;
+}
+
+/* ─── Intro (same pattern as About biography / Investments bio) ─── */
+.contact-intro {
+  width: 100%;
+  background: #ffffff;
+  padding: 80px 8% 40px;
+}
+
+.contact-intro__container {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.contact-intro__content {
+  display: flex;
+  gap: 1.5rem;
+  align-items: flex-start;
+}
+
+.contact-intro__bullet {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+  flex-shrink: 0;
+  margin-top: 0.2rem; /* aligns with top of first text line */
+}
+
+.contact-intro__text {
+  flex: 1;
+}
+
+.contact-intro__text p {
+  font-family: "Sora", "Segoe UI", sans-serif;
+  font-size: 1rem;
+  line-height: 1.8;
+  font-weight: 400;
+  color: #1a1a1a;
+  margin: 0 0 1rem 0;
+  text-align: left;
+}
+
+.contact-intro__link {
+  display: inline-block;
+  font-family: "Sora", "Segoe UI", sans-serif;
+  font-size: 0.98rem;
+  font-weight: 600;
+  color: #0033cc;
+  text-decoration: none;
+  word-break: break-all;
+  border-bottom: 1px solid rgba(0, 51, 204, 0.25);
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+
+.contact-intro__link:hover {
+  color: #000032;
+  border-bottom-color: rgba(0, 0, 50, 0.4);
+}
+
+/* ─── Contact Form ─── */
+.contact-form-section {
+  width: 100%;
+  background: #ffffff;
+  padding: 20px 8% 120px;
+}
+
+.contact-form-container {
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+.contact-form-card {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 36px;
+  border-radius: 14px;
+  border: 1px solid rgba(0, 0, 50, 0.1);
+  background: #ffffff;
+  box-sizing: border-box;
+}
+
+.contact-form__field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.contact-form__label {
+  font-family: "Sora", "Segoe UI", sans-serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: #000032;
+}
+
+.contact-form__required {
+  color: #cc0033;
+}
+
+.contact-form__input,
+.contact-form__textarea {
+  font-family: "Sora", "Segoe UI", sans-serif;
+  font-size: 0.95rem;
+  color: #1a1a1a;
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 50, 0.15);
+  border-radius: 12px;
+  padding: 12px 14px;
+  box-sizing: border-box;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.contact-form__input:focus,
+.contact-form__textarea:focus {
+  border-color: #000032;
+  box-shadow: 0 0 0 3px rgba(0, 0, 50, 0.08);
+}
+
+.contact-form__textarea {
+  resize: vertical;
+  min-height: 140px;
+  line-height: 1.6;
+}
+
+.contact-form__submit {
+  align-self: flex-start;
+  font-family: "Sora", "Segoe UI", sans-serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: #ffffff;
+  background: #000032;
+  border: 1px solid #000032;
+  border-radius: 12px;
+  padding: 12px 32px;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.contact-form__submit:hover {
+  background: #1a1a4d;
+}
+
+.contact-form__submit:active {
+  transform: translateY(1px);
+}
+
+/* ─── Responsive (≤ 768px) ─── */
+@media (max-width: 768px) {
+  .contact-hero {
+    height: 45vh;
+    min-height: 340px;
+  }
+
+  .contact-hero__wordmark {
+    padding: 0 16px 40px 16px;
+  }
+
+  .contact-svg {
+    max-height: 30vh;
+  }
+
+  .contact-intro {
+    padding: 50px 6% 30px;
+  }
+
+  .contact-intro__content {
+    gap: 1rem;
+  }
+
+  .contact-intro__bullet {
+    width: 36px;
+    height: 36px;
+  }
+
+  .contact-intro__text p,
+  .contact-intro__link {
+    font-size: 0.9rem;
+  }
+
+  .contact-form-section {
+    padding: 10px 6% 80px;
+  }
+
+  .contact-form-card {
+    padding: 24px;
+    gap: 20px;
+    border-radius: 12px;
+  }
+}
+
+/* ─── Small phones (≤ 480px) ─── */
+@media (max-width: 480px) {
+  .contact-hero {
+    height: 38vh;
+    min-height: 280px;
+  }
+
+  .contact-svg {
+    max-height: 22vh;
+  }
+
+  .contact-intro__bullet {
+    width: 28px;
+    height: 28px;
+    margin-top: 0.1rem;
+  }
+
+  .contact-intro__text p,
+  .contact-intro__link {
+    font-size: 0.85rem;
+  }
+
+  .contact-form-card {
+    padding: 20px;
+  }
+
+  .contact-form__submit {
+    align-self: stretch;
+    text-align: center;
+  }
+}
+
+/* ─── Reduce Motion ─── */
+@media (prefers-reduced-motion: reduce) {
+  .contact-svg__letter {
+    stroke-dasharray: none !important;
+  }
+
+  .contact-hero__bg {
+    animation: none !important;
+  }
+
+  .contact-form__submit,
+  .contact-intro__link {
+    transition: none;
+  }
+}

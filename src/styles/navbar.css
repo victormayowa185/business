@@ -36,7 +36,7 @@
   align-items: flex-start;
   justify-self: start;
   flex-shrink: 0;
-  margin-top: -1.6rem;
+  margin-top: -1.1rem;
 }
 
 /* ─── Logo wrapper – default: visible ─── */
@@ -54,7 +54,7 @@
 
 /* ─── Logo image ─── */
 .brand-logo-img {
-  height: 120px;
+  height: 100px;
   width: auto;
   display: block;
 }

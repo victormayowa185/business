@@ -135,7 +135,7 @@ const Navbar: React.FC = () => {
                         <NavLink to="/investments" className="glass-link">Investments</NavLink>
                         <NavLink to="/videos" className="glass-link">Videos</NavLink>
                         <NavLink to="/contact" className="glass-link">Contact</NavLink>
-                        <NavLink to="/news" className="glass-link">News & Articles</NavLink>
+                       
                     </div>
 
                     {/* ─── RIGHT: Live Clock (WAT) ─── */}
