@@ -1,8 +1,9 @@
+// src/components/HeroTrigger.tsx
 import React, { useEffect, useRef } from 'react';
 
 interface HeroTriggerProps {
   pageName?: string;
-  position: 'top' | 'bottom';  // ← required
+  position: 'top' | 'bottom';
 }
 
 const HeroTrigger: React.FC<HeroTriggerProps> = ({ pageName = 'page', position }) => {
@@ -10,23 +11,35 @@ const HeroTrigger: React.FC<HeroTriggerProps> = ({ pageName = 'page', position }
 
   useEffect(() => {
     if (!triggerRef.current) return;
+    const el = triggerRef.current;
+
+    const dispatch = (isVisible: boolean) => {
+      window.dispatchEvent(
+        new CustomEvent('hero-visibility', {
+          detail: { isVisible, page: pageName, position },
+        })
+      );
+    };
+
+    // ── Fire an immediate, synchronous check on mount ──
+    // IntersectionObserver's first callback is async and can land a
+    // frame or two late, which is exactly what let the old race
+    // condition slip in (a stale/late event overwriting a correct one).
+    // Checking getBoundingClientRect() right away gives the Navbar the
+    // true initial state instantly, with no flash of the wrong color.
+    const rect = el.getBoundingClientRect();
+    const initiallyVisible = rect.top < window.innerHeight && rect.bottom > 0;
+    dispatch(initiallyVisible);
 
     const observer = new IntersectionObserver(
-      ([entry]) => {
-        const isVisible = entry.isIntersecting;
-        window.dispatchEvent(
-          new CustomEvent('hero-visibility', {
-            detail: { isVisible, page: pageName, position },
-          })
-        );
-      },
+      ([entry]) => dispatch(entry.isIntersecting),
       { threshold: 0 }
     );
 
-    observer.observe(triggerRef.current);
+    observer.observe(el);
 
     return () => {
-      if (triggerRef.current) observer.unobserve(triggerRef.current);
+      observer.unobserve(el);
     };
   }, [pageName, position]);
 

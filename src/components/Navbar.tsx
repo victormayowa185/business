@@ -1,7 +1,7 @@
 // src/components/Navbar.tsx
-import { NavLink, Link } from 'react-router-dom';
+import { NavLink, Link, useLocation } from 'react-router-dom';
 import { HiMenu, HiX } from 'react-icons/hi';
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import gsap from 'gsap';
 import '../styles/navbar.css';
 import {
@@ -9,10 +9,6 @@ import {
     NAV_ENTRANCE_COMPLETE_EVENT,
 } from '../utils/appEvents';
 
-// Module-level flag (persists for the whole app session, resets on a
-// real page reload since the module re-evaluates then) — lets any
-// component check synchronously whether the one-time entrance
-// sequence has already played, without needing React context.
 declare global {
     interface Window {
         __navEntranceComplete?: boolean;
@@ -28,8 +24,29 @@ const Navbar: React.FC = () => {
     const isHiddenRef = useRef(false);
     const hasPlayedEntrance = useRef(false);
 
+    // ─── Independent top/bottom trigger state ───
+    // Each hero has a top and bottom HeroTrigger. Previously both fed
+    // the SAME shared `scrolled` value, so whichever one's event
+    // arrived last silently overwrote the other — a race condition.
+    // Now each trigger's visibility is tracked in its own ref, keyed
+    // by the event's `position` field, so they can never clobber each
+    // other. `scrolled` (navbar should be black) is only derived as
+    // TRUE once BOTH the top and bottom of the hero have left the
+    // viewport — i.e. the user's scroll position is genuinely past
+    // the entire hero, not just past one edge of it.
+    const topVisibleRef = useRef(true);
+    const bottomVisibleRef = useRef(true);
+
+    const location = useLocation();
+
     const toggleMenu = () => setMenuOpen(!menuOpen);
     const closeMenu = () => setMenuOpen(false);
+
+    // Recompute `scrolled` from the two independent trigger refs.
+    const recomputeScrolled = useCallback(() => {
+        const stillInHero = topVisibleRef.current || bottomVisibleRef.current;
+        setScrolled(!stillInHero);
+    }, []);
 
     // Lock body scroll when mobile menu is open
     useEffect(() => {
@@ -72,19 +89,35 @@ const Navbar: React.FC = () => {
         return () => window.removeEventListener('navbar-visibility', handleVisibility);
     }, []);
 
-    // ─── Scroll listener using Intersection Observer ───
+    // ─── Reset on route change ───
+    // New page mounts new HeroTrigger components, so assume we're
+    // back at the top of a fresh hero until its own triggers report
+    // otherwise (they fire an immediate synchronous check on mount,
+    // so this reset is corrected right away if the new page's hero
+    // is a different height/position).
     useEffect(() => {
-        const handleScroll = (e: Event) => {
-            const { isVisible } = (e as CustomEvent).detail;
-            setScrolled(!isVisible); // When hero is NOT visible, set scrolled to true
+        topVisibleRef.current = true;
+        bottomVisibleRef.current = true;
+        setScrolled(false);
+    }, [location.pathname]);
+
+    // ─── Track top/bottom hero triggers independently ───
+    useEffect(() => {
+        const handleHeroVisibility = (e: Event) => {
+            const { isVisible, position } = (e as CustomEvent).detail;
+
+            if (position === 'top') {
+                topVisibleRef.current = isVisible;
+            } else if (position === 'bottom') {
+                bottomVisibleRef.current = isVisible;
+            }
+
+            recomputeScrolled();
         };
 
-        // Initialize: assume hero is visible on page load (white/normal navbar)
-        setScrolled(false);
-
-        window.addEventListener('hero-visibility', handleScroll);
-        return () => window.removeEventListener('hero-visibility', handleScroll);
-    }, []);
+        window.addEventListener('hero-visibility', handleHeroVisibility);
+        return () => window.removeEventListener('hero-visibility', handleHeroVisibility);
+    }, [recomputeScrolled]);
 
     // ─── Live Clock: Nigerian Time (WAT) ───
     useEffect(() => {
@@ -159,7 +192,7 @@ const Navbar: React.FC = () => {
                         </div>
                     </div>
 
-                    {/* ─── CENTER: Glassy pill with 5 links ─── */}
+                    {/* ─── CENTER: Glassy pill with 4 links ─── */}
                     <div className="nav-center-glass">
                         <NavLink to="/about" className="glass-link">ABOUT</NavLink>
                         <NavLink to="/investments" className="glass-link">INVESTMENTS</NavLink>
