@@ -5,9 +5,15 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { DrawSVGPlugin } from "gsap/DrawSVGPlugin";
 import "../styles/home.css";
-import { NAV_ENTRANCE_COMPLETE_EVENT } from "../utils/appEvents";
+import { PRELOADER_COMPLETE_EVENT } from "../utils/appEvents";
 
 gsap.registerPlugin(ScrollTrigger, DrawSVGPlugin);
+
+declare global {
+    interface Window {
+        __preloaderComplete?: boolean;
+    }
+}
 
 // ─── Wordmark Configuration ───
 const CAP_HEIGHT = 760;
@@ -40,8 +46,7 @@ const LETTERS: LetterGlyph[] = [
         w: 592,
     },
     {
-        ch: "S",
-        d: "M334 -20Q232 -20 162.5 12.0Q93 44 57.5 99.5Q22 155 22 227H202Q202 187 234.5 160.5Q267 134 334 134Q393 134 424.5 155.5Q456 177 456 212Q456 240 436.5 257.5Q417 275 380 285L262 316Q170 340 116.0 393.0Q62 446 62 522Q62 585 94.5 630.0Q127 675 186.5 698.5Q246 722 322 722Q404 722 464.0 696.5Q524 671 557.0 623.5Q590 576 592 511H412Q412 545 384.5 566.5Q357 588 304 588Q253 588 224.5 568.5Q196 549 196 517Q196 491 214.5 475.0Q233 459 268 449L385 418Q483 392 536.5 337.0Q590 282 590 205Q590 141 555.5 96.0Q521 51 460.5 26.5Q400 2 322 -20Q328 -20 334 -20Z",
+        ch: "S", d: "M334 -20Q232 -20 162.5 12.0Q93 44 57.5 99.5Q22 155 22 227H202Q202 187 234.5 160.5Q267 134 334 134Q392 134 424.5 156.0Q457 178 457 215Q457 247 430.0 264.5Q403 282 339 287L292 291Q179 301 112.0 362.0Q45 423 45 524Q45 631 119.0 691.5Q193 752 317 752Q407 752 469.5 722.0Q532 692 565.0 637.5Q598 583 598 511H418Q418 547 391.5 572.5Q365 598 317 598Q271 598 248.0 577.0Q225 556 225 524Q225 496 244.0 476.0Q263 456 310 452L357 448Q439 441 502.0 412.5Q565 384 601.0 335.0Q637 286 637 215Q637 144 600.5 91.0Q564 38 496.5 9.0Q429 -20 334 -20Z",
         x: 2160,
         w: 659,
     },
@@ -93,6 +98,23 @@ const Home: React.FC = () => {
     const membershipsRef = useRef<HTMLDivElement | null>(null);
     const marqueeTrackRef = useRef<HTMLDivElement | null>(null);
 
+    // ─── Hero Text: Show immediately on page load ───
+    // Ensures the hero eyebrow, quote, and "recent news" are all visible
+    // right away when the page loads, before the SVG drawing animation starts.
+    useEffect(() => {
+        if (!heroRef.current) return;
+
+        const eyebrow = heroRef.current.querySelector(".hero-eyebrow");
+        const recentSection = heroRef.current.querySelector(".hero-recent");
+
+        if (eyebrow) {
+            gsap.set(eyebrow, { opacity: 1, y: 0 });
+        }
+        if (recentSection) {
+            gsap.set(recentSection, { opacity: 1, y: 0 });
+        }
+    }, []);
+
     // ─── Hero: drawn wordmark ───
     // Previously this played immediately on mount, chained together
     // with the eyebrow's fade-in in the same GSAP timeline. Now:
@@ -121,11 +143,17 @@ const Home: React.FC = () => {
                 markRef.current!.querySelectorAll(".hero-mark__letter")
             );
 
+            // Hide SVG elements initially
+            gsap.set([svgRef.current, markRef.current], { opacity: 0 });
+
             const order = letterPaths.map((_, i) => i);
             gsap.utils.shuffle(order);
 
             const buildTimeline = () => {
                 const tl = gsap.timeline({ paused: true });
+
+                // Show the SVG containers when animation starts
+                tl.set([svgRef.current, markRef.current], { opacity: 1 }, 0);
 
                 tl.set(letterPaths, { drawSVG: "0%", opacity: 1 });
                 if (markPath) tl.set(markPath, { drawSVG: "0%" });
@@ -160,33 +188,31 @@ const Home: React.FC = () => {
                 return tl;
             };
 
-            const playInitialDraw = () => {
+            const playDraw = () => {
                 timelineRef.current = buildTimeline();
                 timelineRef.current.play();
             };
 
-            // Gate the very first draw behind the navbar's entrance —
-            // but only on a fresh page load. If the navbar entrance
-            // already finished this session (e.g. we've navigated back
-            // to Home), draw immediately with no delay.
-            if (window.__navEntranceComplete) {
-                playInitialDraw();
+            // Check if preloader is already done (not first load, or returning to page)
+            if (window.__preloaderComplete) {
+                playDraw();
             } else {
-                window.addEventListener(NAV_ENTRANCE_COMPLETE_EVENT, playInitialDraw, {
-                    once: true,
-                });
+                // Wait for preloader to complete before playing
+                window.addEventListener(PRELOADER_COMPLETE_EVENT, playDraw, { once: true });
             }
 
-            // Re-trigger on scroll in/back — unchanged from before.
+            // ScrollTrigger re-trigger — but only play if preloader is done
             ScrollTrigger.create({
                 trigger: heroRef.current,
                 start: "top 75%",
                 onEnter: () => {
+                    if (!window.__preloaderComplete) return; // Don't play if preloader still visible
                     timelineRef.current?.kill();
                     timelineRef.current = buildTimeline();
                     timelineRef.current.play();
                 },
                 onEnterBack: () => {
+                    if (!window.__preloaderComplete) return; // Don't play if preloader still visible
                     timelineRef.current?.kill();
                     timelineRef.current = buildTimeline();
                     timelineRef.current.play();
@@ -194,7 +220,7 @@ const Home: React.FC = () => {
             });
 
             return () => {
-                window.removeEventListener(NAV_ENTRANCE_COMPLETE_EVENT, playInitialDraw);
+                window.removeEventListener(PRELOADER_COMPLETE_EVENT, playDraw);
             };
         }, heroRef);
 
@@ -331,9 +357,9 @@ const Home: React.FC = () => {
                             entrepreneurship in Africa, one investment at a time.
                         </strong>
                         <p className="hero-quote-extra">
-                            “Capital alone is not enough. We don't just invest with money;
+                            "Capital alone is not enough. We don't just invest with money;
                             we go beyond the capital to help companies build stronger finance
-                            functions, governance, and strategy.” — Detailing her approach
+                            functions, governance, and strategy." — Detailing her approach
                             at Aruwa Capital Management.
                         </p>
                         {/* ─── NEW: Link to Aruwa Capital ─── */}
@@ -403,7 +429,7 @@ const Home: React.FC = () => {
 
             {/* ═══════════════════════════════════════
           MISSION — two‑column panels + pinned image
-      ═══════════════════════════════════════ */}
+      ════════════════════════════════════���══ */}
             <section className="mission-section" ref={missionRef}>
                 {/* ─── Pinned image (snaps on/off) ─── */}
                 <div className="mission-photo-band" ref={missionPhotoRef}>

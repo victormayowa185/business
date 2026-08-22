@@ -14,6 +14,7 @@ import {
   PRELOADER_COMPLETE_EVENT,
   PRELOADER_MIN_VISIBLE_MS,
   PRELOADER_TOTAL_MS,
+  ANIMATION_DELAY_MS,
 } from './utils/appEvents';
 
 function App() {
@@ -21,19 +22,19 @@ function App() {
 
   useEffect(() => {
     // Preloader is guaranteed to show for at least PRELOADER_MIN_VISIBLE_MS
-    // (2s) regardless of how fast the network/assets load — unchanged.
+    // (2s) regardless of how fast the network/assets load
     const hideTimer = setTimeout(() => {
       setIsLoading(false);
     }, PRELOADER_MIN_VISIBLE_MS);
 
     // Once `hidden` is applied, the Preloader still visually fades out
-    // over 0.6s (see preloader.css). The navbar's bounce-drop shouldn't
-    // start until that fade has actually finished, so this second timer
-    // fires at PRELOADER_TOTAL_MS (2000 + 600 = 2600ms) — the real
-    // moment the preloader is fully gone from the screen.
+    // over 0.6s (see preloader.css). The navbar's bounce-drop and SVG animation
+    // shouldn't start until the preloader is completely gone from view.
+    // This fires at PRELOADER_TOTAL_MS + ANIMATION_DELAY_MS (2600ms + 800ms = 3400ms)
     const completeTimer = setTimeout(() => {
+      (window as any).__preloaderComplete = true;
       window.dispatchEvent(new CustomEvent(PRELOADER_COMPLETE_EVENT));
-    }, PRELOADER_TOTAL_MS);
+    }, PRELOADER_TOTAL_MS + ANIMATION_DELAY_MS);
 
     return () => {
       clearTimeout(hideTimer);
@@ -55,6 +56,6 @@ function App() {
       <Footer />
     </BrowserRouter>
   );
-}
+} ``
 
 export default App;

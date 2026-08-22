@@ -18,3 +18,8 @@ export const NAV_ENTRANCE_COMPLETE_EVENT = "nav-entrance-complete";
 export const PRELOADER_MIN_VISIBLE_MS = 2000;
 export const PRELOADER_FADE_MS = 600;
 export const PRELOADER_TOTAL_MS = PRELOADER_MIN_VISIBLE_MS + PRELOADER_FADE_MS;
+
+// Additional delay after preloader is fully gone before animations start
+// This ensures the user sees the preloader design completely before any
+// entrance animations (navbar bounce-drop, SVG drawing) begin
+export const ANIMATION_DELAY_MS = 800;
