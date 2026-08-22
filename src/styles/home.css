@@ -526,3 +526,30 @@
     margin: 0 20px;
   }
 }
+
+
+/* ─── Marquee Skeleton ─── */
+.skeleton-logo {
+    width: 120px;
+    height: 60px;
+    background: linear-gradient(90deg, #e8e8e8 0%, #f0f0f0 50%, #e8e8e8 100%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+    border-radius: 6px;
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: 200% 0;
+    }
+    100% {
+        background-position: -200% 0;
+    }
+}
+
+@media (max-width: 720px) {
+    .skeleton-logo {
+        width: 80px;
+        height: 40px;
+    }
+}

@@ -1,9 +1,10 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import HeroTrigger from '../components/HeroTrigger';
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { DrawSVGPlugin } from "gsap/DrawSVGPlugin";
+import HeroBackground from '../components/HeroBackground';
 import "../styles/home.css";
 import { PRELOADER_COMPLETE_EVENT } from "../utils/appEvents";
 
@@ -98,9 +99,10 @@ const Home: React.FC = () => {
     const membershipsRef = useRef<HTMLDivElement | null>(null);
     const marqueeTrackRef = useRef<HTMLDivElement | null>(null);
 
+    // ─── Loading state for membership logos ───
+    const [logosLoading, setLogosLoading] = useState(true);
+
     // ─── Hero Text: Show immediately on page load ───
-    // Ensures the hero eyebrow, quote, and "recent news" are all visible
-    // right away when the page loads, before the SVG drawing animation starts.
     useEffect(() => {
         if (!heroRef.current) return;
 
@@ -115,7 +117,11 @@ const Home: React.FC = () => {
         }
     }, []);
 
-
+    // ─── Simulate loading for membership logos ───
+    useEffect(() => {
+        const timer = setTimeout(() => setLogosLoading(false), 1500);
+        return () => clearTimeout(timer);
+    }, []);
 
     useEffect(() => {
         if (!heroRef.current || !svgRef.current || !markRef.current) return;
@@ -131,7 +137,6 @@ const Home: React.FC = () => {
                 markRef.current!.querySelectorAll(".hero-mark__letter")
             );
 
-            // Hide SVG elements initially
             gsap.set([svgRef.current, markRef.current], { opacity: 0 });
 
             const order = letterPaths.map((_, i) => i);
@@ -140,9 +145,7 @@ const Home: React.FC = () => {
             const buildTimeline = () => {
                 const tl = gsap.timeline({ paused: true });
 
-                // Show the SVG containers when animation starts
                 tl.set([svgRef.current, markRef.current], { opacity: 1 }, 0);
-
                 tl.set(letterPaths, { drawSVG: "0%", opacity: 1 });
                 if (markPath) tl.set(markPath, { drawSVG: "0%" });
                 tl.set(markLetters, { drawSVG: "0%" });
@@ -181,26 +184,23 @@ const Home: React.FC = () => {
                 timelineRef.current.play();
             };
 
-            // Check if preloader is already done (not first load, or returning to page)
             if (window.__preloaderComplete) {
                 playDraw();
             } else {
-                // Wait for preloader to complete before playing
                 window.addEventListener(PRELOADER_COMPLETE_EVENT, playDraw, { once: true });
             }
 
-            // ScrollTrigger re-trigger — but only play if preloader is done
             ScrollTrigger.create({
                 trigger: heroRef.current,
                 start: "top 75%",
                 onEnter: () => {
-                    if (!window.__preloaderComplete) return; // Don't play if preloader still visible
+                    if (!window.__preloaderComplete) return;
                     timelineRef.current?.kill();
                     timelineRef.current = buildTimeline();
                     timelineRef.current.play();
                 },
                 onEnterBack: () => {
-                    if (!window.__preloaderComplete) return; // Don't play if preloader still visible
+                    if (!window.__preloaderComplete) return;
                     timelineRef.current?.kill();
                     timelineRef.current = buildTimeline();
                     timelineRef.current.play();
@@ -215,12 +215,7 @@ const Home: React.FC = () => {
         return () => ctx.revert();
     }, []);
 
-    // ─── Mission: fade‑in for bio/investments blocks, pin & bottom
-    //     quotes, plus image snap ───
-    // Added: the top panel's bio/investments blocks previously had NO
-    // entrance animation at all — they just appeared statically. They
-    // now get the same smooth fade+slide reveal as the rest of the
-    // page for consistent "app-like" polish.
+    // ─── Mission: fade‑in for bio/investments blocks, pin & bottom quotes ───
     useEffect(() => {
         const ctx = gsap.context(() => {
             if (missionRef.current) {
@@ -236,7 +231,6 @@ const Home: React.FC = () => {
                 gsap.set(pin, { autoAlpha: 0, y: 24, scale: 0.9 });
                 gsap.set(quoteBlocks, { autoAlpha: 0, y: 28 });
 
-                // Top panel (bio + investments) reveal
                 ScrollTrigger.create({
                     trigger: missionRef.current.querySelector(".mission-panel--top"),
                     start: "top 78%",
@@ -254,7 +248,6 @@ const Home: React.FC = () => {
                     },
                 });
 
-                // Bottom panel (pin + quotes) reveal
                 const tl = gsap.timeline({
                     scrollTrigger: {
                         trigger: missionRef.current.querySelector(".mission-panel--bottom"),
@@ -314,19 +307,33 @@ const Home: React.FC = () => {
                     },
                 });
             }
-
-            if (marqueeTrackRef.current) {
-                const track = marqueeTrackRef.current;
-                gsap.to(track, {
-                    xPercent: -50,
-                    duration: MEMBERSHIP_LOGOS.length * 3,
-                    ease: "none",
-                    repeat: -1,
-                });
-            }
         });
 
         return () => ctx.revert();
+    }, []);
+
+    // ─── Marquee animation — only starts after logos are loaded ───
+    useEffect(() => {
+        if (logosLoading || !marqueeTrackRef.current) return;
+
+        const track = marqueeTrackRef.current;
+        const tween = gsap.to(track, {
+            xPercent: -50,
+            duration: MEMBERSHIP_LOGOS.length * 3,
+            ease: "none",
+            repeat: -1,
+        });
+
+        return () => { tween.kill(); };
+    }, [logosLoading]);
+
+    // ─── Force navbar to white on Home page mount ───
+    useEffect(() => {
+        window.dispatchEvent(
+            new CustomEvent('hero-visibility', {
+                detail: { isVisible: true, page: 'home', position: 'top' },
+            })
+        );
     }, []);
 
     return (
@@ -334,7 +341,7 @@ const Home: React.FC = () => {
             <HeroTrigger pageName="home" position="top" />
 
             <section className="hero-section" ref={heroRef}>
-                <div className="hero-section__bg" />
+                <HeroBackground src="/images/hero.png" focalPosition="center 22%" />
                 <div className="hero-section__scrim" />
 
                 <div className="hero-section__top">
@@ -349,7 +356,6 @@ const Home: React.FC = () => {
                             functions, governance, and strategy." — Detailing her approach
                             at Aruwa Capital Management.
                         </p>
-                        {/* ─── NEW: Link to Aruwa Capital ─── */}
                         <Link
                             to="https://aruwacapital.com/"
                             target="_blank"
@@ -417,19 +423,16 @@ const Home: React.FC = () => {
             <HeroTrigger pageName="home" position="bottom" />
 
             {/* ═══════════════════════════════════════
-          MISSION — two‑column panels + pinned image
-      ═══════════════════════════════════════ */}
+                MISSION
+            ═══════════════════════════════════════ */}
             <section className="mission-section" ref={missionRef}>
-                {/* ─── Pinned image (snaps on/off) ─── */}
                 <div className="mission-photo-band" ref={missionPhotoRef}>
                     <div className="mission-photo-band__img" />
                 </div>
 
-                {/* ─── Top Panel: Bio & Investments side‑by‑side ─── */}
                 <div className="mission-panel mission-panel--top">
                     <div className="mission-inner">
                         <div className="mission-grid-2col">
-                            {/* Left: Bio with logo */}
                             <div className="mission-block">
                                 <img src="/logo1.png" alt="Adesuwa Rhodes" className="mission-block__logo" />
                                 <p className="mission-block__text">
@@ -445,7 +448,6 @@ const Home: React.FC = () => {
                                 <Link to="/about" className="mission-block__link">Read More →</Link>
                             </div>
 
-                            {/* Right: Investments with heading */}
                             <div className="mission-block">
                                 <h3 className="mission-block__heading">INVESTMENTS</h3>
                                 <p className="mission-block__text">
@@ -467,13 +469,10 @@ const Home: React.FC = () => {
                     </div>
                 </div>
 
-                {/* ─── Gap with pinned image ─── */}
                 <div className="mission-gap" ref={missionGapRef} />
 
-                {/* ─── Bottom Panel: Old quotes side‑by‑side ─── */}
                 <div className="mission-panel mission-panel--bottom">
                     <div className="mission-inner">
-                        {/* Decorative pin (bullet) */}
                         <img src="/logo1.png" alt="Adesuwa Rhodes" className="mission-pin" />
 
                         <div className="mission-quotes-grid">
@@ -497,30 +496,41 @@ const Home: React.FC = () => {
                             </div>
                         </div>
 
-                        {/* Single attribution for both quotes */}
                         <div className="mission-attribution">~ Adesuwa Rhodes</div>
                     </div>
                 </div>
             </section>
 
             {/* ═══════════════════════════════════════
-          MEMBERSHIPS & PUBLICATIONS
-      ═══════════════════════════════════════ */}
+                MEMBERSHIPS & PUBLICATIONS — with skeleton loading
+            ═══════════════════════════════════════ */}
             <section className="memberships-section" ref={membershipsRef}>
                 <h2 className="memberships-heading">Memberships and Publications</h2>
 
                 <div className="marquee">
                     <div className="marquee__track" ref={marqueeTrackRef}>
-                        {MEMBERSHIP_LOGOS.map((logo) => (
-                            <div key={logo.id} className="marquee__item">
-                                <img src={logo.src} alt={logo.alt} loading="lazy" />
-                            </div>
-                        ))}
-                        {MEMBERSHIP_LOGOS.map((logo) => (
-                            <div key={`${logo.id}-dup`} className="marquee__item" aria-hidden="true">
-                                <img src={logo.src} alt="" loading="lazy" />
-                            </div>
-                        ))}
+                        {logosLoading ? (
+                            // ─── Show skeleton placeholders while loading ───
+                            Array.from({ length: 8 }).map((_, i) => (
+                                <div key={`logo-skeleton-${i}`} className="marquee__item">
+                                    <div className="skeleton-logo" />
+                                </div>
+                            ))
+                        ) : (
+                            // ─── Show actual logos once loaded ───
+                            <>
+                                {MEMBERSHIP_LOGOS.map((logo) => (
+                                    <div key={logo.id} className="marquee__item">
+                                        <img src={logo.src} alt={logo.alt} loading="lazy" />
+                                    </div>
+                                ))}
+                                {MEMBERSHIP_LOGOS.map((logo) => (
+                                    <div key={`${logo.id}-dup`} className="marquee__item" aria-hidden="true">
+                                        <img src={logo.src} alt="" loading="lazy" />
+                                    </div>
+                                ))}
+                            </>
+                        )}
                     </div>
                 </div>
             </section>

@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import SkeletonCard from '../components/SkeletonCard';
+import HeroBackground from '../components/HeroBackground';
 import { DrawSVGPlugin } from "gsap/DrawSVGPlugin";
 import { PRELOADER_COMPLETE_EVENT } from "../utils/appEvents";
 import HeroTrigger from '../components/HeroTrigger';
@@ -365,7 +366,7 @@ const Videos: React.FC = () => {
       <HeroTrigger pageName="videos" position="top" />
 
       <section className="videos-hero" ref={heroRef}>
-        <div className="videos-hero__bg" />
+      <HeroBackground src="/vidoes.png" focalPosition="center 25%" />
         <div className="videos-hero__scrim" />
 
         <div className="videos-hero__wordmark">

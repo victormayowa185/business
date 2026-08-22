@@ -1,0 +1,84 @@
+/* ===========================================================
+   HERO BACKGROUND — dark glass placeholder + blur-fade photo
+   Shared across every hero (Home, About, Investments, Videos,
+   News, Contact). Import once via HeroBackground.tsx.
+   =========================================================== */
+
+.hero-bg {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    z-index: 0;
+}
+
+/* ─── Dark frosted-glass placeholder ───
+   Renders instantly, zero network dependency. Keeps white hero
+   text readable even before the real photo has downloaded. */
+.hero-bg__placeholder {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, #1c1c26 0%, #0c0c12 100%);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+}
+
+/* Subtle sheen so the placeholder reads as "glass", not just flat black */
+.hero-bg__placeholder::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 30% 20%,
+            rgba(255, 255, 255, 0.06),
+            transparent 60%);
+}
+
+/* ─── Real photo layer ───
+   Starts blurred + invisible + slightly scaled up, then clears,
+   fades in, and settles to normal scale once loaded. */
+.hero-bg__photo {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    opacity: 0;
+    filter: blur(18px);
+    transform: scale(1.06);
+    transition: opacity 0.9s ease, filter 0.9s ease, transform 0.9s ease;
+    will-change: opacity, filter, transform;
+}
+
+.hero-bg__photo--loaded {
+    opacity: 1;
+    filter: blur(0);
+    transform: scale(1);
+}
+
+/* Breathing zoom — only runs once the photo has finished loading and
+   settled, so it doesn't fight the load-in transform above. */
+.hero-bg__photo--breathe.hero-bg__photo--loaded {
+    animation: hero-bg-breathe 12s ease-in-out infinite;
+}
+
+@keyframes hero-bg-breathe {
+
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.05);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .hero-bg__photo {
+        transition: opacity 0.4s ease;
+        filter: none;
+        transform: none;
+    }
+
+    .hero-bg__photo--breathe.hero-bg__photo--loaded {
+        animation: none;
+    }
+}

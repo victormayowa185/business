@@ -22,16 +22,9 @@ function App() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Preloader is guaranteed to show for at least PRELOADER_MIN_VISIBLE_MS
-    // (2s) regardless of how fast the network/assets load
     const hideTimer = setTimeout(() => {
       setIsLoading(false);
     }, PRELOADER_MIN_VISIBLE_MS);
-
-    // Once `hidden` is applied, the Preloader still visually fades out
-    // over 0.6s (see preloader.css). The navbar's bounce-drop and SVG animation
-    // shouldn't start until the preloader is completely gone from view.
-    // This fires at PRELOADER_TOTAL_MS + ANIMATION_DELAY_MS (2600ms + 800ms = 3400ms)
     const completeTimer = setTimeout(() => {
       (window as any).__preloaderComplete = true;
       window.dispatchEvent(new CustomEvent(PRELOADER_COMPLETE_EVENT));

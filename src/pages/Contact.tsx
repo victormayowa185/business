@@ -3,6 +3,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import HeroTrigger from '../components/HeroTrigger';
 import { DrawSVGPlugin } from "gsap/DrawSVGPlugin";
+import HeroBackground from '../components/HeroBackground';
 import { PRELOADER_COMPLETE_EVENT } from "../utils/appEvents";
 import "../styles/contact.css";
 
@@ -200,7 +201,7 @@ const Contact: React.FC = () => {
             <HeroTrigger pageName="contact" position="top" />
 
             <section className="contact-hero" ref={heroRef}>
-                <div className="contact-hero__bg" />
+                <HeroBackground src="/contact.png" focalPosition="center" />
                 <div className="contact-hero__scrim" />
 
                 <div className="contact-hero__wordmark">

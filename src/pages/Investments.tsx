@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { DrawSVGPlugin } from "gsap/DrawSVGPlugin";
+import HeroBackground from '../components/HeroBackground';
 import SkeletonCard from '../components/SkeletonCard';
 import { PRELOADER_COMPLETE_EVENT } from "../utils/appEvents";
 import HeroTrigger from '../components/HeroTrigger';
@@ -342,7 +343,7 @@ const Investments: React.FC = () => {
       <HeroTrigger pageName="investments" position="top" />
 
       <section className="investments-hero" ref={heroRef}>
-        <div className="investments-hero__bg" />
+        <HeroBackground src="/investment.png" focalPosition="center 72%" />
         <div className="investments-hero__scrim" />
 
         <div className="investments-hero__wordmark">
@@ -371,8 +372,8 @@ const Investments: React.FC = () => {
       <HeroTrigger pageName="investments" position="bottom" />
 
       {/* ═══════════════════════════════════════
-          BIO / STRATEGY TEXT
-      ═══════════════════════════════════════ */}
+            BIO / STRATEGY TEXT
+        ═══════════════════════════════════════ */}
       <section className="investments-bio">
         <div className="investments-bio__container">
           <div className="investments-bio__content">
@@ -425,8 +426,8 @@ const Investments: React.FC = () => {
       </section>
 
       {/* ═══════════════════════════════════════
-          FEATURED COMPANIES — masonry, clickable cards
-      ═══════════════════════════════════════ */}
+            FEATURED COMPANIES — masonry, clickable cards
+        ═══════════════════════════════════════ */}
       <section className="featured-companies" ref={companiesRef}>
         <h2 className="featured-companies__heading">FEATURED COMPANIES</h2>
 

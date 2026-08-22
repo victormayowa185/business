@@ -21,14 +21,12 @@ const HeroTrigger: React.FC<HeroTriggerProps> = ({ pageName = 'page', position }
       );
     };
 
-    // ── Fire an immediate, synchronous check on mount ──
-    // IntersectionObserver's first callback is async and can land a
-    // frame or two late, which is exactly what let the old race
-    // condition slip in (a stale/late event overwriting a correct one).
-    // Checking getBoundingClientRect() right away gives the Navbar the
-    // true initial state instantly, with no flash of the wrong color.
+    // Immediate synchronous check on mount (fixes the initial-load
+    // race from before). Using <= / >= here (not < / >) since a
+    // 0px-tall element has rect.top === rect.bottom, so the check
+    // needs to be inclusive or it can never register as "visible".
     const rect = el.getBoundingClientRect();
-    const initiallyVisible = rect.top < window.innerHeight && rect.bottom > 0;
+    const initiallyVisible = rect.top <= window.innerHeight && rect.bottom >= 0;
     dispatch(initiallyVisible);
 
     const observer = new IntersectionObserver(
@@ -43,7 +41,23 @@ const HeroTrigger: React.FC<HeroTriggerProps> = ({ pageName = 'page', position }
     };
   }, [pageName, position]);
 
-  return <div ref={triggerRef} style={{ height: '1px', visibility: 'hidden' }} />;
+  return (
+    <div
+      ref={triggerRef}
+      style={{
+        // Normal document flow (this is the version that correctly
+        // fixed the top/bottom race condition). Height is 0px, not
+        // 1px, so it takes up NO layout space at all — no gap,
+        // regardless of where in the JSX it sits.
+        height: '0px',
+        margin: 0,
+        padding: 0,
+        border: 'none',
+        visibility: 'hidden',
+        pointerEvents: 'none',
+      }}
+    />
+  );
 };
 
 export default HeroTrigger;
