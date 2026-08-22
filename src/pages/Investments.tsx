@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { DrawSVGPlugin } from "gsap/DrawSVGPlugin";
+import SkeletonCard from '../components/SkeletonCard';
 import { PRELOADER_COMPLETE_EVENT } from "../utils/appEvents";
 import HeroTrigger from '../components/HeroTrigger';
 import "../styles/investments.css";
@@ -253,6 +254,13 @@ const Investments: React.FC = () => {
   const svgRef = useRef<SVGSVGElement | null>(null);
   const timelineRef = useRef<gsap.core.Timeline | null>(null);
   const companiesRef = useRef<HTMLDivElement | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  // Simulate loading for 2 seconds
+  useEffect(() => {
+    const timer = setTimeout(() => setLoading(false), 2000);
+    return () => clearTimeout(timer);
+  }, []);
 
   useEffect(() => {
     if (!heroRef.current || !svgRef.current) return;
@@ -448,41 +456,51 @@ const Investments: React.FC = () => {
         </div>
       </section>
 
-      {/* ═══════════════════════════════════════
-          FEATURED COMPANIES — masonry, clickable cards
-      ═══════════════════════════════════════ */}
+
+
       <section className="featured-companies" ref={companiesRef}>
         <h2 className="featured-companies__heading">FEATURED COMPANIES</h2>
 
         <div className="company-masonry">
-          {FEATURED_COMPANIES.map((company) => (
-            <a
-              key={company.id}
-              href={company.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={`company-card company-card--${company.height ?? "md"}`}
-            >
-              <div className="company-card__logo-wrap">
-                <img
-                  src={company.logo}
-                  alt={`${company.name} logo`}
-                  className="company-card__logo"
-                  loading="lazy"
-                />
-              </div>
-              <div className="company-card__body">
-                <h3 className="company-card__name">{company.name}</h3>
-                <p className="company-card__sector">
-                  Sector: {company.sector}
-                </p>
-                <p className="company-card__description">
-                  {company.description}
-                </p>
-                <span className="company-card__link">{company.url}</span>
-              </div>
-            </a>
-          ))}
+          {loading ? (
+            // ─── Show skeleton cards while loading ───
+            Array.from({ length: 12 }).map((_, i) => {
+              const heights: ('sm' | 'md' | 'lg')[] = ['sm', 'md', 'lg'];
+              return (
+                <SkeletonCard key={`skeleton-${i}`} height={heights[i % 3]} />
+              );
+            })
+          ) : (
+            // ─── Show actual cards once loaded ───
+            FEATURED_COMPANIES.map((company) => (
+              <a
+                key={company.id}
+                href={company.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`company-card company-card--${company.height ?? "md"}`}
+              >
+                <div className="company-card__logo-wrap">
+                  <img
+                    src={company.logo}
+                    alt={`${company.name} logo`}
+                    className="company-card__logo"
+                    loading="lazy"
+                  />
+                </div>
+                <div className="company-card__body">
+                  <h3 className="company-card__name">{company.name}</h3>
+                  <p className="company-card__sector">
+                    Sector: {company.sector}
+                  </p>
+                  <p className="company-card__description">
+                    {company.description}
+                  </p>
+                  <span className="company-card__link">{company.url}</span>
+                </div>
+              </a>
+            ))
+          )}
         </div>
       </section>
     </>

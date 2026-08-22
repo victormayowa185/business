@@ -1,6 +1,7 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import SkeletonCard from '../components/SkeletonCard';
 import { DrawSVGPlugin } from "gsap/DrawSVGPlugin";
 import { PRELOADER_COMPLETE_EVENT } from "../utils/appEvents";
 import HeroTrigger from '../components/HeroTrigger';
@@ -235,6 +236,15 @@ const Videos: React.FC = () => {
   const timelineRef = useRef<gsap.core.Timeline | null>(null);
   const videosRef = useRef<HTMLDivElement | null>(null);
 
+  // ─── Loading state for skeleton cards ───
+  const [loading, setLoading] = useState(true);
+
+  // Simulate loading for 2 seconds
+  useEffect(() => {
+    const timer = setTimeout(() => setLoading(false), 2000);
+    return () => clearTimeout(timer);
+  }, []);
+
   // Hero wordmark drawing effect
   useEffect(() => {
     if (!heroRef.current || !svgRef.current) return;
@@ -383,29 +393,40 @@ const Videos: React.FC = () => {
       <section className="videos-grid-section" ref={videosRef}>
         <div className="videos-grid-container">
           <div className="video-masonry">
-            {VIDEOS.map((video) => (
-              <a
-                key={video.id}
-                href={video.link}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={`video-card video-card--${video.height ?? "md"}`}
-              >
-                <div className="video-card__image">
-                  <img
-                    src={video.thumbnail}
-                    alt={video.title}
-                    loading="lazy"
-                  />
-                  {/* Date overlay — bottom right */}
-                  <span className="video-card__date">{video.date}</span>
-                </div>
-                <div className="video-card__body">
-                  <h3 className="video-card__title">{video.title}</h3>
-                  <p className="video-card__excerpt">{video.excerpt}</p>
-                </div>
-              </a>
-            ))}
+            {loading ? (
+              // ─── Show skeleton cards while loading ───
+              Array.from({ length: 12 }).map((_, i) => {
+                const heights: ('sm' | 'md' | 'lg')[] = ['sm', 'md', 'lg'];
+                return (
+                  <SkeletonCard key={`skeleton-${i}`} height={heights[i % 3]} />
+                );
+              })
+            ) : (
+              // ─── Show actual cards once loaded ───
+              VIDEOS.map((video) => (
+                <a
+                  key={video.id}
+                  href={video.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={`video-card video-card--${video.height ?? "md"}`}
+                >
+                  <div className="video-card__image">
+                    <img
+                      src={video.thumbnail}
+                      alt={video.title}
+                      loading="lazy"
+                    />
+                    {/* Date overlay — bottom right */}
+                    <span className="video-card__date">{video.date}</span>
+                  </div>
+                  <div className="video-card__body">
+                    <h3 className="video-card__title">{video.title}</h3>
+                    <p className="video-card__excerpt">{video.excerpt}</p>
+                  </div>
+                </a>
+              ))
+            )}
           </div>
         </div>
       </section>

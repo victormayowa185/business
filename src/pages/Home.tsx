@@ -115,20 +115,17 @@ const Home: React.FC = () => {
         }
     }, []);
 
-    // ─── Hero: drawn wordmark ───
-    // Previously this played immediately on mount, chained together
-    // with the eyebrow's fade-in in the same GSAP timeline. Now:
-    //   • The eyebrow (and everything else in the hero) shows
-    //     instantly — it's no longer part of this timeline at all.
-    //   • Only the SVG letter-draw is gated: on a fresh page load it
-    //     waits for the navbar's bounce-drop to finish
-    //     (NAV_ENTRANCE_COMPLETE_EVENT, dispatched from Navbar.tsx)
-    //     before drawing. On any later visit to Home within the same
-    //     session (e.g. navigating away and back), the navbar
-    //     entrance has already completed, so it just draws right away
-    //     — no waiting, no re-gating.
-    // The existing ScrollTrigger re-trigger (replaying the draw when
-    // the hero scrolls back into view) is untouched.
+    // ─── Initialize navbar state on mount
+    useEffect(() => {
+        // On Home page load, we're at the top of the hero, so not scrolled
+        window.dispatchEvent(
+            new CustomEvent('hero-visibility', {
+                detail: { isVisible: true, page: 'home' },
+            })
+        );
+    }, []);
+
+
     useEffect(() => {
         if (!heroRef.current || !svgRef.current || !markRef.current) return;
 

@@ -1,0 +1,102 @@
+/* ─── Skeleton Loading Cards ─── */
+.skeleton-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: #f5f5f5;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.skeleton-card__image {
+  width: 100%;
+  background: #e8e8e8;
+  flex: 0 0 auto;
+}
+
+.skeleton-image {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: linear-gradient(
+    90deg,
+    #e8e8e8 0%,
+    #f0f0f0 50%,
+    #e8e8e8 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+.skeleton-card__body {
+  padding: 1.2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  flex: 1;
+}
+
+.skeleton-text {
+  height: 12px;
+  background: linear-gradient(
+    90deg,
+    #e8e8e8 0%,
+    #f0f0f0 50%,
+    #e8e8e8 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 4px;
+}
+
+.skeleton-text--lg {
+  height: 16px;
+  width: 85%;
+}
+
+.skeleton-text--md {
+  height: 14px;
+  width: 70%;
+}
+
+.skeleton-text--sm {
+  height: 12px;
+  width: 60%;
+}
+
+/* ─── Shimmer animation ─── */
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* ─── Masonry card heights ─── */
+.skeleton-card--sm {
+  min-height: 280px;
+}
+
+.skeleton-card--md {
+  min-height: 380px;
+}
+
+.skeleton-card--lg {
+  min-height: 480px;
+}
+
+/* ─── Responsive ─── */
+@media (max-width: 768px) {
+  .skeleton-card--sm {
+    min-height: 250px;
+  }
+
+  .skeleton-card--md {
+    min-height: 320px;
+  }
+
+  .skeleton-card--lg {
+    min-height: 400px;
+  }
+}
