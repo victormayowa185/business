@@ -3,6 +3,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { DrawSVGPlugin } from "gsap/DrawSVGPlugin";
 import { PRELOADER_COMPLETE_EVENT } from "../utils/appEvents";
+import HeroTrigger from '../components/HeroTrigger';
 import "../styles/videos.css";
 
 gsap.registerPlugin(ScrollTrigger, DrawSVGPlugin);
@@ -373,6 +374,8 @@ const Videos: React.FC = () => {
           </svg>
         </div>
       </section>
+
+      <HeroTrigger pageName="videos" />
 
       {/* ═══════════════════════════════════════
           VIDEO CARDS — Masonry Grid

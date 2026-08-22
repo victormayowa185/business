@@ -90,7 +90,7 @@
 }
 
 .glass-link:hover {
-  color: #000000;
+  color: white;
   transform: translateY(-1px);
 }
 

@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import HeroTrigger from '../components/HeroTrigger';
 import { DrawSVGPlugin } from "gsap/DrawSVGPlugin";
 import { PRELOADER_COMPLETE_EVENT } from "../utils/appEvents";
 import "../styles/contact.css";
@@ -218,6 +219,8 @@ const Contact: React.FC = () => {
                     </svg>
                 </div>
             </section>
+
+           <HeroTrigger pageName="contact" />
 
             <div ref={contentRef}>
                 {/* ═══════════════════════════════════════

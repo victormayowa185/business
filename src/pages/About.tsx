@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import gsap from "gsap";
+import HeroTrigger from '../components/HeroTrigger';
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { DrawSVGPlugin } from "gsap/DrawSVGPlugin";
 import { PRELOADER_COMPLETE_EVENT } from "../utils/appEvents";
@@ -246,6 +247,8 @@ const About: React.FC = () => {
                     </svg>
                 </div>
             </section>
+
+            <HeroTrigger pageName="about" />
 
             {/* ═══════════════════════════════════════
           BIOGRAPHY — with logo1.png as a bullet

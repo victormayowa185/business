@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
-import { WiStars } from "react-icons/wi";
+import HeroTrigger from '../components/HeroTrigger';
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { DrawSVGPlugin } from "gsap/DrawSVGPlugin";
@@ -427,9 +427,11 @@ const Home: React.FC = () => {
                 </div>
             </section>
 
+            <HeroTrigger pageName="home" />
+
             {/* ═══════════════════════════════════════
           MISSION — two‑column panels + pinned image
-      ════════════════════════════════════���══ */}
+      ═══════════════════════════════════════ */}
             <section className="mission-section" ref={missionRef}>
                 {/* ─── Pinned image (snaps on/off) ─── */}
                 <div className="mission-photo-band" ref={missionPhotoRef}>

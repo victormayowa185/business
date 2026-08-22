@@ -73,21 +73,15 @@ const Navbar: React.FC = () => {
     }, []);
 
     // ─── Scroll listener for text color + logo change ───
+    // ─── Scroll listener using Intersection Observer ───
     useEffect(() => {
-        const handleScroll = () => {
-            const scrollY = window.scrollY;
-            const threshold = window.innerHeight * 0.8;
-            setScrolled(scrollY > threshold);
+        const handleScroll = (e: Event) => {
+            const { isVisible } = (e as CustomEvent).detail;
+            setScrolled(!isVisible); // When hero is NOT visible, set scrolled to true
         };
 
-        handleScroll();
-        window.addEventListener('scroll', handleScroll);
-        window.addEventListener('resize', handleScroll);
-
-        return () => {
-            window.removeEventListener('scroll', handleScroll);
-            window.removeEventListener('resize', handleScroll);
-        };
+        window.addEventListener('hero-visibility', handleScroll);
+        return () => window.removeEventListener('hero-visibility', handleScroll);
     }, []);
 
     // ─── Live Clock: Nigerian Time (WAT) ───
