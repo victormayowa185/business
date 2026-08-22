@@ -339,9 +339,8 @@ const Investments: React.FC = () => {
 
   return (
     <>
-      {/* ═══════════════════════════════════════
-          HERO — "INVESTMENTS" with drawing effect
-      ═══════════════════════════════════════ */}
+      <HeroTrigger pageName="investments" position="top" />
+
       <section className="investments-hero" ref={heroRef}>
         <div className="investments-hero__bg" />
         <div className="investments-hero__scrim" />
@@ -369,7 +368,7 @@ const Investments: React.FC = () => {
         </div>
       </section>
 
-      <HeroTrigger pageName="investments" />
+      <HeroTrigger pageName="investments" position="bottom" />
 
       {/* ═══════════════════════════════════════
           BIO / STRATEGY TEXT

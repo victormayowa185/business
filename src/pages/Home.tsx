@@ -331,9 +331,8 @@ const Home: React.FC = () => {
 
     return (
         <>
-            {/* ═══════════════════════════════════════
-          HERO
-      ═══════════════════════════════════════ */}
+            <HeroTrigger pageName="home" position="top" />
+
             <section className="hero-section" ref={heroRef}>
                 <div className="hero-section__bg" />
                 <div className="hero-section__scrim" />
@@ -415,7 +414,7 @@ const Home: React.FC = () => {
                 </div>
             </section>
 
-            <HeroTrigger pageName="home" />
+            <HeroTrigger pageName="home" position="bottom" />
 
             {/* ═══════════════════════════════════════
           MISSION — two‑column panels + pinned image

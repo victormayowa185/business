@@ -197,9 +197,8 @@ const Contact: React.FC = () => {
 
     return (
         <>
-            {/* ═══════════════════════════════════════
-          HERO — "CONTACT" with drawing effect
-      ═══════════════════════════════════════ */}
+            <HeroTrigger pageName="contact" position="top" />
+
             <section className="contact-hero" ref={heroRef}>
                 <div className="contact-hero__bg" />
                 <div className="contact-hero__scrim" />
@@ -229,7 +228,7 @@ const Contact: React.FC = () => {
             </section>
 
             {/* ─── Hero trigger point for navbar scroll detection ─── */}
-            <HeroTrigger pageName="contact" />
+            <HeroTrigger pageName="contact" position="bottom" />
 
             <div ref={contentRef}>
                 {/* ═══════════════════════════════════════

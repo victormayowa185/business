@@ -205,9 +205,12 @@ const About: React.FC = () => {
 
     return (
         <>
+            {/* ─── TOP TRIGGER: At the very start of the page ─── */}
+            <HeroTrigger pageName="about" position="top" />
+
             {/* ═══════════════════════════════════════
-          HERO — "ABOUT ADESUWA" with drawing effect
-      ═══════════════════════════════════════ */}
+                HERO — "ABOUT ADESUWA" with drawing effect
+            ═══════════════════════════════════════ */}
             <section className="about-hero" ref={heroRef}>
                 <div className="about-hero__bg" />
                 <div className="about-hero__scrim" />
@@ -236,12 +239,12 @@ const About: React.FC = () => {
                 </div>
             </section>
 
-            {/* ─── Hero trigger point for navbar scroll detection ─── */}
-            <HeroTrigger pageName="about" />
+            {/* ─── BOTTOM TRIGGER: After hero closes ─── */}
+            <HeroTrigger pageName="about" position="bottom" />
 
             {/* ═══════════════════════════════════════
-          BIOGRAPHY — with logo1.png as a bullet
-      ═══════════════════════════════════════ */}
+                BIOGRAPHY — with logo1.png as a bullet
+            ═══════════════════════════════════════ */}
             <section className="about-biography">
                 <div className="about-biography__container">
                     <div className="about-biography__content">

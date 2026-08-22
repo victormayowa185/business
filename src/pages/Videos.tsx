@@ -362,9 +362,8 @@ const Videos: React.FC = () => {
 
   return (
     <>
-      {/* ═══════════════════════════════════════
-          HERO — "VIDEOS" with drawing effect
-      ═══════════════════════════════════════ */}
+      <HeroTrigger pageName="videos" position="top" />
+
       <section className="videos-hero" ref={heroRef}>
         <div className="videos-hero__bg" />
         <div className="videos-hero__scrim" />
@@ -393,8 +392,7 @@ const Videos: React.FC = () => {
         </div>
       </section>
 
-      {/* ─── Hero trigger point for navbar scroll detection ─── */}
-      <HeroTrigger pageName="videos" />
+      <HeroTrigger pageName="videos" position="bottom" />
 
       {/* ═══════════════════════════════════════
           VIDEO CARDS — Masonry Grid
