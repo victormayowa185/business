@@ -2,14 +2,16 @@ import React, { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { DrawSVGPlugin } from "gsap/DrawSVGPlugin";
+import { PRELOADER_COMPLETE_EVENT } from "../utils/appEvents";
 import "../styles/investments.css";
 
 gsap.registerPlugin(ScrollTrigger, DrawSVGPlugin);
 
-// ─── Wordmark Configuration ───
-// "INVESTMENTS" — letter paths extracted directly from the Sora
-// ExtraBold font (fontTools), so spacing/shape is accurate — no
-// manually reconstructed glyphs this time.
+declare global {
+  interface Window {
+    __preloaderComplete?: boolean;
+  }
+}
 const CAP_HEIGHT = 760;
 const TOTAL_WIDTH = 7600;
 
@@ -251,7 +253,6 @@ const Investments: React.FC = () => {
   const timelineRef = useRef<gsap.core.Timeline | null>(null);
   const companiesRef = useRef<HTMLDivElement | null>(null);
 
-  // ─── Hero: drawn "INVESTMENTS" wordmark ───
   useEffect(() => {
     if (!heroRef.current || !svgRef.current) return;
 
@@ -260,11 +261,17 @@ const Investments: React.FC = () => {
         svgRef.current!.querySelectorAll(".investments-svg__letter")
       );
 
+      // Hide SVG initially
+      gsap.set(svgRef.current, { opacity: 0 });
+
       const order = letterPaths.map((_, i) => i);
       gsap.utils.shuffle(order);
 
       const buildTimeline = () => {
         const tl = gsap.timeline({ paused: true });
+
+        // Show the SVG when animation starts
+        tl.set(svgRef.current, { opacity: 1 }, 0);
 
         tl.set(letterPaths, { drawSVG: "0%", opacity: 1 });
 
@@ -280,23 +287,40 @@ const Investments: React.FC = () => {
         return tl;
       };
 
-      timelineRef.current = buildTimeline();
-      timelineRef.current.play();
+      const playDraw = () => {
+        timelineRef.current = buildTimeline();
+        timelineRef.current.play();
+      };
 
+      // Check if preloader is already done
+      if (window.__preloaderComplete) {
+        playDraw();
+      } else {
+        // Wait for preloader to complete before playing
+        window.addEventListener(PRELOADER_COMPLETE_EVENT, playDraw, { once: true });
+      }
+
+      // ScrollTrigger re-trigger — but only play if preloader is done
       ScrollTrigger.create({
         trigger: heroRef.current,
         start: "top 75%",
         onEnter: () => {
+          if (!window.__preloaderComplete) return;
           timelineRef.current?.kill();
           timelineRef.current = buildTimeline();
           timelineRef.current.play();
         },
         onEnterBack: () => {
+          if (!window.__preloaderComplete) return;
           timelineRef.current?.kill();
           timelineRef.current = buildTimeline();
           timelineRef.current.play();
         },
       });
+
+      return () => {
+        window.removeEventListener(PRELOADER_COMPLETE_EVENT, playDraw);
+      };
     }, heroRef);
 
     return () => ctx.revert();
@@ -356,7 +380,7 @@ const Investments: React.FC = () => {
               {LETTERS.map((letter, i) => (
                 <g key={`${letter.ch}-${i}`} transform={`translate(${letter.x}, 0)`}>
                   <path
-                    className="investments-svg__letter"
+                    className="investments-svg__letter"  // ← This is the correct class name
                     d={letter.d}
                     fillRule="evenodd"
                   />

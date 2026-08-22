@@ -2,10 +2,15 @@ import React, { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { DrawSVGPlugin } from "gsap/DrawSVGPlugin";
+import { PRELOADER_COMPLETE_EVENT } from "../utils/appEvents";
 import "../styles/videos.css";
 
 gsap.registerPlugin(ScrollTrigger, DrawSVGPlugin);
-
+declare global {
+  interface Window {
+    __preloaderComplete?: boolean;
+  }
+}
 const CAP_HEIGHT = 730; // Standardized height
 const TOTAL_WIDTH = 7600;
 
@@ -238,11 +243,18 @@ const Videos: React.FC = () => {
         svgRef.current!.querySelectorAll(".videos-svg__letter")
       );
 
+      // Hide SVG initially
+      gsap.set(svgRef.current, { opacity: 0 });
+
       const order = letterPaths.map((_, i) => i);
       gsap.utils.shuffle(order);
 
       const buildTimeline = () => {
         const tl = gsap.timeline({ paused: true });
+
+        // Show the SVG when animation starts
+        tl.set(svgRef.current, { opacity: 1 }, 0);
+
         tl.set(letterPaths, { drawSVG: "0%", opacity: 1 });
 
         order.forEach((idx, i) => {
@@ -257,23 +269,40 @@ const Videos: React.FC = () => {
         return tl;
       };
 
-      timelineRef.current = buildTimeline();
-      timelineRef.current.play();
+      const playDraw = () => {
+        timelineRef.current = buildTimeline();
+        timelineRef.current.play();
+      };
 
+      // Check if preloader is already done
+      if (window.__preloaderComplete) {
+        playDraw();
+      } else {
+        // Wait for preloader to complete before playing
+        window.addEventListener(PRELOADER_COMPLETE_EVENT, playDraw, { once: true });
+      }
+
+      // ScrollTrigger re-trigger — but only play if preloader is done
       ScrollTrigger.create({
         trigger: heroRef.current,
         start: "top 75%",
         onEnter: () => {
+          if (!window.__preloaderComplete) return;
           timelineRef.current?.kill();
           timelineRef.current = buildTimeline();
           timelineRef.current.play();
         },
         onEnterBack: () => {
+          if (!window.__preloaderComplete) return;
           timelineRef.current?.kill();
           timelineRef.current = buildTimeline();
           timelineRef.current.play();
         },
       });
+
+      return () => {
+        window.removeEventListener(PRELOADER_COMPLETE_EVENT, playDraw);
+      };
     }, heroRef);
 
     return () => ctx.revert();

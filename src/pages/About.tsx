@@ -2,34 +2,16 @@ import React, { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { DrawSVGPlugin } from "gsap/DrawSVGPlugin";
+import { PRELOADER_COMPLETE_EVENT } from "../utils/appEvents";
 import "../styles/about.css";
 
 gsap.registerPlugin(ScrollTrigger, DrawSVGPlugin);
 
-// ─── Wordmark Configuration ───
-// "ABOUT ADESUWA"
-//
-// Fixes applied here vs. the previous version:
-//
-// 1) B — the upper counter (inner "hole") subpath peaked at y=776,
-//    46 units above the outer outline's own top (y=730). That's the
-//    stray loop poking out above the B. The whole upper-counter
-//    subpath has been shifted down by 46 units so it tops out at
-//    exactly y=730, flush with the rest of the letter, leaving a
-//    clean ~110-unit crossbar between the two counters.
-//
-// 2) O — pulled from a different source at a shorter cap height
-//    (568 units tall, y 80→648) than the rest of the glyphs (~730+).
-//    A local `transform` rescales it by 730/568 ≈ 1.2852 and
-//    re-baselines/re-centers it so it matches the others, same fix
-//    used on the Videos page wordmark.
-//
-// 3) U/T spacing — U's real ink extends to x=782, past its declared
-//    box width of 771, so it was overlapping T with no visible gap.
-//    T (and every letter after it) is shifted +71 units right to
-//    open a real ~60-unit gap, and TOTAL_WIDTH is extended to match
-//    so the word still ends flush on the right.
-const CAP_HEIGHT = 760;
+declare global {
+    interface Window {
+        __preloaderComplete?: boolean;
+    }
+}
 const TOTAL_WIDTH = 9652;
 
 interface LetterGlyph {
@@ -167,11 +149,17 @@ const About: React.FC = () => {
                 svgRef.current!.querySelectorAll(".about-svg__letter")
             );
 
+            // Hide SVG initially
+            gsap.set(svgRef.current, { opacity: 0 });
+
             const order = letterPaths.map((_, i) => i);
             gsap.utils.shuffle(order);
 
             const buildTimeline = () => {
                 const tl = gsap.timeline({ paused: true });
+
+                // Show the SVG when animation starts
+                tl.set(svgRef.current, { opacity: 1 }, 0);
 
                 tl.set(letterPaths, { drawSVG: "0%", opacity: 1 });
 
@@ -187,23 +175,40 @@ const About: React.FC = () => {
                 return tl;
             };
 
-            timelineRef.current = buildTimeline();
-            timelineRef.current.play();
+            const playDraw = () => {
+                timelineRef.current = buildTimeline();
+                timelineRef.current.play();
+            };
 
+            // Check if preloader is already done
+            if (window.__preloaderComplete) {
+                playDraw();
+            } else {
+                // Wait for preloader to complete before playing
+                window.addEventListener(PRELOADER_COMPLETE_EVENT, playDraw, { once: true });
+            }
+
+            // ScrollTrigger re-trigger — but only play if preloader is done
             ScrollTrigger.create({
                 trigger: heroRef.current,
                 start: "top 75%",
                 onEnter: () => {
+                    if (!window.__preloaderComplete) return;
                     timelineRef.current?.kill();
                     timelineRef.current = buildTimeline();
                     timelineRef.current.play();
                 },
                 onEnterBack: () => {
+                    if (!window.__preloaderComplete) return;
                     timelineRef.current?.kill();
                     timelineRef.current = buildTimeline();
                     timelineRef.current.play();
                 },
             });
+
+            return () => {
+                window.removeEventListener(PRELOADER_COMPLETE_EVENT, playDraw);
+            };
         }, heroRef);
 
         return () => ctx.revert();
