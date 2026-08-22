@@ -72,13 +72,15 @@ const Navbar: React.FC = () => {
         return () => window.removeEventListener('navbar-visibility', handleVisibility);
     }, []);
 
-    // ─── Scroll listener for text color + logo change ───
     // ─── Scroll listener using Intersection Observer ───
     useEffect(() => {
         const handleScroll = (e: Event) => {
             const { isVisible } = (e as CustomEvent).detail;
             setScrolled(!isVisible); // When hero is NOT visible, set scrolled to true
         };
+
+        // Initialize: assume hero is visible on page load (white/normal navbar)
+        setScrolled(false);
 
         window.addEventListener('hero-visibility', handleScroll);
         return () => window.removeEventListener('hero-visibility', handleScroll);
@@ -105,18 +107,6 @@ const Navbar: React.FC = () => {
     }, []);
 
     // ─── Entrance animation — bounce-drop, gated behind the preloader ───
-    // Previously this played immediately on mount with a plain
-    // slide+fade (power3.out, no overshoot). Now it waits for the
-    // preloader to have fully faded out (see App.tsx's
-    // PRELOADER_COMPLETE_EVENT, fired at 2600ms), then plays a
-    // bounce-drop using an overshoot ease so it drops slightly past
-    // its resting position and settles back — a real "bounce",
-    // rather than a straight slide-in.
-    //
-    // Because Navbar mounts once and stays mounted for the whole
-    // BrowserRouter session (it's outside <Routes>), this only ever
-    // runs once per full page load — route switches never remount it,
-    // so this never replays when navigating between pages.
     useEffect(() => {
         if (hasPlayedEntrance.current || !navInnerRef.current) return;
         hasPlayedEntrance.current = true;
@@ -130,7 +120,7 @@ const Navbar: React.FC = () => {
                 y: '0%',
                 opacity: 1,
                 duration: 0.9,
-                ease: 'back.out(1.7)', // overshoots slightly past 0%, then settles — the "bounce"
+                ease: 'back.out(1.7)',
                 onComplete: () => {
                     window.__navEntranceComplete = true;
                     window.dispatchEvent(new CustomEvent(NAV_ENTRANCE_COMPLETE_EVENT));
@@ -138,12 +128,7 @@ const Navbar: React.FC = () => {
             });
         };
 
-        // Safety net: if this effect somehow subscribes after the
-        // preloader has already fired its complete event (shouldn't
-        // normally happen — Navbar mounts synchronously at app start,
-        // well before the 2600ms mark), don't get stuck waiting forever.
         if (window.__navEntranceComplete) {
-            // Entrance already happened this session — just snap to final state.
             gsap.set(el, { y: '0%', opacity: 1 });
             return;
         }
@@ -180,7 +165,6 @@ const Navbar: React.FC = () => {
                         <NavLink to="/investments" className="glass-link">INVESTMENTS</NavLink>
                         <NavLink to="/videos" className="glass-link">VIDEOS</NavLink>
                         <NavLink to="/contact" className="glass-link">CONTACT</NavLink>
-
                     </div>
 
                     {/* ─── RIGHT: Live Clock (WAT) ─── */}

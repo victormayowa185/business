@@ -115,15 +115,6 @@ const Home: React.FC = () => {
         }
     }, []);
 
-    // ─── Initialize navbar state on mount
-    useEffect(() => {
-        // On Home page load, we're at the top of the hero, so not scrolled
-        window.dispatchEvent(
-            new CustomEvent('hero-visibility', {
-                detail: { isVisible: true, page: 'home' },
-            })
-        );
-    }, []);
 
 
     useEffect(() => {

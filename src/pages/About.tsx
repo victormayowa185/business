@@ -20,8 +20,6 @@ interface LetterGlyph {
     d: string;
     x: number;
     w: number;
-    /** Optional local transform to normalize glyphs pulled from a
-     *  different source/scale than the rest of the set (used for O). */
     transform?: string;
 }
 
@@ -33,14 +31,9 @@ const LETTERS: LetterGlyph[] = [
         x: 0,
         w: 790,
     },
-    // B — upper counter subpath corrected (see NOTE above): shifted
-    // down 46 units so it no longer overshoots the outer outline's
-    // y=730 top.
+    // B — upper counter subpath corrected
     {
         ch: "B",
-        // This path uses perfect horizontal tangents for the curves.
-        // The bottom loop is slightly larger (visual balance).
-        // All coordinates are snapped to a clean 0-730 grid.
         d: `
         M80 0 
         V730 
@@ -68,16 +61,13 @@ const LETTERS: LetterGlyph[] = [
         x: 790,
         w: 790,
     },
-    // O — rescaled/re-baselined to match cap height of the other
-    // letters (see NOTE above).
+    // O — rescaled/re-baselined
     {
         ch: "O",
-        // Native path: No transform/scale needed. Perfectly circular and smooth.
         d: "M395 0 C170 0 50 160 50 365 C50 570 170 730 395 730 C620 730 740 570 740 365 C740 160 620 0 395 0 Z M395 140 C510 140 570 230 570 365 C570 500 510 590 395 590 C280 590 220 500 220 365 C220 230 280 140 395 140 Z",
         x: 1580,
         w: 790,
     },
-
     {
         ch: "U",
         d: "M386 -20Q281 -20 208.5 19.0Q136 58 98.0 129.5Q60 201 60 299V730H246V295Q246 230 269.0 190.5Q292 151 331.5 133.5Q371 116 421 116Q471 116 510.5 133.5Q550 151 573.0 190.5Q596 230 596 295V730H782V299Q782 201 743.5 129.5Q705 58 632.5 19.0Q560 -20 455 -20Q420 -20 386 -20Z",
@@ -90,8 +80,7 @@ const LETTERS: LetterGlyph[] = [
         x: 3212,
         w: 680,
     },
-
-    // ── ADESUWA (word gap preserved after the U/T spacing fix) ──
+    // ── ADESUWA ──
     {
         ch: "A",
         d: "M8 0 242 730H540L782 0H590L537 169H246L194 0ZM292 321H489L408 580H371Z",
@@ -110,7 +99,6 @@ const LETTERS: LetterGlyph[] = [
         x: 5760,
         w: 592,
     },
-
     {
         ch: "S",
         d: "M334 -20Q232 -20 162.5 12.0Q93 44 57.5 99.5Q22 155 22 227H202Q202 187 234.5 160.5Q267 134 334 134Q392 134 424.5 156.0Q457 178 457 215Q457 247 430.0 264.5Q403 282 339 287L292 291Q179 301 112.0 362.0Q45 423 45 524Q45 631 119.0 691.5Q193 752 317 752Q407 752 469.5 722.0Q532 692 565.0 637.5Q598 583 598 511H418Q418 547 391.5 572.5Q365 598 317 598Q271 598 248.0 577.0Q225 556 225 524Q225 496 244.0 476.0Q263 456 310 452L357 448Q439 441 502.0 412.5Q565 384 601.0 335.0Q637 286 637 215Q637 144 600.5 91.0Q564 38 496.5 9.0Q429 -20 334 -20Z",
@@ -248,6 +236,7 @@ const About: React.FC = () => {
                 </div>
             </section>
 
+            {/* ─── Hero trigger point for navbar scroll detection ─── */}
             <HeroTrigger pageName="about" />
 
             {/* ═══════════════════════════════════════

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { DrawSVGPlugin } from "gsap/DrawSVGPlugin";
@@ -38,13 +38,6 @@ const LETTERS: LetterGlyph[] = [
   { ch: "S", d: "M334 -20Q232 -20 162.5 12.0Q93 44 57.5 99.5Q22 155 22 227H202Q202 187 234.5 160.5Q267 134 334 134Q392 134 424.5 156.0Q457 178 457 215Q457 247 430.0 264.5Q403 282 339 287L292 291Q179 301 112.0 362.0Q45 423 45 524Q45 631 119.0 691.5Q193 752 317 752Q407 752 469.5 722.0Q532 692 565.0 637.5Q598 583 598 511H418Q418 547 391.5 572.5Q365 598 317 598Q271 598 248.0 577.0Q225 556 225 524Q225 496 244.0 476.0Q263 456 310 452L357 448Q439 441 502.0 412.5Q565 384 601.0 335.0Q637 286 637 215Q637 144 600.5 91.0Q564 38 496.5 9.0Q429 -20 334 -20Z", x: 6941, w: 659 },
 ];
 
-/**
- * ─── Featured companies ───
- * Add more entries here as you get them — each becomes one masonry
- * card. `logo` files live in /public/company/ (logo1.png, logo2.png…).
- * `height` gives each card a bit of masonry variation; tweak per card
- * once real descriptions/logos are in.
- */
 interface Company {
   id: string;
   name: string;
@@ -96,7 +89,6 @@ const FEATURED_COMPANIES: Company[] = [
     logo: "/company/logo4.png",
     height: "md",
   },
-  // 👉 add more companies here, e.g.:
   {
     id: "company5",
     name: "Company Five",
@@ -106,7 +98,6 @@ const FEATURED_COMPANIES: Company[] = [
     logo: "/company/logo5.png",
     height: "sm",
   },
-
   {
     id: "company6",
     name: "Company Six",
@@ -116,7 +107,6 @@ const FEATURED_COMPANIES: Company[] = [
     logo: "/company/logo6.png",
     height: "sm",
   },
-
   {
     id: "company7",
     name: "Company Seven",
@@ -126,7 +116,6 @@ const FEATURED_COMPANIES: Company[] = [
     logo: "/company/logo7.png",
     height: "sm",
   },
-
   {
     id: "company8",
     name: "Company Eight",
@@ -136,7 +125,6 @@ const FEATURED_COMPANIES: Company[] = [
     logo: "/company/logo8.png",
     height: "sm",
   },
-
   {
     id: "company9",
     name: "Company Nine",
@@ -146,7 +134,6 @@ const FEATURED_COMPANIES: Company[] = [
     logo: "/company/logo9.png",
     height: "sm",
   },
-
   {
     id: "company10",
     name: "Company Ten",
@@ -156,7 +143,6 @@ const FEATURED_COMPANIES: Company[] = [
     logo: "/company/logo10.png",
     height: "sm",
   },
-
   {
     id: "company11",
     name: "Company Eleven",
@@ -166,7 +152,6 @@ const FEATURED_COMPANIES: Company[] = [
     logo: "/company/logo11.png",
     height: "sm",
   },
-
   {
     id: "company12",
     name: "Company Twelve",
@@ -176,7 +161,6 @@ const FEATURED_COMPANIES: Company[] = [
     logo: "/company/logo12.png",
     height: "sm",
   },
-
   {
     id: "company13",
     name: "Company Thirteen",
@@ -186,7 +170,6 @@ const FEATURED_COMPANIES: Company[] = [
     logo: "/company/logo13.png",
     height: "sm",
   },
-
   {
     id: "company14",
     name: "Company Fourteen",
@@ -196,7 +179,6 @@ const FEATURED_COMPANIES: Company[] = [
     logo: "/company/logo14.png",
     height: "sm",
   },
-
   {
     id: "company15",
     name: "Company fifteen",
@@ -206,8 +188,6 @@ const FEATURED_COMPANIES: Company[] = [
     logo: "/company/logo15.png",
     height: "sm",
   },
-
-
   {
     id: "company16",
     name: "Company Sixteen",
@@ -217,8 +197,6 @@ const FEATURED_COMPANIES: Company[] = [
     logo: "/company/logo16.png",
     height: "sm",
   },
-
-
   {
     id: "company17",
     name: "Company Seventeen",
@@ -228,8 +206,6 @@ const FEATURED_COMPANIES: Company[] = [
     logo: "/company/logo17.png",
     height: "sm",
   },
-
-
   {
     id: "company18",
     name: "Company Eighteen",
@@ -239,7 +215,6 @@ const FEATURED_COMPANIES: Company[] = [
     logo: "/company/logo18.png",
     height: "sm",
   },
-
 ];
 
 const PRIMARY_SECTORS = [
@@ -270,7 +245,6 @@ const Investments: React.FC = () => {
         svgRef.current!.querySelectorAll(".investments-svg__letter")
       );
 
-      // Hide SVG initially
       gsap.set(svgRef.current, { opacity: 0 });
 
       const order = letterPaths.map((_, i) => i);
@@ -279,9 +253,7 @@ const Investments: React.FC = () => {
       const buildTimeline = () => {
         const tl = gsap.timeline({ paused: true });
 
-        // Show the SVG when animation starts
         tl.set(svgRef.current, { opacity: 1 }, 0);
-
         tl.set(letterPaths, { drawSVG: "0%", opacity: 1 });
 
         order.forEach((idx, i) => {
@@ -301,15 +273,12 @@ const Investments: React.FC = () => {
         timelineRef.current.play();
       };
 
-      // Check if preloader is already done
       if (window.__preloaderComplete) {
         playDraw();
       } else {
-        // Wait for preloader to complete before playing
         window.addEventListener(PRELOADER_COMPLETE_EVENT, playDraw, { once: true });
       }
 
-      // ScrollTrigger re-trigger — but only play if preloader is done
       ScrollTrigger.create({
         trigger: heroRef.current,
         start: "top 75%",
@@ -389,7 +358,7 @@ const Investments: React.FC = () => {
               {LETTERS.map((letter, i) => (
                 <g key={`${letter.ch}-${i}`} transform={`translate(${letter.x}, 0)`}>
                   <path
-                    className="investments-svg__letter"  // ← This is the correct class name
+                    className="investments-svg__letter"
                     d={letter.d}
                     fillRule="evenodd"
                   />
@@ -456,14 +425,14 @@ const Investments: React.FC = () => {
         </div>
       </section>
 
-
-
+      {/* ═══════════════════════════════════════
+          FEATURED COMPANIES — masonry, clickable cards
+      ═══════════════════════════════════════ */}
       <section className="featured-companies" ref={companiesRef}>
         <h2 className="featured-companies__heading">FEATURED COMPANIES</h2>
 
         <div className="company-masonry">
           {loading ? (
-            // ─── Show skeleton cards while loading ───
             Array.from({ length: 12 }).map((_, i) => {
               const heights: ('sm' | 'md' | 'lg')[] = ['sm', 'md', 'lg'];
               return (
@@ -471,7 +440,6 @@ const Investments: React.FC = () => {
               );
             })
           ) : (
-            // ─── Show actual cards once loaded ───
             FEATURED_COMPANIES.map((company) => (
               <a
                 key={company.id}

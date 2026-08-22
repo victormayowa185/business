@@ -16,6 +16,14 @@ declare global {
 const CAP_HEIGHT = 730; // Standardized height
 const TOTAL_WIDTH = 7600;
 
+interface LetterGlyph {
+  ch: string;
+  d: string;
+  x: number;
+  w: number;
+  transform?: string;
+}
+
 const LETTERS: LetterGlyph[] = [
   // V — Smoothed and aligned to 0-730
   {
@@ -385,6 +393,7 @@ const Videos: React.FC = () => {
         </div>
       </section>
 
+      {/* ─── Hero trigger point for navbar scroll detection ─── */}
       <HeroTrigger pageName="videos" />
 
       {/* ═══════════════════════════════════════

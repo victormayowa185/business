@@ -14,8 +14,16 @@ declare global {
     }
 }
 
+interface LetterGlyph {
+    ch: string;
+    d: string;
+    x: number;
+    w: number;
+    transform?: string;
+}
+
 const CAP_HEIGHT = 730;
-const TOTAL_WIDTH = 5521; // Adjusted for new spacing
+const TOTAL_WIDTH = 5521;
 
 const LETTERS: LetterGlyph[] = [
     // C — Smooth geometric arc
@@ -29,7 +37,7 @@ const LETTERS: LetterGlyph[] = [
     {
         ch: "O",
         d: "M395 0 C170 0 50 160 50 365 C50 570 170 730 395 730 C620 730 740 570 740 365 C740 160 620 0 395 0 Z M395 140 C510 140 570 230 570 365 C570 500 510 590 395 590 C280 590 220 500 220 365 C220 230 280 140 395 140 Z",
-        x: 842, // Adjusted X to maintain gap
+        x: 842,
         w: 790,
     },
     // N — Clean straight lines
@@ -220,7 +228,8 @@ const Contact: React.FC = () => {
                 </div>
             </section>
 
-           <HeroTrigger pageName="contact" />
+            {/* ─── Hero trigger point for navbar scroll detection ─── */}
+            <HeroTrigger pageName="contact" />
 
             <div ref={contentRef}>
                 {/* ═══════════════════════════════════════
@@ -269,7 +278,7 @@ const Contact: React.FC = () => {
                                 />
                             </div>
 
-                            {/* ─── NEW: Email Field ─── */}
+                            {/* ─── Email Field ─── */}
                             <div className="contact-form__field">
                                 <label htmlFor="contact-email" className="contact-form__label">
                                     EMAIL   <span className="contact-form__required">*</span>
