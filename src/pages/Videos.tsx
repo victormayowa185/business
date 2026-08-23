@@ -366,7 +366,7 @@ const Videos: React.FC = () => {
       <HeroTrigger pageName="videos" position="top" />
 
       <section className="videos-hero" ref={heroRef}>
-      <HeroBackground src="/vidoes.png" focalPosition="center 25%" />
+      <HeroBackground src="/videos.webp" focalPosition="center 25%" />
         <div className="videos-hero__scrim" />
 
         <div className="videos-hero__wordmark">

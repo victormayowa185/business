@@ -20,7 +20,7 @@
 .investments-hero__bg {
   position: absolute;
   inset: 0;
-  background-image: url("/investment.png");
+  background-image: url("/investment.webp");
   background-size: cover;
   background-position: center 55%;
   z-index: 0;

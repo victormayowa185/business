@@ -213,7 +213,7 @@ const About: React.FC = () => {
                 HERO — "ABOUT ADESUWA" with drawing effect
             ═══════════════════════════════════════ */}
             <section className="about-hero" ref={heroRef}>
-                <HeroBackground src="/about.png" focalPosition="center 22%" />
+                <HeroBackground src="/about.webp" focalPosition="center 22%" />
                 <div className="about-hero__scrim" />
 
                 <div className="about-hero__wordmark">
@@ -249,7 +249,7 @@ const About: React.FC = () => {
             <section className="about-biography">
                 <div className="about-biography__container">
                     <div className="about-biography__content">
-                        <img src="/logo1.png" alt="Bullet" className="about-biography__bullet" />
+                        <img src="/logo1.webp" alt="Bullet" className="about-biography__bullet" />
                         <div className="about-biography__text">
                             <p>
                                 Adesuwa Okunbo Rhodes is the Founder and Managing Partner of{" "}

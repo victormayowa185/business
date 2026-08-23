@@ -184,7 +184,7 @@ const Navbar: React.FC = () => {
                         <div className="brand-logo-wrapper">
                             <Link to="/">
                                 <img
-                                    src={scrolled ? "/logo-dark.png" : "/logo.png"}
+                                    src={scrolled ? "/logo-dark.webp" : "/logo.webp"}
                                     alt="Logo"
                                     className="brand-logo-img"
                                 />

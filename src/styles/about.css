@@ -22,7 +22,7 @@
 .about-hero__bg {
     position: absolute;
     inset: 0;
-    background-image: url("/about.png");
+    background-image: url("/about.webp");
     background-size: cover;
     background-position: center 22%;
     z-index: 0;

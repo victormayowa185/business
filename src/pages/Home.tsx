@@ -78,13 +78,13 @@ interface MembershipLogo {
 }
 
 const MEMBERSHIP_LOGOS: MembershipLogo[] = [
-    { id: "logo1", src: "/logos/logo1.jpg", alt: "Membership logo 1" },
-    { id: "logo2", src: "/logos/logo2.jpg", alt: "Membership logo 2" },
-    { id: "logo3", src: "/logos/logo3.jpg", alt: "Membership logo 3" },
-    { id: "logo4", src: "/logos/logo4.jpg", alt: "Membership logo 4" },
-    { id: "logo5", src: "/logos/logo5.jpg", alt: "Membership logo 5" },
-    { id: "logo6", src: "/logos/logo6.jpg", alt: "Membership logo 6" },
-    { id: "logo7", src: "/logos/logo7.jpg", alt: "Membership logo 7" },
+    { id: "logo1", src: "/logos/logo1.webp", alt: "Membership logo 1" },
+    { id: "logo2", src: "/logos/logo2.webp", alt: "Membership logo 2" },
+    { id: "logo3", src: "/logos/logo3.webp", alt: "Membership logo 3" },
+    { id: "logo4", src: "/logos/logo4.webp", alt: "Membership logo 4" },
+    { id: "logo5", src: "/logos/logo5.webp", alt: "Membership logo 5" },
+    { id: "logo6", src: "/logos/logo6.webp", alt: "Membership logo 6" },
+    { id: "logo7", src: "/logos/logo7.webp", alt: "Membership logo 7" },
 ];
 
 const Home: React.FC = () => {
@@ -341,7 +341,7 @@ const Home: React.FC = () => {
             <HeroTrigger pageName="home" position="top" />
 
             <section className="hero-section" ref={heroRef}>
-                <HeroBackground src="/images/hero.png" focalPosition="center 22%" />
+                <HeroBackground src="/images/hero.webp" focalPosition="center 22%" />
                 <div className="hero-section__scrim" />
 
                 <div className="hero-section__top">
@@ -434,7 +434,7 @@ const Home: React.FC = () => {
                     <div className="mission-inner">
                         <div className="mission-grid-2col">
                             <div className="mission-block">
-                                <img src="/logo1.png" alt="Adesuwa Rhodes" className="mission-block__logo" />
+                                <img src="/logo1.webp" alt="Adesuwa Rhodes" className="mission-block__logo" />
                                 <p className="mission-block__text">
                                     Adesuwa is a leading investment professional and CEO with over 14
                                     years of experience in investment banking and private equity in
@@ -442,8 +442,16 @@ const Home: React.FC = () => {
                                     healthcare, financial services, technology and consumer goods.
                                     Adesuwa is an entrepreneur, CEO, mother, investor and women's
                                     empowerment advocate. She is one of the youngest female private
-                                    equity fund managers running her own fund in Africa, having
-                                    launched her fund at 29 years old.....
+                                    equity fund managers running her own fund,{" "}
+                                    <a
+                                        href="https://aruwacapital.com/"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="mission-block__inline-link"
+                                    >
+                                        Aruwa Capital Management
+                                    </a>
+                                    , in Africa, having launched her fund at 29 years old.....
                                 </p>
                                 <Link to="/about" className="mission-block__link">Read More →</Link>
                             </div>
@@ -451,8 +459,14 @@ const Home: React.FC = () => {
                             <div className="mission-block">
                                 <h3 className="mission-block__heading">INVESTMENTS</h3>
                                 <p className="mission-block__text">
-                                    Adesuwa is the Founder &amp; Managing Partner of Aruwa Capital
-                                    Management an early stage private equity fund investing in rapidly
+                                    Adesuwa is the Founder &amp; Managing Partner of    <a
+                                        href="https://aruwacapital.com/"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="mission-block__inline-link"
+                                    >
+                                        Aruwa Capital Management
+                                    </a> an early stage private equity fund investing in rapidly
                                     growing businesses in West Africa. With Aruwa Capital and her own
                                     personal investments, Adesuwa is focused on uncovering untapped
                                     investment opportunities that are typically overlooked and
@@ -473,7 +487,7 @@ const Home: React.FC = () => {
 
                 <div className="mission-panel mission-panel--bottom">
                     <div className="mission-inner">
-                        <img src="/logo1.png" alt="Adesuwa Rhodes" className="mission-pin" />
+                        <img src="/logo1.webp" alt="Adesuwa Rhodes" className="mission-pin" />
 
                         <div className="mission-quotes-grid">
                             <div className="mission-quote">

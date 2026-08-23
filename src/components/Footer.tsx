@@ -12,20 +12,20 @@ const Footer: React.FC = () => {
             <div className="footer-inner">
                 {/* ─── LEFT: Logo ─── */}
                 <div className="footer-brand">
-                    <img src="/logo-dark.png" alt="Logo" className="footer-logo" />
+                    <img src="/logo-dark.webp" alt="Logo" className="footer-logo" />
                 </div>
 
                 {/* ─── CENTER: Copyright + Designer Link ─── */}
                 <div className="footer-center">
                     <p className="footer-copyright">
-                        &copy; {currentYear} Designed by{' '}
+                        &copy; {currentYear}  Founder & Managing Partner{' '}
                         <a
-                            href="https://victormayowa.vercel.app/"
+                            href="https://aruwacapital.com/"
                             target="_blank"
                             rel="noopener noreferrer"
                             className="footer-link"
                         >
-                            VICTOR MAYOWA
+                            Aruwa Capital Management
                         </a>
                     </p>
                 </div>
@@ -33,7 +33,7 @@ const Footer: React.FC = () => {
                 {/* ─── RIGHT: Social Icons ─── */}
                 <div className="footer-social">
                     <a
-                        href="https://linkedin.com"
+                        href="https://www.linkedin.com/in/adesuwa-okunbo-rhodes/"
                         target="_blank"
                         rel="noopener noreferrer"
                         aria-label="LinkedIn"
@@ -42,7 +42,7 @@ const Footer: React.FC = () => {
                         <FaLinkedinIn />
                     </a>
                     <a
-                        href="https://instagram.com"
+                        href="https://instagram.com/adesuwa_okunborhodes"
                         target="_blank"
                         rel="noopener noreferrer"
                         aria-label="Instagram"
@@ -51,7 +51,7 @@ const Footer: React.FC = () => {
                         <FaInstagram />
                     </a>
                     <a
-                        href="https://twitter.com"
+                        href="https://twitter.com/AdesuwaOR"
                         target="_blank"
                         rel="noopener noreferrer"
                         aria-label="Twitter"

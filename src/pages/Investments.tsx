@@ -57,7 +57,7 @@ const FEATURED_COMPANIES: Company[] = [
     description:
       "Polysmart is a leading integrated plastic recycling and packaging solutions provider in Nigeria.",
     url: "https://www.polysmartgroup.com/",
-    logo: "/company/logo1.png",
+    logo: "/company/logo1.webp",
     height: "md",
   },
   {
@@ -67,7 +67,7 @@ const FEATURED_COMPANIES: Company[] = [
     description:
       "Placeholder description — swap in real copy when ready.",
     url: "https://example.com",
-    logo: "/company/logo2.png",
+    logo: "/company/logo2.webp",
     height: "lg",
   },
   {
@@ -77,7 +77,7 @@ const FEATURED_COMPANIES: Company[] = [
     description:
       "Placeholder description — swap in real copy when ready.",
     url: "https://example.com",
-    logo: "/company/logo3.png",
+    logo: "/company/logo3.webp",
     height: "sm",
   },
   {
@@ -87,7 +87,7 @@ const FEATURED_COMPANIES: Company[] = [
     description:
       "Placeholder description — swap in real copy when ready.",
     url: "https://example.com",
-    logo: "/company/logo4.png",
+    logo: "/company/logo4.webp",
     height: "md",
   },
   {
@@ -96,7 +96,7 @@ const FEATURED_COMPANIES: Company[] = [
     sector: "Consumer",
     description: "…",
     url: "https://example.com",
-    logo: "/company/logo5.png",
+    logo: "/company/logo5.webp",
     height: "sm",
   },
   {
@@ -105,7 +105,7 @@ const FEATURED_COMPANIES: Company[] = [
     sector: "Consumer",
     description: "…",
     url: "https://example.com",
-    logo: "/company/logo6.png",
+    logo: "/company/logo6.webp",
     height: "sm",
   },
   {
@@ -114,7 +114,7 @@ const FEATURED_COMPANIES: Company[] = [
     sector: "Consumer",
     description: "…",
     url: "https://example.com",
-    logo: "/company/logo7.png",
+    logo: "/company/logo7.webp",
     height: "sm",
   },
   {
@@ -123,7 +123,7 @@ const FEATURED_COMPANIES: Company[] = [
     sector: "Consumer",
     description: "…",
     url: "https://example.com",
-    logo: "/company/logo8.png",
+    logo: "/company/logo8.webp",
     height: "sm",
   },
   {
@@ -132,7 +132,7 @@ const FEATURED_COMPANIES: Company[] = [
     sector: "Consumer",
     description: "…",
     url: "https://example.com",
-    logo: "/company/logo9.png",
+    logo: "/company/logo9.webp",
     height: "sm",
   },
   {
@@ -141,7 +141,7 @@ const FEATURED_COMPANIES: Company[] = [
     sector: "Consumer",
     description: "…",
     url: "https://example.com",
-    logo: "/company/logo10.png",
+    logo: "/company/logo10.webp",
     height: "sm",
   },
   {
@@ -150,7 +150,7 @@ const FEATURED_COMPANIES: Company[] = [
     sector: "Consumer",
     description: "…",
     url: "https://example.com",
-    logo: "/company/logo11.png",
+    logo: "/company/logo11.webp",
     height: "sm",
   },
   {
@@ -159,7 +159,7 @@ const FEATURED_COMPANIES: Company[] = [
     sector: "Consumer",
     description: "…",
     url: "https://example.com",
-    logo: "/company/logo12.png",
+    logo: "/company/logo12.webp",
     height: "sm",
   },
   {
@@ -168,7 +168,7 @@ const FEATURED_COMPANIES: Company[] = [
     sector: "Consumer",
     description: "…",
     url: "https://example.com",
-    logo: "/company/logo13.png",
+    logo: "/company/logo13.webp",
     height: "sm",
   },
   {
@@ -177,7 +177,7 @@ const FEATURED_COMPANIES: Company[] = [
     sector: "Consumer",
     description: "…",
     url: "https://example.com",
-    logo: "/company/logo14.png",
+    logo: "/company/logo14.webp",
     height: "sm",
   },
   {
@@ -186,7 +186,7 @@ const FEATURED_COMPANIES: Company[] = [
     sector: "Consumer",
     description: "…",
     url: "https://example.com",
-    logo: "/company/logo15.png",
+    logo: "/company/logo15.webp",
     height: "sm",
   },
   {
@@ -195,7 +195,7 @@ const FEATURED_COMPANIES: Company[] = [
     sector: "Consumer",
     description: "…",
     url: "https://example.com",
-    logo: "/company/logo16.png",
+    logo: "/company/logo16.webp",
     height: "sm",
   },
   {
@@ -204,7 +204,7 @@ const FEATURED_COMPANIES: Company[] = [
     sector: "Consumer",
     description: "…",
     url: "https://example.com",
-    logo: "/company/logo17.png",
+    logo: "/company/logo17.webp",
     height: "sm",
   },
   {
@@ -213,7 +213,7 @@ const FEATURED_COMPANIES: Company[] = [
     sector: "Consumer",
     description: "…",
     url: "https://example.com",
-    logo: "/company/logo18.png",
+    logo: "/company/logo18.webp",
     height: "sm",
   },
 ];
@@ -343,7 +343,7 @@ const Investments: React.FC = () => {
       <HeroTrigger pageName="investments" position="top" />
 
       <section className="investments-hero" ref={heroRef}>
-        <HeroBackground src="/investment.png" focalPosition="center 72%" />
+        <HeroBackground src="/investment.webp" focalPosition="center 72%" />
         <div className="investments-hero__scrim" />
 
         <div className="investments-hero__wordmark">
@@ -378,7 +378,7 @@ const Investments: React.FC = () => {
         <div className="investments-bio__container">
           <div className="investments-bio__content">
             <img
-              src="/logo1.png"
+              src="/logo1.webp"
               alt="Bullet"
               className="investments-bio__bullet"
             />

@@ -9,7 +9,7 @@ const Preloader: React.FC<PreloaderProps> = ({ hidden = false }) => {
   return (
     <div className={`preloader ${hidden ? 'hidden' : ''}`}>
       <div className="preloader-inner">
-        <img src="/logo-dark.png" alt="Loading" className="preloader-logo" />
+        <img src="/logo-dark.webp" alt="Loading" className="preloader-logo" />
       </div>
     </div>
   );

@@ -201,7 +201,7 @@ const Contact: React.FC = () => {
             <HeroTrigger pageName="contact" position="top" />
 
             <section className="contact-hero" ref={heroRef}>
-                <HeroBackground src="/contact.png" focalPosition="center" />
+                <HeroBackground src="/contact.webp" focalPosition="center" />
                 <div className="contact-hero__scrim" />
 
                 <div className="contact-hero__wordmark">
@@ -239,7 +239,7 @@ const Contact: React.FC = () => {
                     <div className="contact-intro__container">
                         <div className="contact-intro__content contact-fade">
                             <img
-                                src="/logo1.png"
+                                src="/logo1.webp"
                                 alt="Bullet"
                                 className="contact-intro__bullet"
                             />

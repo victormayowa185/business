@@ -20,7 +20,7 @@
 .videos-hero__bg {
   position: absolute;
   inset: 0;
-  background-image: url("vidoes.png"); /* change to your video hero image */
+  background-image: url("/videos.webp"); /* change to your video hero image */
   background-size: cover;
   background-position: center 25%;
   z-index: 0;

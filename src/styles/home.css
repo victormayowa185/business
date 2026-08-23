@@ -32,6 +32,19 @@
   transition: border-color 0.2s ease, color 0.2s ease;
 }
 
+/* ─── Inline link inside mission block ─── */
+.mission-block__inline-link {
+  color: #000;
+  text-decoration: none;
+  border-bottom: 1px solid #00000051;
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+
+.mission-block__inline-link:hover {
+  color: #000032;
+  border-bottom-color: rgba(0, 0, 50, 0.4);
+}
+
 .hero-aruwacapital-link:hover {
   color: #ffffff;
   border-bottom-color: #ffffff;
@@ -41,7 +54,7 @@
 .hero-section__bg {
   position: absolute;
   inset: 0;
-  background-image: url("/images/hero.png");
+  background-image: url("/images/hero.webp");
   background-size: cover;
   background-position: center 22%;
   z-index: 0;
@@ -176,6 +189,14 @@
 
 /* ─── Responsive (≤ 900px) ─── */
 @media (max-width: 900px) {
+  .hero-section {
+    height: 97vh;
+    /* ← add this — adjust to taste */
+    min-height: 480px;
+    /* ← optional: keep a minimum height so it doesn't get too short */
+  }
+
+
   .hero-section__top {
     top: 19%;
     left: 24px;
@@ -267,7 +288,7 @@
   inset: 0;
   width: 100%;
   height: 100%;
-  background-image: url("/images/hero2.png");
+  background-image: url("/images/hero2.webp");
   background-size: cover;
   background-position: center 20%;
 }
@@ -441,7 +462,7 @@
   .mission-block__text,
   .mission-quote__text {
     font-size: 0.95rem;
-    
+
   }
 
   .mission-attribution {
@@ -460,7 +481,8 @@
   padding: 80px 0;
   overflow: hidden;
   background: #fff;
-  z-index: 1000;
+  position: relative;
+  z-index: 1000000;
 }
 
 .memberships-heading {
@@ -530,26 +552,27 @@
 
 /* ─── Marquee Skeleton ─── */
 .skeleton-logo {
-    width: 120px;
-    height: 60px;
-    background: linear-gradient(90deg, #e8e8e8 0%, #f0f0f0 50%, #e8e8e8 100%);
-    background-size: 200% 100%;
-    animation: shimmer 1.5s infinite;
-    border-radius: 6px;
+  width: 120px;
+  height: 60px;
+  background: linear-gradient(90deg, #e8e8e8 0%, #f0f0f0 50%, #e8e8e8 100%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 6px;
 }
 
 @keyframes shimmer {
-    0% {
-        background-position: 200% 0;
-    }
-    100% {
-        background-position: -200% 0;
-    }
+  0% {
+    background-position: 200% 0;
+  }
+
+  100% {
+    background-position: -200% 0;
+  }
 }
 
 @media (max-width: 720px) {
-    .skeleton-logo {
-        width: 80px;
-        height: 40px;
-    }
+  .skeleton-logo {
+    width: 80px;
+    height: 40px;
+  }
 }
